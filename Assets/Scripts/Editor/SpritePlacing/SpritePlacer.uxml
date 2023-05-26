@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Scripts/Editor/SpritePlacing/SpritePlacer.uss?fileID=7433441132597879392&amp;guid=11c328082a7fff74887093fc99d466ae&amp;type=3#SpritePlacer" />
+    <ui:Label text="NPCs" display-tooltip-when-elided="true" style="font-size: 15px; -unity-font-style: bold; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 3px; -unity-text-align: upper-center; background-color: rgb(78, 78, 78);" />
+    <ui:VisualElement name="NPCs" style="flex-grow: initial; flex-direction: row; flex-wrap: wrap;" />
+    <ui:Label text="Enemies" display-tooltip-when-elided="true" style="font-size: 15px; -unity-font-style: bold; margin-left: 0; margin-right: 0; margin-top: 20px; margin-bottom: 5px; -unity-text-align: upper-center; background-color: rgb(78, 78, 78);" />
+    <ui:VisualElement name="enemies" style="flex-grow: initial; flex-direction: row; flex-wrap: wrap;" />
+</ui:UXML>

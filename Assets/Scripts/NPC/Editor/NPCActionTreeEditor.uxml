@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/Scripts/NPC/Editor/NPCActionTreeEditor.uss?fileID=7433441132597879392&amp;guid=78119da4930ed3b4faa184d7d9913d0e&amp;type=3#NPCActionTreeEditor" />
+    <TreeGraph focusable="true" style="flex-grow: 1;" />
+    <ui:Label text="No Tree Selected" display-tooltip-when-elided="true" name="tree-name" picking-mode="Ignore" class="red-text" style="left: 10px; top: 10px;" />
+    <ui:Label display-tooltip-when-elided="true" name="tree-info" picking-mode="Ignore" class="hide" style="border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px;" />
+</ui:UXML>

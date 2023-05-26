@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6183751070623937507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8d861fd9d47f4409d8241e1f19d8c4, type: 3}
+  m_Name: Node_FirstTimeDownThisBranch
+  m_EditorClassIdentifier: 
+  guid: 9767f3f7933e2e3449798114ed5671ad
+  position: {x: 380.0675, y: -19.964966}
+  if: {fileID: 4560251451386777665}
+  else: {fileID: -3742199233918939628}
+  uniqueId: -1469569657
+--- !u!114 &-3742199233918939628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6eaa618f23ed4478cdf2a70b45d04b, type: 3}
+  m_Name: Node_Say
+  m_EditorClassIdentifier: 
+  guid: 6f872d2a0304f574294b8bdbe676a024
+  position: {x: 863, y: 176.3875}
+  child: {fileID: 0}
+  text: 
+--- !u!114 &-528086995887071821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6eaa618f23ed4478cdf2a70b45d04b, type: 3}
+  m_Name: Node_Say
+  m_EditorClassIdentifier: 
+  guid: 5bbd4c9900d9a5c44af28f59703add3c
+  position: {x: 1356.28, y: 51.999985}
+  child: {fileID: 0}
+  text: Nice to meet you {{Answer}}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c42512dadd5be304e808057306f73b0a, type: 3}
+  m_Name: Old Man Purple(-3798)
+  m_EditorClassIdentifier: 
+  rootNode: {fileID: 8035131107815348298}
+  nodes:
+  - {fileID: 8035131107815348298}
+  - {fileID: 4560251451386777665}
+  - {fileID: -6183751070623937507}
+  - {fileID: -528086995887071821}
+  - {fileID: -3742199233918939628}
+--- !u!114 &4560251451386777665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d73e22eb8c976a42994cd26cbf8b660, type: 3}
+  m_Name: Node_AskComplexQuestion
+  m_EditorClassIdentifier: 
+  guid: 6dce55012657ce34f9cfd63e3cca19e7
+  position: {x: 862.74005, y: -203.31204}
+  child: {fileID: -528086995887071821}
+  prompt: Hi what's your name?
+  choices:
+  - Bob
+  - Billy
+  - Jimbo
+  - '{{NAME}}'
+  allowNoAnswer: 0
+--- !u!114 &8035131107815348298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f827acdc3bc342d40869a8399b90304f, type: 3}
+  m_Name: Node_OnInteract
+  m_EditorClassIdentifier: 
+  guid: f64bd283b4abcb74c8823e0dd4556ab1
+  position: {x: 0, y: 0}
+  child: {fileID: -6183751070623937507}

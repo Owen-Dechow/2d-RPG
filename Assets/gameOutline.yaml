@@ -1,0 +1,108 @@
+TITLE: Island Past Infinity
+GAME ENGINE: Unity
+
+STORY LINE:
+    Viking must save crew
+    must get magic to save them
+    saves the world so he can leave the island that is surrounded by the magic clouds/storm
+
+STORY PATH:
+    Viking on Ship
+    Magic Storm
+    Stone Crew
+    Ship Wrecks
+    Crew Sinks into Ocean 
+    Swim to Shore
+    Pass Out
+    Kidnapped By Strange monster
+    Prepare to roast over fire
+    Saved by strange hammer wielding people
+    follow them to village
+    meets with elder
+    teaches player fighing controls
+    meets first enemy in a clearing
+    breaks axe on way to beach
+    gets to beach
+    takes boat out to shipwreck with native
+    sees Crew frozen in stone
+    goes back to village
+    talks to elder 
+    sent on mission to find one of the 3 books to the seal of the wizards lair
+    find hammer
+    finds rest of island except for beach blocked off by lava river
+    bridge is burned down
+    collects wood from forest
+    starts construction on bridge
+    learn to swim in village 
+    complete swimming mission to collect badge
+    badge system explained by a guy
+    bridge finished
+    you go cross bridge
+    clearing cant go up or right because of a obstacle
+    one is flight other is spell from first book
+    go down
+    prairie with many rocks and stonehenge stuff and Easter island heads
+    open area, lots of space
+    find temple, looks like a Aztec with step pyramid
+    complete puzzles and obstacles 
+    puzzles centered around looking at mirror images of rooms in other rooms and finding secrets
+    finds first boss room
+    armadillo boss rolls at you 
+    to defeat wait for roll into wall and hammer exposed back
+    can leave through back door to book
+    that room has a door that leads to first room
+    little side areas available to complete games for badges or to find secrets or complete side quests
+    go back to clearing open up new area 
+    forest up into a area with a river and cave system and mountain
+    explore to find a new hammer
+    tower is blocked off second book needed
+    find a castle built into a mountain, big gates, inside is second book
+    castle used to be dwarves, ruined by dragon
+    technology present, becoming more modern
+    castles puzzles are on off switch puzzles 
+    boss is a dragon stockpiling gold
+    attacks you with fire breath, and flybys
+    dragon is in Chinese wormlike style
+    after you defeat the dragon, leads you to another room
+    book is in room, have to hit the on off switch to get it
+    room leads back to first room
+    leave the castle in the mountain
+    book opens up side paths
+    if you bring any of the books back to the castle at any point, you will break that seal
+    like donkey kong country returns with the orbs
+    using book, go into tower
+    tower has puzzles based around 
+    get to the top and find a guy who gives you wings
+    wings allow you to fly over obstacles and explore island
+    can go over to last temple area now
+    last area is a mix of aea types with colors that aren't normal; purple, red, orange, pink, blue to make up organic stuff
+    castle is a legitimate castle, has drawbridge and everything. cant fly into it.
+    Castle has puzzles based around getting bomb enemies to open up paths, move around stuff to change trajectory
+    bomb enemies can be hammered to launch in a direction
+    fight boss, boss is a really big bug, royal blue coloring, with blue highlights
+    boss shoots stuff, you have to hammer the projectiles back at the bug, the projectiles are like the bomb enemies
+    after boss is done, you go to room and get book.
+    
+SYSTEMS:
+    Environment: Tiled
+    Partical: Unity
+    Combat: Turn Based (Finial Fantasy)
+
+IMPORTANT FEATURES:
+    Weapon is hammer:
+        Works as standard weapon.
+        Only in sprite.
+
+    Player can run:
+        Allows player run faster than normal pace.
+
+    Flight:
+        Allows player to fly over walls.
+        If player lands out of bounds he respans on take off point.
+
+    Lots of loot:
+        Pack game with collectables and treasure.
+
+    Badge system:
+        Badges are equipable collectables that can change various things.
+        They are separated into threegroups (Attack, Defense, Special).
