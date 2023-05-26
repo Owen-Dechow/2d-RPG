@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8201156932416638746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78d2e0be2ad61644fb14b2c91d6e874d, type: 3}
+  m_Name: Node_GiveItem
+  m_EditorClassIdentifier: 
+  guid: 225df7db78ecfed4e905668cb9e92540
+  position: {x: 2022, y: 305}
+  child: {fileID: -83169634161051680}
+  item: 0
+--- !u!114 &-6468432650696736690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed3ab0e9a4647364fb0de67eb14e5fa4, type: 3}
+  m_Name: Node_DoNothing
+  m_EditorClassIdentifier: 
+  guid: 27c5c334eb0f8634280007bd75c55edc
+  position: {x: 2060, y: 87.12}
+  child: {fileID: -83169634161051680}
 --- !u!114 &-6183751070623937507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30,9 +61,9 @@ MonoBehaviour:
   m_Name: Node_Say
   m_EditorClassIdentifier: 
   guid: 6f872d2a0304f574294b8bdbe676a024
-  position: {x: 863, y: 176.3875}
-  child: {fileID: 0}
-  text: 
+  position: {x: 794, y: 168}
+  child: {fileID: 78110423595088280}
+  text: Back again
 --- !u!114 &-528086995887071821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47,8 +78,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: 5bbd4c9900d9a5c44af28f59703add3c
   position: {x: 1356.28, y: 51.999985}
-  child: {fileID: 0}
+  child: {fileID: -6468432650696736690}
   text: Nice to meet you {{Answer}}
+--- !u!114 &-83169634161051680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6eaa618f23ed4478cdf2a70b45d04b, type: 3}
+  m_Name: Node_Say
+  m_EditorClassIdentifier: 
+  guid: 9187ef66c2cb5bc49b283d16247ea0d4
+  position: {x: 2630, y: 366}
+  child: {fileID: 0}
+  text: 
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,6 +115,61 @@ MonoBehaviour:
   - {fileID: -6183751070623937507}
   - {fileID: -528086995887071821}
   - {fileID: -3742199233918939628}
+  - {fileID: 78110423595088280}
+  - {fileID: 2420322237010301417}
+  - {fileID: -8201156932416638746}
+  - {fileID: -83169634161051680}
+  - {fileID: -6468432650696736690}
+  - {fileID: 365822353370177026}
+--- !u!114 &78110423595088280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8d861fd9d47f4409d8241e1f19d8c4, type: 3}
+  m_Name: Node_FirstTimeDownThisBranch
+  m_EditorClassIdentifier: 
+  guid: 60cb8a5cb488c6043b28b3b7439fd8cd
+  position: {x: 1219, y: 330}
+  if: {fileID: 2420322237010301417}
+  else: {fileID: 365822353370177026}
+  uniqueId: 1550675403
+--- !u!114 &365822353370177026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6eaa618f23ed4478cdf2a70b45d04b, type: 3}
+  m_Name: Node_Say
+  m_EditorClassIdentifier: 
+  guid: 9ab98f25413e4f44fbfa09d7b61f5e0d
+  position: {x: 1807, y: 503}
+  child: {fileID: -83169634161051680}
+  text: I'm no giving you any more food if thats what your after.
+--- !u!114 &2420322237010301417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6eaa618f23ed4478cdf2a70b45d04b, type: 3}
+  m_Name: Node_Say
+  m_EditorClassIdentifier: 
+  guid: 7a58dd3f98d1aaf4388005864319b2e5
+  position: {x: 1629, y: 305}
+  child: {fileID: -8201156932416638746}
+  text: Well take this Beef Jerky.
 --- !u!114 &4560251451386777665
 MonoBehaviour:
   m_ObjectHideFlags: 0
