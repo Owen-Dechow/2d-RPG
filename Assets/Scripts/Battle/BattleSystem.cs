@@ -217,7 +217,7 @@ public class BattleSystem : MonoBehaviour
             else enemyGroupName = "a " + enemyGroupName;
 
             // Display Message
-            yield return GameManager.TypeOut($"{GameManager.player.Name} engages {enemyGroupName}.");
+            yield return GameUI.TypeOut($"{GameManager.player.Name} engages {enemyGroupName}.");
         }
 
         // Pick who goes first
@@ -290,13 +290,13 @@ public class BattleSystem : MonoBehaviour
         if (player.magicOptionsForUnit.Count == 0) possibleActions.Remove("Magic");
         if (player.items.Count == 0) possibleActions.Remove("Item");
 
-        yield return GameManager.GetChoice(null, possibleActions.ToArray());
+        yield return GameUI.ChoiceMenu(null, possibleActions.ToArray(), 1);
         System.Enum.TryParse(GameManager.Answer, out BattleUnit.TurnOptions choice);
 
         // Run choice
         if (choice == BattleUnit.TurnOptions.Run)
         {
-            yield return GameManager.TypeOut($"{player.title} attempts to {GetActionStatement(player, runText, EnemyTitle)}.");
+            yield return GameUI.TypeOut($"{player.title} attempts to {GetActionStatement(player, runText, EnemyTitle)}.");
 
             bool run;
             if (enemies[0].escapePercentageAllowed == 0) run = false;
@@ -304,10 +304,10 @@ public class BattleSystem : MonoBehaviour
 
             if (run)
             {
-                yield return GameManager.TypeOut("And got away!");
+                yield return GameUI.TypeOut("And got away!");
                 setBattleWinnerToRun = true;
             }
-            else yield return GameManager.TypeOut("But couldn't get away.");
+            else yield return GameUI.TypeOut("But couldn't get away.");
 
         }
         else if (choice == BattleUnit.TurnOptions.Magic)
@@ -319,7 +319,7 @@ public class BattleSystem : MonoBehaviour
                 magicOptions[i] = player.magicOptionsForUnit[i].ToString();
                 magicOptions[i] = magicOptions[i] + " : " + new Magic.Data(player.magicOptionsForUnit[i]).price;
             }
-            yield return GameManager.GetChoice(null, magicOptions, alowCancel: true);
+            yield return GameUI.ChoiceMenu(null, magicOptions, 1, allowCancel: true);
 
             // Handel cancel
             if (GameManager.Answer == "CANCEL")
@@ -359,11 +359,11 @@ public class BattleSystem : MonoBehaviour
             }
 
             // Preliminary text
-            yield return GameManager.TypeOut($"{player.title} tried {data.title}.", close: false);
+            yield return GameUI.TypeOut($"{player.title} tried {data.title}.");
             if (data.HasEnoughMagic(player)) player.magic -= data.price;
             else
             {
-                yield return GameManager.TypeOut($"But didn't have enough magic.");
+                yield return GameUI.TypeOut($"But didn't have enough magic.");
                 yield break;
             }
 
@@ -375,7 +375,7 @@ public class BattleSystem : MonoBehaviour
                     yield return new WaitForEndOfFrame();
 
                     int hit = target.badges.GetDefenseChange(data.attackPower, target.onDefence);
-                    yield return GameManager.TypeOut($"{hit} damage to {target.title}.", close: false);
+                    yield return GameUI.TypeOut($"{hit} damage to {target.title}.");
                     yield return ChangeLifeOnEnemyUnit(target, -hit);
                 }
 
@@ -388,14 +388,14 @@ public class BattleSystem : MonoBehaviour
                 }
                 else { yield return AttackUnit(selectedUnit); }
 
-                GameManager.CloseUI();
+                GameUI.ClearUI();
             }
             if (data.Heal)
             {
                 IEnumerator HealUnit(BattleUnit target)
                 {
                     yield return new WaitForEndOfFrame();
-                    yield return GameManager.TypeOut($"{target.title} gained {data.healingPower} HP.", close: false);
+                    yield return GameUI.TypeOut($"{target.title} gained {data.healingPower} HP.");
                     yield return ChangeLifeOnPlayerUnit(target, data.healingPower);
                 }
 
@@ -408,7 +408,7 @@ public class BattleSystem : MonoBehaviour
                 }
                 else yield return HealUnit(selectedUnit);
 
-                GameManager.CloseUI();
+                GameUI.ClearUI();
             }
 
         }
@@ -424,14 +424,14 @@ public class BattleSystem : MonoBehaviour
             int attack = player.badges.GetAttack();
             int defense = selectedUnit.badges.GetDefenseChange(attack, selectedUnit.onDefence);
 
-            yield return GameManager.TypeOut($"{player.title} {GetActionStatement(player, attackText, selectedUnit.title)}!");
-            yield return GameManager.TypeOut($"{defense} damage to {selectedUnit.title}.");
+            yield return GameUI.TypeOut($"{player.title} {GetActionStatement(player, attackText, selectedUnit.title)}!");
+            yield return GameUI.TypeOut($"{defense} damage to {selectedUnit.title}.");
             yield return ChangeLifeOnEnemyUnit(selectedUnit, -defense);
         }
         else if (choice == BattleUnit.TurnOptions.Defend)
         {
             player.onDefence = true;
-            yield return GameManager.TypeOut($"{player.title} {GetActionStatement(player, defendText, EnemyTitle)}.");
+            yield return GameUI.TypeOut($"{player.title} {GetActionStatement(player, defendText, EnemyTitle)}.");
         }
         else if (choice == BattleUnit.TurnOptions.Item)
         {
@@ -441,7 +441,16 @@ public class BattleSystem : MonoBehaviour
             {
                 itemOptions[i] = player.items[i].ToString();
             }
-            yield return GameManager.GetChoice(null, itemOptions, alowCancel: true);
+
+            int cols;
+            {
+                int itemCount = player.items.Count;
+                if (itemCount <= 3) cols = 1;
+                else if (itemCount <= 6) cols = 2;
+                else cols = 3;
+            }
+
+            yield return GameUI.ChoiceMenu(null, itemOptions, cols, true);
             if (GameManager.Answer == "CANCEL")
             {
                 yield return new WaitForEndOfFrame();
@@ -475,7 +484,7 @@ public class BattleSystem : MonoBehaviour
             }
 
             // Preliminary text
-            yield return GameManager.TypeOut($"{player.title} tried using {data.title}.", close: false);
+            yield return GameUI.TypeOut($"{player.title} tried using {data.title}.");
             player.items.Remove(data.type);
 
             // Run Item
@@ -484,13 +493,13 @@ public class BattleSystem : MonoBehaviour
                 yield return new WaitForEndOfFrame();
 
                 int hit = selectedUnit.badges.GetDefenseChange(data.attackPower, selectedUnit.onDefence);
-                yield return GameManager.TypeOut($"{hit} damage to {selectedUnit.title}.");
+                yield return GameUI.TypeOut($"{hit} damage to {selectedUnit.title}.");
                 yield return ChangeLifeOnEnemyUnit(selectedUnit, -hit);
             }
             if (data.Heal)
             {
                 yield return new WaitForEndOfFrame();
-                yield return GameManager.TypeOut($"{selectedUnit.title} gained {data.healingPower} HP.");
+                yield return GameUI.TypeOut($"{selectedUnit.title} gained {data.healingPower} HP.");
                 yield return ChangeLifeOnPlayerUnit(selectedUnit, data.healingPower);
             }
 
@@ -529,8 +538,8 @@ public class BattleSystem : MonoBehaviour
             {
                 EnemySelectCammand getInput()
                 {
-                    int direction = (int)(MyInput.GetMoveHorizontal() - MyInput.GetMoveVertical());
-                    int select = MyInput.GetSelect();
+                    int direction = (int)(MyInput.MoveHorizontal - MyInput.MoveVertical);
+                    int select = MyInput.Select;
 
                     if (select == 1) return EnemySelectCammand.Select;
                     if (select == -1) return EnemySelectCammand.Cancel;
@@ -591,7 +600,7 @@ public class BattleSystem : MonoBehaviour
 
         if (turnChoice == BattleUnit.TurnOptions.Run)
         {
-            yield return GameManager.TypeOut($"{enemy.title} tried to {GetActionStatement(enemy, runText, PlayerTitle)}.");
+            yield return GameUI.TypeOut($"{enemy.title} tried to {GetActionStatement(enemy, runText, PlayerTitle)}.");
 
             bool run;
             if (players[0].escapePercentageAllowed == 0) run = false;
@@ -599,10 +608,10 @@ public class BattleSystem : MonoBehaviour
 
             if (run)
             {
-                yield return GameManager.TypeOut("And got away!");
+                yield return GameUI.TypeOut("And got away!");
                 setBattleWinnerToRun = true;
             }
-            else yield return GameManager.TypeOut("But couldn't get away.");
+            else yield return GameUI.TypeOut("But couldn't get away.");
         }
         else if (turnChoice == BattleUnit.TurnOptions.Magic)
         {
@@ -629,11 +638,11 @@ public class BattleSystem : MonoBehaviour
             }
 
             // Preliminary text
-            yield return GameManager.TypeOut($"{enemy.title} tried {data.title}.", close: false);
+            yield return GameUI.TypeOut($"{enemy.title} tried {data.title}.");
             if (data.HasEnoughMagic(enemy)) enemy.magic -= data.price;
             else
             {
-                yield return GameManager.TypeOut($"But didn't have enough magic.");
+                yield return GameUI.TypeOut($"But didn't have enough magic.");
                 yield break;
             }
 
@@ -645,7 +654,7 @@ public class BattleSystem : MonoBehaviour
                     yield return new WaitForEndOfFrame();
 
                     int hit = target.badges.GetDefenseChange(data.attackPower, target.onDefence);
-                    yield return GameManager.TypeOut($"{hit} damage to {target.title}.", close: false);
+                    yield return GameUI.TypeOut($"{hit} damage to {target.title}.");
                     yield return ChangeLifeOnPlayerUnit(target, -hit);
                 }
 
@@ -658,14 +667,14 @@ public class BattleSystem : MonoBehaviour
                 }
                 else { yield return AttackUnit(selectedUnit); }
 
-                GameManager.CloseUI();
+                GameUI.ClearUI();
             }
             if (data.Heal)
             {
                 IEnumerator HealUnit(BattleUnit target)
                 {
                     yield return new WaitForEndOfFrame();
-                    yield return GameManager.TypeOut($"{target.title} gained {data.healingPower} HP.", close: false);
+                    yield return GameUI.TypeOut($"{target.title} gained {data.healingPower} HP.");
                     yield return ChangeLifeOnPlayerUnit(target, data.healingPower);
                 }
 
@@ -678,7 +687,7 @@ public class BattleSystem : MonoBehaviour
                 }
                 else yield return HealUnit(selectedUnit);
 
-                GameManager.CloseUI();
+                GameUI.ClearUI();
             }
 
         }
@@ -689,14 +698,14 @@ public class BattleSystem : MonoBehaviour
             int attack = enemy.badges.GetAttack();
             int defense = selectedUnit.badges.GetDefenseChange(attack, selectedUnit.onDefence);
 
-            yield return GameManager.TypeOut($"{enemy.title} {GetActionStatement(enemy, attackText, selectedUnit.title)}!");
-            yield return GameManager.TypeOut($"{defense} damage to {selectedUnit.title}.");
+            yield return GameUI.TypeOut($"{enemy.title} {GetActionStatement(enemy, attackText, selectedUnit.title)}!");
+            yield return GameUI.TypeOut($"{defense} damage to {selectedUnit.title}.");
             yield return ChangeLifeOnPlayerUnit(selectedUnit, -defense);
         }
         else if (turnChoice == BattleUnit.TurnOptions.Defend)
         {
             enemy.onDefence = true;
-            yield return GameManager.TypeOut($"{enemy.title} {GetActionStatement(enemy, defendText, PlayerTitle)}.");
+            yield return GameUI.TypeOut($"{enemy.title} {GetActionStatement(enemy, defendText, PlayerTitle)}.");
         }
         else if (turnChoice == BattleUnit.TurnOptions.Item)
         {
@@ -719,7 +728,7 @@ public class BattleSystem : MonoBehaviour
             }
 
             // Preliminary text
-            yield return GameManager.TypeOut($"{enemy.title} tried using {data.title}.", close: false);
+            yield return GameUI.TypeOut($"{enemy.title} tried using {data.title}.");
             enemy.items.Remove(data.type);
 
             // Run Item
@@ -728,13 +737,13 @@ public class BattleSystem : MonoBehaviour
                 yield return new WaitForEndOfFrame();
 
                 int hit = selectedUnit.badges.GetDefenseChange(data.attackPower, selectedUnit.onDefence);
-                yield return GameManager.TypeOut($"{hit} damage to {selectedUnit.title}.");
+                yield return GameUI.TypeOut($"{hit} damage to {selectedUnit.title}.");
                 yield return ChangeLifeOnPlayerUnit(selectedUnit, -hit);
             }
             if (data.Heal)
             {
                 yield return new WaitForEndOfFrame();
-                yield return GameManager.TypeOut($"{selectedUnit.title} gained {data.healingPower} HP.");
+                yield return GameUI.TypeOut($"{selectedUnit.title} gained {data.healingPower} HP.");
                 yield return ChangeLifeOnPlayerUnit(selectedUnit, data.healingPower);
             }
 
@@ -758,11 +767,11 @@ public class BattleSystem : MonoBehaviour
         if (unit.life >= unit.maxLife)
         {
             unit.life = unit.maxLife;
-            yield return GameManager.TypeOut($"{unit.title}'s life is maxed out.");
+            yield return GameUI.TypeOut($"{unit.title}'s life is maxed out.");
         }
         if (!unit.Alive)
         {
-            yield return GameManager.TypeOut($"{unit.title} has been destroyed.");
+            yield return GameUI.TypeOut($"{unit.title} has been destroyed.");
 
             int iterations = 6;
             for (float i = 0; i < iterations; i++)
@@ -794,11 +803,11 @@ public class BattleSystem : MonoBehaviour
         if (unit.life >= unit.maxLife)
         {
             unit.life = unit.maxLife;
-            yield return GameManager.TypeOut($"{unit.title}'s life is maxed out.");
+            yield return GameUI.TypeOut($"{unit.title}'s life is maxed out.");
         }
         if (!unit.Alive)
         {
-            yield return GameManager.TypeOut($"{unit.title} died.");
+            yield return GameUI.TypeOut($"{unit.title} died.");
         }
     }
 
@@ -811,11 +820,11 @@ public class BattleSystem : MonoBehaviour
             case BattleWinner.Player:
                 Destroy(enemyGameObject);
                 GameManager.player.playerObject.SetInactive();
-                yield return GameManager.TypeOut($"{GameManager.player.Name} won the battle!");
+                yield return GameUI.TypeOut($"{GameManager.player.Name} won the battle!");
                 break;
 
             case BattleWinner.Enemy:
-                yield return GameManager.TypeOut($"{GameManager.player.Name} lost the battle!");
+                yield return GameUI.TypeOut($"{GameManager.player.Name} lost the battle!");
                 GameManager.LostBattle();
                 yield return new WaitWhile(() => true);
                 break;

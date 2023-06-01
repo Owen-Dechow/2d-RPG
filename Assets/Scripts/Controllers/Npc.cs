@@ -1,3 +1,5 @@
+// Ignore Spelling: Npc
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,7 +22,7 @@ public class Npc : MonoBehaviour
         XAndY,
     }
     [SerializeField] MovementType movementType;
-    public BehaviourTree behaviourTree;
+    public BehaviourTree behaviorTree;
 
     private bool inPlayerInteractionZone = false;
     private bool runningInteraction = false;
@@ -44,7 +46,7 @@ public class Npc : MonoBehaviour
 
     void InteractWithPlayer()
     {
-        if (MyInput.GetSelectDown() != 1) return;
+        if (MyInput.SelectDown != 1) return;
         if (runningInteraction) return;
         if (!inPlayerInteractionZone) return;
         if (Time.timeScale == 0) return;
@@ -57,11 +59,11 @@ public class Npc : MonoBehaviour
         runningInteraction = true;
         yield return new WaitForEndOfFrame();
 
-        yield return behaviourTree.Run();
+        yield return behaviorTree.Run();
 
-        yield return new WaitWhile(() => MyInput.GetSelect() == 1);
+        yield return new WaitWhile(() => MyInput.Select == 1);
         Time.timeScale = 1;
-        GameManager.CloseUI();
+        GameUI.ClearUI();
         runningInteraction = false;
     }
 }

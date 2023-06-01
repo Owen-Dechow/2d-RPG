@@ -105,7 +105,7 @@ public class Door : MonoBehaviour
     IEnumerator CantEnter(string text)
     {
         Time.timeScale = 0;
-        yield return GameManager.TypeOut(text);
+        yield return GameUI.TypeOut(text);
         Time.timeScale = 1;
 
     }

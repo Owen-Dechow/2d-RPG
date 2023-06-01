@@ -8,6 +8,6 @@ public class Node_Say : ActionNode
 
     protected override IEnumerator Execute()
     {
-        yield return GameManager.TypeOut(text);
+        yield return GameUI.TypeOut(text);
     }
 }

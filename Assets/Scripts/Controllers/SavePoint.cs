@@ -31,7 +31,7 @@ public class SavePoint : MonoBehaviour
     IEnumerator SaveGame()
     {
         Time.timeScale = 0;
-        yield return GameManager.GetYesNo("Save Game?");
+        yield return GameUI.GetYesNo("Save Game?");
         if (GameManager.Answer == "Yes") GameManager.SaveGame();
         Time.timeScale = 1;
     }

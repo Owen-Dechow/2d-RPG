@@ -6,17 +6,24 @@ public class TextBox : MonoBehaviour
     public TMPro.TextMeshProUGUI textMeshObject;
     public float delayBeforeTyping;
 
-    public IEnumerator TypeOut(string text, bool close)
+    public IEnumerator TypeOut(string text, bool instant)
     {
-        yield return TypeText(text.Trim(), close);
+        if (instant)
+        {
+            textMeshObject.text = text;
+        }
+        else 
+        {
+            yield return TypeText(text.Trim());
+        }
     }
 
-    private IEnumerator TypeText(string text, bool close)
+    private IEnumerator TypeText(string text)
     {
         // Setup
         textMeshObject.text = "";
         yield return new WaitForSecondsRealtime(delayBeforeTyping);
-        yield return new WaitWhile(() => MyInput.GetSelect() == 1);
+        yield return new WaitWhile(() => MyInput.Select == 1);
 
         // Type out text
         foreach (char letter in text)
@@ -24,10 +31,10 @@ public class TextBox : MonoBehaviour
             textMeshObject.text += letter;
             gameObject.SetActive(true);
 
-            if (MyInput.GetSelect() == 1)
+            if (MyInput.Select == 1)
             {
                 textMeshObject.text = text;
-                yield return new WaitUntil(() => MyInput.GetSelect() == 0);
+                yield return new WaitUntil(() => MyInput.Select == 0);
                 break;
             }
 
@@ -35,10 +42,10 @@ public class TextBox : MonoBehaviour
         }
 
         // Wait for space click
-        yield return MyInput.WaitForClick();
+        yield return MyInput.WaitForMenuNavigation();
 
         // Finish
-        if (close) gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     public void Close()

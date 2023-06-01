@@ -1,32 +1,71 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public static class MyInput
 {
-    public static float GetMoveHorizontal()
+    public enum Action
+    {
+        Up,
+        Down,
+        Left,
+        Right,
+        Select,
+        Cancel,
+        None,
+    }
+
+    public static int Select { get => GetSelect(); }
+    public static int SelectDown { get => GetSelectDown(); }
+    public static float MoveHorizontal { get => GetMove_Horizontal(); }
+    public static float MoveVertical { get => GetMove_Vertical(); }
+    public static bool OpenMenu { get => GetOpenMenu(); }
+
+    public static Action MenuNavigation { get; private set; } = Action.None;
+
+    static float GetMove_Horizontal()
     {
         return Input.GetAxisRaw("Horizontal");
     }
-    public static float GetMoveVertical()
+    static float GetMove_Vertical()
     {
         return Input.GetAxisRaw("Vertical");
     }
 
-    public static int GetSelect()
+    static int GetSelect()
     {
         return (int)(Input.GetAxisRaw("Submit") - Input.GetAxisRaw("Cancel"));
     }
 
-    public static int GetSelectDown()
+    static int GetSelectDown()
     {
-        if (!Input.anyKeyDown)
-        {
-           return GetSelect();
-        } else return 0;
+        if (Input.GetButtonDown("Submit") || Input.GetButtonDown("Cancel"))
+            return GetSelect();
+        else return 0;
     }
 
-    public static IEnumerator WaitForClick()
+    static bool GetOpenMenu()
+    {
+        return Input.GetKeyDown(KeyCode.Z);
+    }
+
+    public static IEnumerator WaitForMenuNavigation()
+    {
+        yield return new WaitUntil(() =>
+            Input.GetButtonDown("Horizontal")
+            || Input.GetButtonDown("Vertical")
+            || Input.GetButtonDown("Submit")
+            || Input.GetButtonDown("Cancel")
+        );
+
+        if (MoveHorizontal == 1) MenuNavigation = Action.Right;
+        else if (MoveHorizontal == -1) MenuNavigation = Action.Left;
+        else if (MoveVertical == 1) MenuNavigation = Action.Up;
+        else if (MoveVertical == -1) MenuNavigation = Action.Down;
+        else if (Select == 1) MenuNavigation = Action.Select;
+        else if (Select == -1) MenuNavigation = Action.Cancel;
+        else MenuNavigation = Action.None;
+    }
+    public static IEnumerator WaitForClickSelect()
     {
         yield return new WaitUntil(() => GetSelectDown() == 1);
         yield return new WaitWhile(() => GetSelect() == 1);

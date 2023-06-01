@@ -63,7 +63,7 @@ MonoBehaviour:
   guid: 6f872d2a0304f574294b8bdbe676a024
   position: {x: 794, y: 168}
   child: {fileID: 78110423595088280}
-  text: Back again
+  text: Back again.
 --- !u!114 &-528086995887071821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,7 +79,7 @@ MonoBehaviour:
   guid: 5bbd4c9900d9a5c44af28f59703add3c
   position: {x: 1356.28, y: 51.999985}
   child: {fileID: -6468432650696736690}
-  text: Nice to meet you {{Answer}}
+  text: Nice to meet you {{ANSWER}}.
 --- !u!114 &-83169634161051680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95,7 +95,7 @@ MonoBehaviour:
   guid: 9187ef66c2cb5bc49b283d16247ea0d4
   position: {x: 2630, y: 366}
   child: {fileID: 0}
-  text: 
+  text: Well See you later!
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,7 +190,7 @@ MonoBehaviour:
   - Bob
   - Billy
   - Jimbo
-  - '{{NAME}}'
+  - Owen
   allowNoAnswer: 0
 --- !u!114 &8035131107815348298
 MonoBehaviour:

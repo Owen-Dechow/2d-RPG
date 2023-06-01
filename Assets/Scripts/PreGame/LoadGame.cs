@@ -54,12 +54,12 @@ public class LoadGame : MonoBehaviour
         IEnumerator startgame()
         {
             DontDestroyOnLoad(gameObject);
-            yield return GameManager.ToggleLoadingScreen(true);
+            yield return GameUI.ToggleLoadingScreen(true);
 
             gameObject.GetComponent<Canvas>().enabled = false;
             GameManager.LoadScene(LevelScene.Level_0, Vector2.zero, AnimPlus.Direction.down);
 
-            yield return GameManager.ToggleLoadingScreen(false);
+            yield return GameUI.ToggleLoadingScreen(false);
             GameManager.SaveGame();
             Destroy(gameObject);
         }
@@ -140,12 +140,12 @@ public class LoadGame : MonoBehaviour
         IEnumerator startgame()
         {
             DontDestroyOnLoad(gameObject);
-            yield return GameManager.ToggleLoadingScreen(true);
+            yield return GameUI.ToggleLoadingScreen(true);
 
             gameObject.GetComponent<Canvas>().enabled = false;
             GameManager.LoadFromSavePoint(key);
 
-            yield return GameManager.ToggleLoadingScreen(false);
+            yield return GameUI.ToggleLoadingScreen(false);
             Destroy(gameObject);
         }
         StartCoroutine(startgame());

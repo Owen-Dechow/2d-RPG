@@ -9,6 +9,13 @@ public class Node_AskComplexQuestion : ActionNode
 
     protected override IEnumerator Execute()
     {
-        yield return GameManager.GetChoice(prompt, choices, allowNoAnswer);
+        int cols;
+        {
+            if (choices.Length <= 3) cols = 1; 
+            else if (choices.Length <= 6) cols = 2; 
+            else cols = 3;
+        }
+
+        yield return GameUI.ChoiceMenu(prompt, choices, cols, allowNoAnswer);
     }
 }

@@ -9,11 +9,11 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public List<GameObject> playerUnits;
 
     [SerializeField] GameObject battleSystemPrefab;
-    [SerializeField] TextBox textBox;
-    [SerializeField] ChoiceBox choiceBox;
-    [SerializeField] Image loadingScreen;
+    //[SerializeField] TextBox textBox;
+    //[SerializeField] OptionMenu choiceBox;
+    //[SerializeField] Image loadingScreen;
     [SerializeField] GameObject gameUi;
-    private static GameManager instance;
+    private static GameManager i;
 
     public static List<int> NPCActionTreeBranchProtectors = new();
 
@@ -33,13 +33,13 @@ public class GameManager : MonoBehaviour
     public static AnimPlus.Direction playerDirectionLoad;
     public static Door.DoorTag playerDoorEnter;
 
-    void Start()
+    void Awake()
     {
         DontDestroyOnLoad(this);
 
         id = SaveSystem.GetNewId();
 
-        instance = this;
+        i = this;
         player = GetComponent<Player>();
         checkpoints = GetComponent<CheckpointSystem>();
     }
@@ -72,15 +72,11 @@ public class GameManager : MonoBehaviour
     public static void StartBattle(BattleUnit[] enemyUnits, GameObject enemyGameObject)
     {
         Time.timeScale = 0;
-        BattleSystem battleSystem = instance.battleSystemPrefab.GetComponent<BattleSystem>();
+        BattleSystem battleSystem = i.battleSystemPrefab.GetComponent<BattleSystem>();
         battleSystem.enemies = enemyUnits;
         battleSystem.players = player.GetBattleUnits();
         battleSystem.enemyGameObject = enemyGameObject;
-        Instantiate(instance.battleSystemPrefab);
-    }
-    public static void CloseUI()
-    {
-        instance.textBox.Close();
+        Instantiate(i.battleSystemPrefab);
     }
     public static string GetCleanedText(string text)
     {
@@ -116,81 +112,30 @@ public class GameManager : MonoBehaviour
         static IEnumerator lostbattle()
         {
             Time.timeScale = 0;
-            yield return ToggleLoadingScreen(true, instant: true);
+            yield return GameUI.ToggleLoadingScreen(true, instant: true);
 
             LoadFromSavePoint(id);
 
-            yield return ToggleLoadingScreen(false);
+            yield return GameUI.ToggleLoadingScreen(false);
             Time.timeScale = 1;
         }
-        instance.StartCoroutine(lostbattle());
+        i.StartCoroutine(lostbattle());
     }
 
-    public static IEnumerator TypeOut(string text, bool close = true)
-    {
-        string newText = GetCleanedText(text);
-        yield return instance.textBox.TypeOut(newText, close);
-    }
-    public static IEnumerator GetChoice(string prompt, string[] options, bool alowCancel = false)
-    {
-        string[] newOptions = options;
-        for (int i = 0; i < options.Length; i++)
-        {
-            newOptions[i] = GetCleanedText(options[i]);
-        }
-
-        yield return instance.choiceBox.AskChoice(prompt, newOptions, alowCancel);
-    }
-    public static IEnumerator GetYesNo(string prompt, string thirdOption = null, bool alowCancel = false)
-    {
-        string[] options;
-        if (thirdOption != null && thirdOption.Length > 0)
-            options = new string[] { "Yes", "No", GetCleanedText(thirdOption) };
-        else
-            options = new string[] { "Yes", "No" };
-
-        yield return instance.choiceBox.AskChoice(prompt, options, alowCancel);
-    }
-    public static IEnumerator ToggleLoadingScreen(bool onOff, bool instant = false)
-    {
-        instance.gameUi.SetActive(true);
-
-        if (instant)
-        {
-            instance.loadingScreen.color = new Color(0, 0, 0, onOff ? 1 : 0);
-        }
-
-        if (onOff)
-        {
-            while (instance.loadingScreen.color.a < 1)
-            {
-                instance.loadingScreen.color = new Color(0, 0, 0, Mathf.Clamp(instance.loadingScreen.color.a + Time.unscaledDeltaTime, 0, 1));
-                yield return new WaitForEndOfFrame();
-            }
-        }
-        else
-        {
-            while (instance.loadingScreen.color.a > 0)
-            {
-                instance.loadingScreen.color = new Color(0, 0, 0, Mathf.Clamp(instance.loadingScreen.color.a - Time.unscaledDeltaTime, 0, 1));
-                yield return new WaitForEndOfFrame();
-            }
-        }
-    }
     public static IEnumerator LoadLevelAnimated(LevelScene scene, Vector2 playerSpanPoint, AnimPlus.Direction playerSpanDirection)
     {
         Time.timeScale = 0;
-        yield return ToggleLoadingScreen(true);
+        yield return GameUI.ToggleLoadingScreen(true);
         LoadScene(scene, playerSpanPoint, playerSpanDirection);
-        yield return ToggleLoadingScreen(false);
+        yield return GameUI.ToggleLoadingScreen(false);
         Time.timeScale = 1;
     }
     public static IEnumerator LoadLevelAnimated(LevelScene scene, Door.DoorTag playerSpanDoor)
     {
         Time.timeScale = 0;
-        yield return ToggleLoadingScreen(true);
+        yield return GameUI.ToggleLoadingScreen(true);
         LoadScene(scene, playerSpanDoor);
-        yield return ToggleLoadingScreen(false);
+        yield return GameUI.ToggleLoadingScreen(false);
         Time.timeScale = 1;
     }
     public static int GetRandomIntId()

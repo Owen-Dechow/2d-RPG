@@ -13,6 +13,6 @@ public class Node_AskYesNoQuestion : ActionNode
         {
             if (thirdOption.Length <= 0) thirdOption = null;
         }
-        yield return GameManager.GetYesNo(prompt, thirdOption, allowNoAnswer);
+        yield return GameUI.GetYesNo(prompt, thirdOption, allowNoAnswer);
     }
 }

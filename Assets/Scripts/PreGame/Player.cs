@@ -16,6 +16,6 @@ public class Player : MonoBehaviour
 
     public BattleUnit[] GetBattleUnits()
     {
-        return new BattleUnit[] { playerBattleUnit };
+        return new BattleUnit[] { playerBattleUnit, playerBattleUnit };
     }
 }

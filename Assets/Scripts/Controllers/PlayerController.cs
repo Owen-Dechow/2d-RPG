@@ -1,3 +1,9 @@
+// Ignore Spelling: Collider
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -36,12 +42,12 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     public void Update()
     {
-        bool running = MyInput.GetSelect() == 1;
+        bool running = MyInput.Select == 1;
         animPlus.speedAdded = running;
         Vector2 delta = new()
         {
-            x = MyInput.GetMoveHorizontal(),
-            y = MyInput.GetMoveVertical()
+            x = MyInput.MoveHorizontal,
+            y = MyInput.MoveVertical
         };
 
         // inactive
@@ -68,6 +74,52 @@ public class PlayerController : MonoBehaviour
 
         // Moving
         moving = delta.magnitude > 0;
+
+        // Handel Menu
+        MenuClick();
+    }
+
+    void MenuClick()
+    {
+        if (MyInput.OpenMenu)
+        {
+            print("Open Menu");
+            StartCoroutine(Menu());
+        }
+    }
+
+    IEnumerator Menu()
+    {
+        Time.timeScale = 0;
+        yield return new WaitUntil(() => MyInput.Select == 0);
+
+        //Dictionary<string, Dictionary<string, string[]>> menu = new();
+        //foreach (BattleUnit battleUnit in GameManager.player.GetBattleUnits())
+        //{
+        //    List<string> items = new();
+        //    foreach (Items.Options item in battleUnit.items)
+        //    {
+        //        items.Add(item.ToString());
+        //    }
+
+        //    List<string> magic = new();
+        //    foreach (Items.Options magicOption in battleUnit.magicOptionsForUnit.Select(v => (Items.Options)v))
+        //    {
+        //        items.Add(magic.ToString());
+        //    }
+
+        //    menu[battleUnit.name] = new Dictionary<string, string[]>
+        //    {
+        //        ["Items"] = items.ToArray(),
+        //        ["Magic"] = magic.ToArray(),
+        //    };
+        //}
+        //GameManager.FullMenu(menu);
+
+        yield return GameUI.ChoiceMenu(null, new string[] {"One", "Two", "Three", "Four"}, 2);
+
+        yield return new WaitUntil(() => MyInput.Select == 0);
+        Time.timeScale = 1;
     }
 
     public void SetInactive()
