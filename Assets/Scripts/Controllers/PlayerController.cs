@@ -81,9 +81,10 @@ public class PlayerController : MonoBehaviour
 
     void MenuClick()
     {
+        if (Time.timeScale <= 0) return;
+
         if (MyInput.OpenMenu)
         {
-            print("Open Menu");
             StartCoroutine(Menu());
         }
     }
@@ -93,30 +94,7 @@ public class PlayerController : MonoBehaviour
         Time.timeScale = 0;
         yield return new WaitUntil(() => MyInput.Select == 0);
 
-        //Dictionary<string, Dictionary<string, string[]>> menu = new();
-        //foreach (BattleUnit battleUnit in GameManager.player.GetBattleUnits())
-        //{
-        //    List<string> items = new();
-        //    foreach (Items.Options item in battleUnit.items)
-        //    {
-        //        items.Add(item.ToString());
-        //    }
-
-        //    List<string> magic = new();
-        //    foreach (Items.Options magicOption in battleUnit.magicOptionsForUnit.Select(v => (Items.Options)v))
-        //    {
-        //        items.Add(magic.ToString());
-        //    }
-
-        //    menu[battleUnit.name] = new Dictionary<string, string[]>
-        //    {
-        //        ["Items"] = items.ToArray(),
-        //        ["Magic"] = magic.ToArray(),
-        //    };
-        //}
-        //GameManager.FullMenu(menu);
-
-        yield return GameUI.ChoiceMenu(null, new string[] {"One", "Two", "Three", "Four"}, 2);
+        yield return GameUI.GetYesNo("This is a very good ui system");
 
         yield return new WaitUntil(() => MyInput.Select == 0);
         Time.timeScale = 1;

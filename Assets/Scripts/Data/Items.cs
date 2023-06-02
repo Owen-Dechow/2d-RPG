@@ -1,5 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+// Ignore Spelling: Scriptable
+
+using System;
 using UnityEngine;
 
 public class Items
@@ -10,41 +11,26 @@ public class Items
         Bacon,
         Fire_Crackers
     }
-    public class Data
+
+    [System.Serializable]
+    public class DataSet
     {
-        public Data(Options option)
-        {
-            title = GameManager.GetCleanedText(option.ToString());
-            type = option;
-
-            switch (option)
-            {
-                case Options.Beef_Jerky:
-                    healingPower = 5;
-                    break;
-                case Options.Bacon:
-                    healingPower = 7;
-                    break;
-                case Options.Fire_Crackers:
-                    attackPower = 8;
-                    break;
-            }
-        }
-
-        public string title;
-        public bool CanUseOutsideOfBattle { get => healingPower > 0; }
-        public int attackPower = 0;
-        public bool Attack { get => attackPower > 0; }
-        public int healingPower = 0;
-        public bool Heal { get => healingPower > 0; }
-        public Options type;
-
+        public String Title { get => itemIdentity.ToString(); }
+        public Options itemIdentity;
+        public ItemScriptable itemScriptable;
     }
 
-    public static Data GetDataForOption(string cleanedMagicName)
+    public static DataSet GetDataForOption(string stringOption)
     {
-        System.Enum.TryParse(cleanedMagicName.Replace(' ', '_'), out Options option);
 
-        return new Data(option);
+        stringOption = stringOption.Replace(' ', '_');
+        Options option = (Options)Enum.Parse(typeof(Options), stringOption);
+
+        foreach (DataSet dataSet in GameManager.ItemData)
+        {
+            if (dataSet.itemIdentity == option) return dataSet;
+        }
+
+        throw new System.NotImplementedException($"Could not find data for {option}");
     }
 }

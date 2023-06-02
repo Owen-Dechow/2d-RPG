@@ -6,14 +6,14 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    [HideInInspector] public List<GameObject> playerUnits;
-
-    [SerializeField] GameObject battleSystemPrefab;
-    //[SerializeField] TextBox textBox;
-    //[SerializeField] OptionMenu choiceBox;
-    //[SerializeField] Image loadingScreen;
-    [SerializeField] GameObject gameUi;
     private static GameManager i;
+
+    [HideInInspector] public List<GameObject> playerUnits;
+    [SerializeField] GameObject battleSystemPrefab;
+
+    [SerializeField] Items.DataSet[] itemData;
+    public static Items.DataSet[] ItemData { get => i.itemData; }
+
 
     public static List<int> NPCActionTreeBranchProtectors = new();
 

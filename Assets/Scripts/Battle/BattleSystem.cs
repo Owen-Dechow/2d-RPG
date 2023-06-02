@@ -322,7 +322,7 @@ public class BattleSystem : MonoBehaviour
             yield return GameUI.ChoiceMenu(null, magicOptions, 1, allowCancel: true);
 
             // Handel cancel
-            if (GameManager.Answer == "CANCEL")
+            if (GameManager.Answer == "{{CANCEL}}")
             {
                 yield return new WaitForEndOfFrame();
                 yield return PlayerUnitTurn(player);
@@ -451,7 +451,7 @@ public class BattleSystem : MonoBehaviour
             }
 
             yield return GameUI.ChoiceMenu(null, itemOptions, cols, true);
-            if (GameManager.Answer == "CANCEL")
+            if (GameManager.Answer == "{{CANCEL}}")
             {
                 yield return new WaitForEndOfFrame();
                 yield return PlayerUnitTurn(player);
@@ -459,10 +459,11 @@ public class BattleSystem : MonoBehaviour
             }
 
             // Get data for magic choice
-            Items.Data data = Items.GetDataForOption(GameManager.Answer);
+            Items.DataSet data = Items.GetDataForOption(GameManager.Answer);
+            print(data);
 
             // Choose attack target
-            if (data.Attack)
+            if (data.itemScriptable.CanAttack)
             {
 
                 yield return ChooseUnitPlayer(enemies);
@@ -474,7 +475,7 @@ public class BattleSystem : MonoBehaviour
             }
 
             // Choose heal target
-            if (data.Heal)
+            if (data.itemScriptable.CanHeal)
             {
                 yield return ChooseUnitPlayer(players);
                 if (selectedUnit == null)
@@ -484,23 +485,24 @@ public class BattleSystem : MonoBehaviour
             }
 
             // Preliminary text
-            yield return GameUI.TypeOut($"{player.title} tried using {data.title}.");
-            player.items.Remove(data.type);
+            yield return GameUI.TypeOut($"{player.title} tried using {data.Title}.");
+            player.items.Remove(data.itemIdentity);
 
             // Run Item
-            if (data.Attack)
+            if (data.itemScriptable.CanAttack)
             {
                 yield return new WaitForEndOfFrame();
 
-                int hit = selectedUnit.badges.GetDefenseChange(data.attackPower, selectedUnit.onDefence);
+                int hit = selectedUnit.badges.GetDefenseChange(data.itemScriptable.AttackPower, selectedUnit.onDefence);
                 yield return GameUI.TypeOut($"{hit} damage to {selectedUnit.title}.");
                 yield return ChangeLifeOnEnemyUnit(selectedUnit, -hit);
             }
-            if (data.Heal)
+            if (data.itemScriptable.CanHeal)
             {
                 yield return new WaitForEndOfFrame();
-                yield return GameUI.TypeOut($"{selectedUnit.title} gained {data.healingPower} HP.");
-                yield return ChangeLifeOnPlayerUnit(selectedUnit, data.healingPower);
+                int heal = data.itemScriptable.HealPower;
+                yield return GameUI.TypeOut($"{selectedUnit.title} gained {heal} HP.");
+                yield return ChangeLifeOnPlayerUnit(selectedUnit, heal);
             }
 
         }
@@ -711,10 +713,10 @@ public class BattleSystem : MonoBehaviour
         {
             // Get desired magic choice
             string choice = enemy.items[Random.Range(0, enemy.items.Count)].ToString();
-            Items.Data data = Items.GetDataForOption(choice);
+            Items.DataSet data = Items.GetDataForOption(choice);
 
             // Choose attack target
-            if (data.Attack)
+            if (data.itemScriptable.CanAttack)
             {
 
                 ChooseUnitEnemy(players);
@@ -722,29 +724,30 @@ public class BattleSystem : MonoBehaviour
             }
 
             // Choose heal target
-            if (data.Heal)
+            if (data.itemScriptable.CanHeal)
             {
                 ChooseUnitEnemy(enemies);
             }
 
             // Preliminary text
-            yield return GameUI.TypeOut($"{enemy.title} tried using {data.title}.");
-            enemy.items.Remove(data.type);
+            yield return GameUI.TypeOut($"{enemy.title} tried using {data.Title}.");
+            enemy.items.Remove(data.itemIdentity);
 
             // Run Item
-            if (data.Attack)
+            if (data.itemScriptable.CanAttack)
             {
                 yield return new WaitForEndOfFrame();
 
-                int hit = selectedUnit.badges.GetDefenseChange(data.attackPower, selectedUnit.onDefence);
+                int hit = selectedUnit.badges.GetDefenseChange(data.itemScriptable.AttackPower, selectedUnit.onDefence);
                 yield return GameUI.TypeOut($"{hit} damage to {selectedUnit.title}.");
                 yield return ChangeLifeOnPlayerUnit(selectedUnit, -hit);
             }
-            if (data.Heal)
+            if (data.itemScriptable.CanHeal)
             {
                 yield return new WaitForEndOfFrame();
-                yield return GameUI.TypeOut($"{selectedUnit.title} gained {data.healingPower} HP.");
-                yield return ChangeLifeOnPlayerUnit(selectedUnit, data.healingPower);
+                int heal = data.itemScriptable.HealPower;
+                yield return GameUI.TypeOut($"{selectedUnit.title} gained {heal} HP.");
+                yield return ChangeLifeOnPlayerUnit(selectedUnit, heal);
             }
 
         }

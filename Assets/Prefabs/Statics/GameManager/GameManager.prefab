@@ -50,7 +50,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerUnits: []
   battleSystemPrefab: {fileID: 3272117986164641667, guid: 5fd7af94004125744b97b20aeca8d890, type: 3}
-  gameUi: {fileID: 6483088252439544798}
+  itemData:
+  - itemIdentity: 0
+    itemScriptable: {fileID: 11400000, guid: ca0d3aa4d3babac4d81ad05fd6a5dc71, type: 2}
+  - itemIdentity: 1
+    itemScriptable: {fileID: 11400000, guid: 9d1eadda87ccb6e4daa7e1500e0dd4fd, type: 2}
+  - itemIdentity: 2
+    itemScriptable: {fileID: 11400000, guid: 21581e710b535784c911c6f9f8c4b9a4, type: 2}
 --- !u!114 &6483088251835158178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,7 +245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e1369dc641e4594dac2e7787db5817c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textArea: {fileID: 3507527660197755248, guid: 7bb84ebe0ed97b94d898100efa0eb37c, type: 3}
+  textArea: {fileID: 5274386076459265888, guid: ddf324af1ee15cc4da15036adb156c41, type: 3}
   optionArea: {fileID: 5970641827195594597, guid: 5940cd7e63b53704ab1533c64907c9f2, type: 3}
   loadingScreen: {fileID: 8042831398115974259}
 --- !u!1 &8042831398115974259

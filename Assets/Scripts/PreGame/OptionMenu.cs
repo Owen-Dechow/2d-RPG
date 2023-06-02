@@ -8,20 +8,13 @@ public class OptionMenu : MonoBehaviour
     [SerializeField] GameObject textareaPrefab;
 
     [SerializeField] float pointerOriginY;
-    [SerializeField] float pointerOriginX;
     [SerializeField] float pointerSpaceY;
+    [SerializeField] float pointerSpaceX;
 
     List<TMPro.TextMeshProUGUI> textboxes;
 
-    int cols;
-    int rows;
-
     void SetUp(string[] options, Vector2 position, int cols)
     {
-        // Set number of cols/rows
-        this.cols = cols;
-        rows = options.Length / cols;
-
         // Place in UI
         GameUI.RenderAtPosition(gameObject, position);
 
@@ -39,39 +32,80 @@ public class OptionMenu : MonoBehaviour
             int boxNumber = i % cols;
             textboxes[boxNumber].text += options[i] + "\n";
         }
+
     }
 
     public IEnumerator Options(string[] options, Vector2 position, int cols, bool allowCancel)
     {
         SetUp(options, position, cols);
+        yield return new WaitForEndOfFrame();
+        PositionPointer(0, cols);
 
-        int row = 0;
-        int col = 0;
+        int selected = 0;
         while (true)
         {
             yield return MyInput.WaitForMenuNavigation();
 
-            switch (MyInput.MenuNavigation)
+            MyInput.Action action = MyInput.MenuNavigation;
+            if (action == MyInput.Action.Up)
             {
-                case MyInput.Action.Up:
-                    col -= 1;
-                    if (col <= -1) col = cols;
-                    break;
-                case MyInput.Action.Down:
-                    break;
-                case MyInput.Action.Left:
-                    break;
-                case MyInput.Action.Right:
-                    break;
-                case MyInput.Action.Select:
-                    break;
-                case MyInput.Action.Cancel:
-                    break;
-                case MyInput.Action.None:
-                    break;
+                selected -= cols;
+                if (selected < 0)
+                {
+                    selected += cols;
+                    if (selected == 0) selected = options.Length - 1;
+                    else selected = 0;
+                }
             }
-        }
+            else if (action == MyInput.Action.Down)
+            {
+                selected += cols;
+                if (selected >= options.Length)
+                {
+                    selected -= cols;
+                    if (selected == options.Length - 1) selected = 0;
+                    else selected = options.Length - 1;
+                }
+            }
+            else if (action == MyInput.Action.Left)
+            {
+                selected -= 1;
+                if (selected < 0) selected = options.Length - 1;
+            }
+            else if (action == MyInput.Action.Right)
+            {
+                selected += 1;
+                if (selected >= options.Length) selected = 0;
+            }
+            else if (action == MyInput.Action.Select)
+            {
+                GameManager.Answer = options[selected];
+                GameManager.AnswerIndex = selected;
+                break;
+            }
+            else if (action == MyInput.Action.Cancel)
+            {
+                if (allowCancel)
+                {
+                    GameManager.Answer = "{{CANCEL}}";
+                    GameManager.AnswerIndex = -1;
+                    break;
+                }
+            }
 
-        yield return null;
+            PositionPointer(selected, cols);
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    void PositionPointer(int selected, int cols)
+    {
+        int row = selected / cols;
+        int col = selected % cols;
+
+        float x = textboxes[col].gameObject.transform.localPosition.x + pointerSpaceX;
+        float y = row * pointerSpaceY + pointerOriginY;
+
+        (pointer.transform as RectTransform).anchoredPosition = new Vector2(x, y);
     }
 }

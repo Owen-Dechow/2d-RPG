@@ -1,18 +1,31 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TextBox : MonoBehaviour
 {
     public TMPro.TextMeshProUGUI textMeshObject;
     public float delayBeforeTyping;
 
-    public IEnumerator TypeOut(string text, bool instant)
+    public IEnumerator TypeOut(string text, bool instant, Vector2 position)
     {
+        GameUI.RenderAtPosition(gameObject, position);
+
+        // Set Size
+        GameObject model = Instantiate(gameObject);
+        model.GetComponent<TextBox>().textMeshObject.text = text;
+        yield return new WaitForEndOfFrame();
+        Vector2 size = (model.transform as RectTransform).sizeDelta;
+        Destroy(model);
+        GetComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.Unconstrained;
+        (transform as RectTransform).sizeDelta = size;
+
+
         if (instant)
         {
             textMeshObject.text = text;
         }
-        else 
+        else
         {
             yield return TypeText(text.Trim());
         }
@@ -43,13 +56,5 @@ public class TextBox : MonoBehaviour
 
         // Wait for space click
         yield return MyInput.WaitForMenuNavigation();
-
-        // Finish
-        gameObject.SetActive(false);
-    }
-
-    public void Close()
-    {
-        gameObject.SetActive(false);
     }
 }

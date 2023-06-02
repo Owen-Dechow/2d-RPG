@@ -3,7 +3,7 @@ guid: 26322ba7b14371d4c85a0839929fd633
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -63,6 +63,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -94,6 +95,42 @@ TextureImporter:
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -2361,113 +2398,113 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      free_23: 742635557
-      free_13: -1549775820
-      free_34: -1727019576
-      free_75: -1726981933
-      free_21: 324108391
-      free_72: 50694562
-      free_26: -2019251595
-      free_37: 233576144
-      free_55: -2020148074
-      free_86: 643166813
-      free_17: -84621636
-      free_92: 2027417201
-      free_88: 2138027783
-      free_79: -1289529228
-      free_36: 1322791913
-      free_47: 1773149804
-      free_39: 1359207680
-      free_74: -1574443791
-      free_67: -508151828
-      free_41: 129145755
-      free_76: 1209251626
-      free_42: 21365907
-      free_68: 335529861
-      free_22: 855554204
-      free_97: -2082500346
-      free_35: 858314328
-      free_91: -198822958
-      free_101: 374904878
-      free_62: -1941966289
-      free_103: -147177665
-      free_63: 1865265755
-      free_81: -1527821419
-      free_38: 590070498
-      free_3: -491896473
-      free_60: -533578475
-      free_14: 1632733592
-      free_96: 1436900332
-      free_12: 1889047181
-      free_11: 1305959737
-      free_70: 1877569939
-      free_58: 1962229314
-      free_24: -1987311576
-      free_32: -114014715
-      free_33: 503467264
-      free_48: 918997210
-      free_65: 95272510
-      free_2: 1597547011
-      free_78: 1386240843
-      free_19: -1033917482
-      free_95: -941254973
-      free_29: -1684965326
-      free_15: 297639649
+      free_0: -1716795445
+      free_1: 1451564221
       free_10: 1358790002
       free_100: -1628339616
-      free_66: 1791161700
-      free_45: -2084512625
-      free_71: 1776079210
-      free_90: -2062292365
+      free_101: 374904878
       free_102: 152128655
-      free_105: -2023448979
-      free_43: 625352285
-      free_73: -936405873
-      free_50: -630337260
-      free_16: -996742096
-      free_1: 1451564221
-      free_44: 220205837
-      free_99: 783481489
-      free_84: 184773571
-      free_89: -4819981
+      free_103: -147177665
       free_104: 788015380
-      free_57: 851081386
-      free_8: -1422317772
-      free_61: -1064600290
-      free_82: 1301968170
-      free_87: 861019816
-      free_53: 368067835
-      free_64: -995981262
-      free_69: -1538629714
-      free_9: -79594808
-      free_49: 1240802765
-      free_94: -1217472872
-      free_30: 914997092
-      free_77: 1496087009
-      free_85: 2131057468
-      free_5: -145934574
-      free_46: -161567841
-      free_25: 1806475314
+      free_105: -2023448979
       free_106: -234545425
-      free_98: 1135422474
-      free_51: -1253687759
-      free_7: -664333109
-      free_52: -1357932945
-      free_0: -1716795445
-      free_40: -789076889
-      free_28: -1971190372
-      free_54: -1018693616
-      free_59: -49655282
-      free_20: 478387696
-      free_80: -2063544242
-      free_93: -1588515942
-      free_27: -714055827
-      free_56: 416657599
-      free_31: 1061206293
-      free_83: -1142169508
-      free_4: -1561078443
+      free_11: 1305959737
+      free_12: 1889047181
+      free_13: -1549775820
+      free_14: 1632733592
+      free_15: 297639649
+      free_16: -996742096
+      free_17: -84621636
       free_18: 1563008167
+      free_19: -1033917482
+      free_2: 1597547011
+      free_20: 478387696
+      free_21: 324108391
+      free_22: 855554204
+      free_23: 742635557
+      free_24: -1987311576
+      free_25: 1806475314
+      free_26: -2019251595
+      free_27: -714055827
+      free_28: -1971190372
+      free_29: -1684965326
+      free_3: -491896473
+      free_30: 914997092
+      free_31: 1061206293
+      free_32: -114014715
+      free_33: 503467264
+      free_34: -1727019576
+      free_35: 858314328
+      free_36: 1322791913
+      free_37: 233576144
+      free_38: 590070498
+      free_39: 1359207680
+      free_4: -1561078443
+      free_40: -789076889
+      free_41: 129145755
+      free_42: 21365907
+      free_43: 625352285
+      free_44: 220205837
+      free_45: -2084512625
+      free_46: -161567841
+      free_47: 1773149804
+      free_48: 918997210
+      free_49: 1240802765
+      free_5: -145934574
+      free_50: -630337260
+      free_51: -1253687759
+      free_52: -1357932945
+      free_53: 368067835
+      free_54: -1018693616
+      free_55: -2020148074
+      free_56: 416657599
+      free_57: 851081386
+      free_58: 1962229314
+      free_59: -49655282
       free_6: -854059129
+      free_60: -533578475
+      free_61: -1064600290
+      free_62: -1941966289
+      free_63: 1865265755
+      free_64: -995981262
+      free_65: 95272510
+      free_66: 1791161700
+      free_67: -508151828
+      free_68: 335529861
+      free_69: -1538629714
+      free_7: -664333109
+      free_70: 1877569939
+      free_71: 1776079210
+      free_72: 50694562
+      free_73: -936405873
+      free_74: -1574443791
+      free_75: -1726981933
+      free_76: 1209251626
+      free_77: 1496087009
+      free_78: 1386240843
+      free_79: -1289529228
+      free_8: -1422317772
+      free_80: -2063544242
+      free_81: -1527821419
+      free_82: 1301968170
+      free_83: -1142169508
+      free_84: 184773571
+      free_85: 2131057468
+      free_86: 643166813
+      free_87: 861019816
+      free_88: 2138027783
+      free_89: -4819981
+      free_9: -79594808
+      free_90: -2062292365
+      free_91: -198822958
+      free_92: 2027417201
+      free_93: -1588515942
+      free_94: -1217472872
+      free_95: -941254973
+      free_96: 1436900332
+      free_97: -2082500346
+      free_98: 1135422474
+      free_99: 783481489
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -36,11 +36,31 @@ public class GameUI : MonoBehaviour
         string newText = GameManager.GetCleanedText(text);
 
         GameObject textAreaObject = Instantiate(i.textArea);
-        yield return textAreaObject.GetComponent<TextBox>().TypeOut(newText, instant);
+        yield return textAreaObject.GetComponent<TextBox>().TypeOut(newText, instant, Vector2.zero);
+        Destroy(textAreaObject);
     }
 
     public static IEnumerator ChoiceMenu(string prompt, string[] options, int cols, bool allowCancel = false)
-    {
+    {   
+        Vector2 position;
+        GameObject textAreaObject;
+        if (prompt != null && prompt != "")
+        {
+            textAreaObject = Instantiate(i.textArea);
+            yield return textAreaObject.GetComponent<TextBox>().TypeOut(prompt, false, Vector2.zero);
+
+            RectTransform rt = textAreaObject.GetComponent<RectTransform>();
+            if (rt.sizeDelta.y > 200)
+                position = new Vector2(rt.sizeDelta.x - 11, 0);
+            else
+                position = new Vector2(0, rt.sizeDelta.y + 3);
+        }
+        else
+        {
+            textAreaObject = null;
+            position = Vector2.zero;
+        }
+
         string[] newOptions = options;
         for (int i = 0; i < options.Length; i++)
         {
@@ -48,7 +68,10 @@ public class GameUI : MonoBehaviour
         }
 
         GameObject optionsAreaObject = Instantiate(i.optionArea);
-        yield return optionsAreaObject.GetComponent<OptionMenu>().Options(newOptions, Vector2.zero, cols, allowCancel);
+        yield return optionsAreaObject.GetComponent<OptionMenu>().Options(newOptions, position, cols, allowCancel);
+
+        Destroy(optionsAreaObject);
+        Destroy(textAreaObject);
     }
 
     public static IEnumerator GetYesNo(string prompt, string thirdOption = null, bool allowCancel = false)
@@ -59,9 +82,9 @@ public class GameUI : MonoBehaviour
         else
             options = new string[] { "Yes", "No" };
 
-        GameObject optionsAreaObject = Instantiate(i.optionArea);
-        yield return optionsAreaObject.GetComponent<OptionMenu>().Options(options, Vector2.zero, 2, allowCancel);
+        yield return ChoiceMenu(prompt, options, 1, allowCancel);
     }
+
     public static IEnumerator ToggleLoadingScreen(bool onOff, bool instant = false)
     {
         i.gameObject.SetActive(true);
