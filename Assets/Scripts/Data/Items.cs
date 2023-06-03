@@ -15,9 +15,9 @@ public class Items
     [System.Serializable]
     public class DataSet
     {
-        public String Title { get => itemIdentity.ToString(); }
-        public Options itemIdentity;
-        public ItemScriptable itemScriptable;
+        public string Title { get => identity.ToString(); }
+        public Options identity;
+        public ItemScriptable scriptable;
     }
 
     public static DataSet GetDataForOption(string stringOption)
@@ -28,7 +28,7 @@ public class Items
 
         foreach (DataSet dataSet in GameManager.ItemData)
         {
-            if (dataSet.itemIdentity == option) return dataSet;
+            if (dataSet.identity == option) return dataSet;
         }
 
         throw new System.NotImplementedException($"Could not find data for {option}");

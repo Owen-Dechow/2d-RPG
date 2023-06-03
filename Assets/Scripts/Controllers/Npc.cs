@@ -63,7 +63,6 @@ public class Npc : MonoBehaviour
 
         yield return new WaitWhile(() => MyInput.Select == 1);
         Time.timeScale = 1;
-        GameUI.ClearUI();
         runningInteraction = false;
     }
 }

@@ -10,19 +10,12 @@ public class GameUI : MonoBehaviour
     [SerializeField] GameObject optionArea;
     [SerializeField] GameObject loadingScreen;
 
+    [SerializeField] Vector2 autoPlaceOffset;
+
     void Awake()
     {
         i = this;
         gameObject.SetActive(false);
-    }
-
-    public static void ClearUI()
-    {
-        foreach (Transform child in i.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
     }
 
     public static void RenderAtPosition(GameObject go, Vector2 position)
@@ -51,9 +44,9 @@ public class GameUI : MonoBehaviour
 
             RectTransform rt = textAreaObject.GetComponent<RectTransform>();
             if (rt.sizeDelta.y > 200)
-                position = new Vector2(rt.sizeDelta.x - 11, 0);
+                position = new Vector2(rt.sizeDelta.x + i.autoPlaceOffset.x, 0);
             else
-                position = new Vector2(0, rt.sizeDelta.y + 3);
+                position = new Vector2(0, rt.sizeDelta.y + i.autoPlaceOffset.y);
         }
         else
         {

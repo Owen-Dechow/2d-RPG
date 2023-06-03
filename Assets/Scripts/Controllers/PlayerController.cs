@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
         Time.timeScale = 0;
         yield return new WaitUntil(() => MyInput.Select == 0);
 
-        yield return GameUI.GetYesNo("This is a very good ui system");
+
 
         yield return new WaitUntil(() => MyInput.Select == 0);
         Time.timeScale = 1;

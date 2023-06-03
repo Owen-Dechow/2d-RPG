@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50887b85b28b8d446a2f62665ded052d, type: 3}
-  m_Name: Fire Crackers
+  m_Script: {fileID: 11500000, guid: 455d8703eb168eb4cb53709663df95ba, type: 3}
+  m_Name: RainFire
   m_EditorClassIdentifier: 
-  title: 
+  type: 0
   canUseOutsideOfBattle: 0
-  attackPowerMin: 0
-  attackPowerMax: 0
-  healingPowerMin: 0
-  healingPowerMax: 0
+  price: 0
+  powerMin: 0
+  powerMax: 0

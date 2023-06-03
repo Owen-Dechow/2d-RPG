@@ -14,6 +14,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] Items.DataSet[] itemData;
     public static Items.DataSet[] ItemData { get => i.itemData; }
 
+    [SerializeField] Magic.DataSet[] magicData;
+    public static Magic.DataSet[] MagicData { get => i.magicData; }
+
 
     public static List<int> NPCActionTreeBranchProtectors = new();
 
