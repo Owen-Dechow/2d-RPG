@@ -14134,7 +14134,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 973764888, guid: c6c634c6408e1e14bae5176c9166fb94, type: 3}
       propertyPath: doorTag
-      value: 1
+      value: level enter
       objectReference: {fileID: 0}
     - target: {fileID: 973764888, guid: c6c634c6408e1e14bae5176c9166fb94, type: 3}
       propertyPath: doorOpening
@@ -14145,12 +14145,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 973764888, guid: c6c634c6408e1e14bae5176c9166fb94, type: 3}
+      propertyPath: toLevel.path
+      value: Assets/Scenes/Level_0.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 973764888, guid: c6c634c6408e1e14bae5176c9166fb94, type: 3}
       propertyPath: connectedDoor
-      value: 1
+      value: level enter
       objectReference: {fileID: 0}
     - target: {fileID: 973764888, guid: c6c634c6408e1e14bae5176c9166fb94, type: 3}
       propertyPath: disallowEnterText
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 973764888, guid: c6c634c6408e1e14bae5176c9166fb94, type: 3}
+      propertyPath: toLevel.buildIndex
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8153163655817150941, guid: c6c634c6408e1e14bae5176c9166fb94, type: 3}
       propertyPath: m_RootOrder
@@ -15968,7 +15976,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 973764888, guid: c6c634c6408e1e14bae5176c9166fb94, type: 3}
       propertyPath: doorTag
-      value: 0
+      value: can't enter
       objectReference: {fileID: 0}
     - target: {fileID: 973764888, guid: c6c634c6408e1e14bae5176c9166fb94, type: 3}
       propertyPath: doorOpening

@@ -3,30 +3,6 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    public enum DoorTag
-    {
-        NoTag,
-        Door1,
-        Door2,
-        Door3,
-        Door4,
-        Door5,
-        Door6,
-        Door7,
-        Door8,
-        Door9,
-        Door10,
-        Door11,
-        Door12,
-        Door13,
-        Door14,
-        Door15,
-        Door16,
-        Door17,
-        Door18,
-        Door19,
-        Door20,
-    }
     public enum DoorOpenDir
     {
         top = 0,
@@ -40,8 +16,8 @@ public class Door : MonoBehaviour
     [SerializeField] DoorOpenDir doorOpening;
     [SerializeField] bool betweenTiles;
 
-    [SerializeField] DoorTag doorTag;
-    [SerializeField] DoorTag connectedDoor;
+    [SerializeField] string doorTag;
+    [SerializeField] string connectedDoor;
 
     [SerializeField] string disallowEnterText;
 

@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
 
     public static Vector2 playerLocationLoad;
     public static AnimPlus.Direction playerDirectionLoad;
-    public static Door.DoorTag playerDoorEnter;
+    public static string playerDoorEnter;
 
     void Awake()
     {
@@ -57,13 +57,13 @@ public class GameManager : MonoBehaviour
     {
         playerLocationLoad = playerSpanPoint;
         playerDirectionLoad = playerSpanDirection;
-        playerDoorEnter = (Door.DoorTag)int.MaxValue;
+        playerDoorEnter = null;
 
         setPlayerLocationOnLoad = true;
         currentLevelScene = scene;
         SceneManager.LoadScene(scene.ToString());
     }
-    public static void LoadScene(LevelScene scene, Door.DoorTag playerSpanDoor)
+    public static void LoadScene(LevelScene scene, string playerSpanDoor)
     {
         playerDoorEnter = playerSpanDoor;
 
@@ -133,7 +133,7 @@ public class GameManager : MonoBehaviour
         yield return GameUI.ToggleLoadingScreen(false);
         Time.timeScale = 1;
     }
-    public static IEnumerator LoadLevelAnimated(LevelScene scene, Door.DoorTag playerSpanDoor)
+    public static IEnumerator LoadLevelAnimated(LevelScene scene, string playerSpanDoor)
     {
         Time.timeScale = 0;
         yield return GameUI.ToggleLoadingScreen(true);
