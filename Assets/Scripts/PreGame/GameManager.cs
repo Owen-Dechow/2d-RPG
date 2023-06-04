@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] Magic.DataSet[] magicData;
     public static Magic.DataSet[] MagicData { get => i.magicData; }
 
-
     public static List<int> NPCActionTreeBranchProtectors = new();
 
     public static int id;
@@ -29,12 +28,7 @@ public class GameManager : MonoBehaviour
     public static string Answer { get; set; }
     public static int AnswerIndex { get; set; }
 
-    public static bool setPlayerLocationOnLoad;
-    public static LevelScene currentLevelScene;
-
-    public static Vector2 playerLocationLoad;
-    public static AnimPlus.Direction playerDirectionLoad;
-    public static string playerDoorEnter;
+    public static PlayerController.PlacementSettings PlayerPlacementSettings { get; set; }
 
     void Awake()
     {
@@ -52,24 +46,6 @@ public class GameManager : MonoBehaviour
         SaveData saveData = new();
         SaveSystem.SaveData(saveData);
         Debug.Log("Game Saved: [path] " + SaveSystem.path);
-    }
-    public static void LoadScene(LevelScene scene, Vector2 playerSpanPoint, AnimPlus.Direction playerSpanDirection)
-    {
-        playerLocationLoad = playerSpanPoint;
-        playerDirectionLoad = playerSpanDirection;
-        playerDoorEnter = null;
-
-        setPlayerLocationOnLoad = true;
-        currentLevelScene = scene;
-        SceneManager.LoadScene(scene.ToString());
-    }
-    public static void LoadScene(LevelScene scene, string playerSpanDoor)
-    {
-        playerDoorEnter = playerSpanDoor;
-
-        setPlayerLocationOnLoad = false;
-        currentLevelScene = scene;
-        SceneManager.LoadScene(scene.ToString());
     }
 
     public static void StartBattle(BattleUnit[] enemyUnits, GameObject enemyGameObject)
@@ -108,7 +84,7 @@ public class GameManager : MonoBehaviour
     {
         SaveData data = SaveSystem.LoadData(id);
         SaveData.UnpackSaveData(data);
-        LoadScene(data._levelScene, new Vector2(data._position[0], data._position[1]), AnimPlus.Direction.down);
+        LoadLevel(data._levelScene, new Vector2(data._position[0], data._position[1]), AnimPlus.Direction.down);
     }
     public static void LostBattle()
     {
@@ -125,11 +101,21 @@ public class GameManager : MonoBehaviour
         i.StartCoroutine(lostbattle());
     }
 
+    public static void LoadLevel(LevelScene scene, Vector2 playerSpanPoint, AnimPlus.Direction playerSpanDirection)
+    {
+        PlayerPlacementSettings = new(playerSpanPoint, playerSpanDirection);
+        SceneManager.LoadScene(scene.ToString());
+    }
+    public static void LoadLevel(LevelScene scene, string playerSpanDoor)
+    {
+        PlayerPlacementSettings = new(playerSpanDoor);
+        SceneManager.LoadScene(scene.ToString());
+    }
     public static IEnumerator LoadLevelAnimated(LevelScene scene, Vector2 playerSpanPoint, AnimPlus.Direction playerSpanDirection)
     {
         Time.timeScale = 0;
         yield return GameUI.ToggleLoadingScreen(true);
-        LoadScene(scene, playerSpanPoint, playerSpanDirection);
+        LoadLevel(scene, playerSpanPoint, playerSpanDirection);
         yield return GameUI.ToggleLoadingScreen(false);
         Time.timeScale = 1;
     }
@@ -137,10 +123,11 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 0;
         yield return GameUI.ToggleLoadingScreen(true);
-        LoadScene(scene, playerSpanDoor);
+        LoadLevel(scene, playerSpanDoor);
         yield return GameUI.ToggleLoadingScreen(false);
         Time.timeScale = 1;
     }
+    
     public static int GetRandomIntId()
     {
         return Random.Range(int.MinValue, int.MaxValue);

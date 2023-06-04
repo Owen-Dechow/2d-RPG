@@ -29,7 +29,10 @@ public class Door : MonoBehaviour
     private void Start()
     {
         Position();
-        if (GameManager.playerDoorEnter == doorTag)
+        if (GameManager.PlayerPlacementSettings.Relocation != PlayerController.PlacementSettings.RelocateType.Door)
+            return;
+
+        if (GameManager.PlayerPlacementSettings.DoorTag == doorTag)
         {
             var direction = doorOpening switch
             {
@@ -37,7 +40,7 @@ public class Door : MonoBehaviour
                 DoorOpenDir.bottom => AnimPlus.Direction.down,
                 DoorOpenDir.left => AnimPlus.Direction.left,
                 DoorOpenDir.right => AnimPlus.Direction.right,
-                _ => AnimPlus.Direction.down,
+                _ => throw new System.NotImplementedException(),
             };
             GameManager.player.playerObject.GetComponent<AnimPlus>().SetDirection(direction);
 

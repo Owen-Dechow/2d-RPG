@@ -57,7 +57,7 @@ public class LoadGame : MonoBehaviour
             yield return GameUI.ToggleLoadingScreen(true);
 
             gameObject.GetComponent<Canvas>().enabled = false;
-            GameManager.LoadScene(LevelScene.Level_0, Vector2.zero, AnimPlus.Direction.down);
+            GameManager.LoadLevel(LevelScene.Level_0, Vector2.zero, AnimPlus.Direction.down);
 
             yield return GameUI.ToggleLoadingScreen(false);
             GameManager.SaveGame();

@@ -32,14 +32,13 @@ public class PlayerController : MonoBehaviour
 
         GameManager.player.playerObject = this;
 
-        if (GameManager.setPlayerLocationOnLoad)
+        if (GameManager.PlayerPlacementSettings.Relocation == PlacementSettings.RelocateType.Position)
         {
-            transform.position = GameManager.playerLocationLoad;
-            animPlus.SetDirection(GameManager.playerDirectionLoad);
+            transform.position = GameManager.PlayerPlacementSettings.Position;
+            animPlus.SetDirection(GameManager.PlayerPlacementSettings.Direction);
         }
     }
 
-    // Update is called once per frame
     public void Update()
     {
         bool running = MyInput.Select == 1;
@@ -103,5 +102,39 @@ public class PlayerController : MonoBehaviour
     public void SetInactive()
     {
         inactiveSeconds = 0;
+    }
+
+    public class PlacementSettings
+    {
+        public enum RelocateType
+        {
+            Door,
+            Position,
+            None
+        }
+
+        public RelocateType Relocation { get; private set; }
+        public string DoorTag { get; private set; }
+        public AnimPlus.Direction Direction { get; private set; }
+        public Vector2 Position { get; private set; }
+
+        public PlacementSettings(string doorTag)
+        {
+            Relocation = RelocateType.Door;
+            DoorTag = doorTag;
+        }
+
+        public PlacementSettings(Vector2 position, AnimPlus.Direction direction)
+        {
+            Relocation = RelocateType.Position;
+            Position = position;
+            Direction = direction;
+        }
+
+        public PlacementSettings()
+        {
+            Relocation = RelocateType.None;
+            Direction = AnimPlus.Direction.down;
+        }
     }
 }

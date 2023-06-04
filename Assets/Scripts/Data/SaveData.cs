@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class SaveData
@@ -16,7 +17,7 @@ public class SaveData
     public float[] _position;
     public Magic.Options[] _magicOptions;
     public Items.Options[] _items;
-    public Badges.Equip _badgesEquiped;
+    public Badges.Equip _badgesEquipped;
     public Badges.Inventory _badgeInventory;
     public LevelScene _levelScene;
     public string[] _checkpoints;
@@ -36,7 +37,7 @@ public class SaveData
         _maxMagic = playerBattleUnit.maxMagic;
         _magicOptions = playerBattleUnit.magicOptionsForUnit.ToArray();
         _items = playerBattleUnit.items.ToArray();
-        _badgesEquiped = playerBattleUnit.badges;
+        _badgesEquipped = playerBattleUnit.badges;
         _reflexive = playerBattleUnit.refexive;
 
         _position = new float[2] { position.x, position.y };
@@ -49,7 +50,7 @@ public class SaveData
         }
         _checkpoints = checkpointsReached.ToArray();
 
-        _levelScene = GameManager.currentLevelScene;
+        _levelScene = (LevelScene)System.Enum.Parse(typeof(LevelScene), SceneManager.GetActiveScene().name);
 
         _NPCActionTreeBranchProtectors = GameManager.NPCActionTreeBranchProtectors.ToArray();
     }
@@ -68,7 +69,7 @@ public class SaveData
         playerBattleUnit.maxMagic = data._maxMagic;
         playerBattleUnit.magicOptionsForUnit = new List<Magic.Options>(data._magicOptions);
         playerBattleUnit.items = new List<Items.Options>(data._items);
-        playerBattleUnit.badges = data._badgesEquiped;
+        playerBattleUnit.badges = data._badgesEquipped;
         playerBattleUnit.refexive = data._reflexive;
 
         player.badgeInventory = data._badgeInventory;
