@@ -1,6 +1,4 @@
-﻿// Ignore Spelling: Scriptable
-
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu()]
 public class ItemScriptable : ScriptableObject

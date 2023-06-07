@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -66,8 +67,8 @@ public class BattleSystem : MonoBehaviour
     BattleState battleState;
     BattleFinish battleFinish;
 
-    string PlayerTitle { get => $"{GameManager.player.playerBattleUnit.title}{(players.Length == 1 ? "" : " and his companion" + (players.Length == 2 ? "" : "s"))}"; }
-    string EnemyTitle { get => $"the {enemies[0].title}{(enemies.Length == 1 ? "" : enemies.Length == 2 ? " and his brother" : "'s mob")}"; }
+    string PlayerTitle { get => $"{GameManager.player.playerBattleUnit.data.title}{(players.Length == 1 ? "" : " and his companion" + (players.Length == 2 ? "" : "s"))}"; }
+    string EnemyTitle { get => $"the {enemies[0].data.title}{(enemies.Length == 1 ? "" : enemies.Length == 2 ? " and his brother" : "'s mob")}"; }
 
     enum BattleState
     {
@@ -94,9 +95,9 @@ public class BattleSystem : MonoBehaviour
             players[i].stationGO = new($"PlayerBattleUnit_{i}", new System.Type[] { typeof(SpriteRenderer) });
             players[i].stationGO.transform.parent = playerBattleStation;
 
-            players[i].spr = players[i].stationGO.GetComponent<SpriteRenderer>();
-            players[i].spr.sprite = players[i].sprite;
-            players[i].spr.sortingLayerName = "Battle";
+            players[i].spriteRenderer = players[i].stationGO.GetComponent<SpriteRenderer>();
+            players[i].spriteRenderer.sprite = players[i].sprite;
+            players[i].spriteRenderer.sortingLayerName = "Battle";
 
             float playerMove;
             playerMove = (i * playerSpread) - (players.Length * playerSpread / 2);
@@ -120,9 +121,9 @@ public class BattleSystem : MonoBehaviour
             enemies[i].stationGO = new($"EnemyBattleUnit_{i}", new System.Type[] { typeof(SpriteRenderer) });
             enemies[i].stationGO.transform.parent = enemyBattleStation;
 
-            enemies[i].spr = enemies[i].stationGO.GetComponent<SpriteRenderer>();
-            enemies[i].spr.sprite = enemies[i].sprite;
-            enemies[i].spr.sortingLayerName = "Battle";
+            enemies[i].spriteRenderer = enemies[i].stationGO.GetComponent<SpriteRenderer>();
+            enemies[i].spriteRenderer.sprite = enemies[i].sprite;
+            enemies[i].spriteRenderer.sortingLayerName = "Battle";
 
             float enemyMove;
             enemyMove = (i * playerSpread) - (enemies.Length * playerSpread / 2);
@@ -130,14 +131,14 @@ public class BattleSystem : MonoBehaviour
             enemies[i].stationGO.transform.localPosition = Vector3.zero;
             enemies[i].stationGO.transform.Translate(enemyMove, 0, 0);
 
-            enemies[i] = enemies[i].Copy();
-            if (enemyNumbers.ContainsKey(enemies[i].title))
+            enemies[i] = enemies[i].CopyAtStationGO();
+            if (enemyNumbers.ContainsKey(enemies[i].data.title))
             {
-                enemyNumbers[enemies[i].title]++;
-                enemies[i].title += " " + enemyNumbers[enemies[i].title];
+                enemyNumbers[enemies[i].data.title]++;
+                enemies[i].data.title += " " + enemyNumbers[enemies[i].data.title];
 
             }
-            else enemyNumbers[enemies[i].title] = 1;
+            else enemyNumbers[enemies[i].data.title] = 1;
         }
 
         // Set Battle Position
@@ -154,7 +155,7 @@ public class BattleSystem : MonoBehaviour
         {
             if (selectedUnit != null)
             {
-                selectedUnit.spr.color = Mathf.Floor(Time.unscaledTime * 10) % 2 == 0 ? Color.white : new Color(0.3f, 0.3f, 0.3f, 0.3f);
+                selectedUnit.spriteRenderer.color = Mathf.Floor(Time.unscaledTime * 10) % 2 == 0 ? Color.white : new Color(0.3f, 0.3f, 0.3f, 0.3f);
             }
         }
     }
@@ -167,11 +168,11 @@ public class BattleSystem : MonoBehaviour
         {
             // Set enemy group name
             string enemyGroupName;
-            if (enemies.Length == 1) enemyGroupName = enemies[0].title;
-            else if (enemies.Length == 2) enemyGroupName = $"{enemies[0].title} and his brother";
+            if (enemies.Length == 1) enemyGroupName = enemies[0].data.title;
+            else if (enemies.Length == 2) enemyGroupName = $"{enemies[0].data.title} and his brother";
 
             // Select a or an
-            else enemyGroupName = $"{enemies[0].title} and his cohorts";
+            else enemyGroupName = $"{enemies[0].data.title} and his cohorts";
             if ("aeiouAEIOU".Contains(enemyGroupName[0])) enemyGroupName = "an " + enemyGroupName;
             else enemyGroupName = "a " + enemyGroupName;
 
@@ -184,8 +185,8 @@ public class BattleSystem : MonoBehaviour
         else battleState = BattleState.EnemyTurn;
 
         // Clear extra data extra data
-        foreach (BattleUnit unit in players) { unit.onDefence = false; }
-        foreach (BattleUnit unit in enemies) { unit.onDefence = false; }
+        foreach (BattleUnit unit in players) { unit.onDefense = false; }
+        foreach (BattleUnit unit in enemies) { unit.onDefense = false; }
 
         // Battle Loop
         while (battleState != BattleState.Exit)
@@ -199,10 +200,10 @@ public class BattleSystem : MonoBehaviour
                 foreach (BattleUnit player in players)
                 {
                     // Check if player is alive
-                    if (!player.Alive) continue;
+                    if (!player.data.Alive) continue;
 
                     // Remove player defense
-                    player.onDefence = false;
+                    player.onDefense = false;
 
                     // Run player
                     yield return PlayerUnitTurn(player);
@@ -233,10 +234,10 @@ public class BattleSystem : MonoBehaviour
                 foreach (BattleUnit enemy in enemies)
                 {
                     // Check if enemy is alive
-                    if (!enemy.Alive) continue;
+                    if (!enemy.data.Alive) continue;
 
                     // Remove enemy defense
-                    enemy.onDefence = false;
+                    enemy.onDefense = false;
 
                     // Run enemy
                     yield return EnemyUnitTurn(enemy);
@@ -275,8 +276,8 @@ public class BattleSystem : MonoBehaviour
 
         // Get possible actions
         List<string> possibleActions = new(System.Enum.GetNames(typeof(BattleUnit.TurnOptions)));
-        if (unit.magicOptionsForUnit.Count == 0) possibleActions.Remove("Magic");
-        if (unit.items.Count == 0) possibleActions.Remove("Item");
+        if (unit.data.magicOptionsForUnit.Count == 0) possibleActions.Remove("Magic");
+        if (unit.data.items.Count == 0) possibleActions.Remove("Item");
 
         // Get desired action
         yield return GameUI.ChoiceMenu(null, possibleActions.ToArray(), 1);
@@ -286,12 +287,12 @@ public class BattleSystem : MonoBehaviour
         if (choice == BattleUnit.TurnOptions.Run)
         {
             // Attempt message
-            yield return GameUI.TypeOut($"{unit.title} attempts to {GetActionStatement(unit, runText, EnemyTitle)}.");
+            yield return GameUI.TypeOut($"{unit.data.title} attempts to {GetActionStatement(unit, runText, EnemyTitle)}.");
 
             // Check if run is successful
             bool run;
-            if (enemies[0].escapePercentageAllowed == 0) run = false;
-            else run = Random.Range(0, 100 / enemies[0].escapePercentageAllowed) == 0;
+            if (enemies[0].data.escapePercentageAllowed == 0) run = false;
+            else run = Random.Range(0, 100 / enemies[0].data.escapePercentageAllowed) == 0;
 
             // Finish turn
             if (run)
@@ -316,34 +317,34 @@ public class BattleSystem : MonoBehaviour
             }
 
             // Get attack power
-            int preDefenseAttack = unit.badges.GetAttack();
-            int attack = selectedUnit.badges.GetDefenseChange(preDefenseAttack, selectedUnit.onDefence);
+            int preDefenseAttack = unit.GetAttack();
+            int attack = selectedUnit.GetDefenseChange(preDefenseAttack, selectedUnit.onDefense);
 
             // Send message
-            yield return GameUI.TypeOut($"{unit.title} {GetActionStatement(unit, attackText, selectedUnit.title)}!");
-            yield return GameUI.TypeOut($"{attack} damage to {selectedUnit.title}.");
+            yield return GameUI.TypeOut($"{unit.data.title} {GetActionStatement(unit, attackText, selectedUnit.data.title)}!");
+            yield return GameUI.TypeOut($"{attack} damage to {selectedUnit.data.title}.");
             yield return ChangeLifeOnEnemyUnit(selectedUnit, -attack);
         }
         else if (choice == BattleUnit.TurnOptions.Defend)
         {
-            unit.onDefence = true;
-            yield return GameUI.TypeOut($"{unit.title} {GetActionStatement(unit, defendText, EnemyTitle)}.");
+            unit.onDefense = true;
+            yield return GameUI.TypeOut($"{unit.data.title} {GetActionStatement(unit, defendText, EnemyTitle)}.");
         }
         else if (choice == BattleUnit.TurnOptions.Item)
         {
             // Get desired item
             {
                 // Get available items
-                string[] itemOptions = new string[unit.items.Count];
+                string[] itemOptions = new string[unit.data.items.Count];
                 for (int i = 0; i < itemOptions.Length; i++)
                 {
-                    itemOptions[i] = unit.items[i].ToString();
+                    itemOptions[i] = unit.data.items[i].ToString();
                 }
 
                 // Get display settings
                 int cols;
                 {
-                    int itemCount = unit.items.Count;
+                    int itemCount = unit.data.items.Count;
                     if (itemCount <= 3) cols = 1;
                     else if (itemCount <= 6) cols = 2;
                     else cols = 3;
@@ -391,24 +392,24 @@ public class BattleSystem : MonoBehaviour
             }
 
             // Preliminary message
-            yield return GameUI.TypeOut($"{unit.title} tried using {data.Title}.");
+            yield return GameUI.TypeOut($"{unit.data.title} tried using {data.Title}.");
 
             // Remove item from inventory
-            unit.items.Remove(data.identity);
+            unit.data.items.Remove(data.identity);
 
             // Run Item
             yield return new WaitForEndOfFrame();
             if (data.scriptable.Type == ItemScriptable.ItemType.Attack)
             {
 
-                int hit = target.badges.GetDefenseChange(data.scriptable.Power, target.onDefence);
-                yield return GameUI.TypeOut($"{hit} damage to {target.title}.");
+                int hit = target.GetDefenseChange(data.scriptable.Power, target.onDefense);
+                yield return GameUI.TypeOut($"{hit} damage to {target.data.title}.");
                 yield return ChangeLifeOnEnemyUnit(target, -hit);
             }
             else if (data.scriptable.Type == ItemScriptable.ItemType.Heal)
             {
                 int heal = data.scriptable.Power;
-                yield return GameUI.TypeOut($"{target.title} gained {heal} HP.");
+                yield return GameUI.TypeOut($"{target.data.title} gained {heal} HP.");
                 yield return ChangeLifeOnPlayerUnit(target, heal);
             }
 
@@ -418,10 +419,10 @@ public class BattleSystem : MonoBehaviour
             // Get desired magic
             {
                 // Get magic options
-                string[] magicOptions = new string[unit.magicOptionsForUnit.Count];
+                string[] magicOptions = new string[unit.data.magicOptionsForUnit.Count];
                 for (int i = 0; i < magicOptions.Length; i++)
                 {
-                    string stringName = unit.magicOptionsForUnit[i].ToString();
+                    string stringName = unit.data.magicOptionsForUnit[i].ToString();
                     magicOptions[i] = stringName;
                     magicOptions[i] = magicOptions[i] + " : " + Magic.GetDataForOption(stringName).scriptable.Price;
                 }
@@ -480,12 +481,12 @@ public class BattleSystem : MonoBehaviour
             }
 
             // Preliminary message
-            yield return GameUI.TypeOut($"{unit.title} tried {data.Title}.");
+            yield return GameUI.TypeOut($"{unit.data.title} tried {data.Title}.");
 
             // Handel tax
-            if (unit.magic >= data.scriptable.Price)
+            if (unit.data.magic >= data.scriptable.Price)
             {
-                unit.magic -= data.scriptable.Price;
+                unit.data.magic -= data.scriptable.Price;
             }
             else
             {
@@ -499,8 +500,8 @@ public class BattleSystem : MonoBehaviour
             {
                 foreach (var target in targets)
                 {
-                    int hit = target.badges.GetDefenseChange(data.scriptable.Power, target.onDefence);
-                    yield return GameUI.TypeOut($"{hit} damage to {target.title}.");
+                    int hit = target.GetDefenseChange(data.scriptable.Power, target.onDefense);
+                    yield return GameUI.TypeOut($"{hit} damage to {target.data.title}.");
                     yield return ChangeLifeOnEnemyUnit(target, -hit);
                 }
             }
@@ -509,7 +510,7 @@ public class BattleSystem : MonoBehaviour
                 foreach (var target in targets)
                 {
                     int heal = data.scriptable.Power;
-                    yield return GameUI.TypeOut($"{target.title} gained {heal} HP.");
+                    yield return GameUI.TypeOut($"{target.data.title} gained {heal} HP.");
                     yield return ChangeLifeOnPlayerUnit(target, heal);
                 }
             }
@@ -523,8 +524,8 @@ public class BattleSystem : MonoBehaviour
 
         // Get possible actions
         List<string> possibleActions = new(System.Enum.GetNames(typeof(BattleUnit.TurnOptions)));
-        if (unit.magicOptionsForUnit.Count == 0) possibleActions.Remove("Magic");
-        if (unit.items.Count == 0) possibleActions.Remove("Item");
+        if (unit.data.magicOptionsForUnit.Count == 0) possibleActions.Remove("Magic");
+        if (unit.data.items.Count == 0) possibleActions.Remove("Item");
 
         // Get desired action
         System.Enum.TryParse(possibleActions[Random.Range(0, possibleActions.Count)], out BattleUnit.TurnOptions choice);
@@ -533,12 +534,12 @@ public class BattleSystem : MonoBehaviour
         if (choice == BattleUnit.TurnOptions.Run)
         {
             // Attempt message
-            yield return GameUI.TypeOut($"{unit.title} attempts to {GetActionStatement(unit, runText, PlayerTitle)}.");
+            yield return GameUI.TypeOut($"{unit.data.title} attempts to {GetActionStatement(unit, runText, PlayerTitle)}.");
 
             // Check if run is successful
             bool run;
-            if (players[0].escapePercentageAllowed == 0) run = false;
-            else run = Random.Range(0, 100 / players[0].escapePercentageAllowed) == 0;
+            if (players[0].data.escapePercentageAllowed == 0) run = false;
+            else run = Random.Range(0, 100 / players[0].data.escapePercentageAllowed) == 0;
 
             // Finish turn
             if (run)
@@ -556,18 +557,18 @@ public class BattleSystem : MonoBehaviour
             ChooseUnitEnemy(players);
 
             // Get attack power
-            int preDefenseAttack = unit.badges.GetAttack();
-            int attack = selectedUnit.badges.GetDefenseChange(preDefenseAttack, selectedUnit.onDefence);
+            int preDefenseAttack = unit.GetAttack();
+            int attack = selectedUnit.GetDefenseChange(preDefenseAttack, selectedUnit.onDefense);
 
             // Send message
-            yield return GameUI.TypeOut($"{unit.title} {GetActionStatement(unit, attackText, selectedUnit.title)}!");
-            yield return GameUI.TypeOut($"{attack} damage to {selectedUnit.title}.");
+            yield return GameUI.TypeOut($"{unit.data.title} {GetActionStatement(unit, attackText, selectedUnit.data.title)}!");
+            yield return GameUI.TypeOut($"{attack} damage to {selectedUnit.data.title}.");
             yield return ChangeLifeOnPlayerUnit(selectedUnit, -attack);
         }
         else if (choice == BattleUnit.TurnOptions.Defend)
         {
-            unit.onDefence = true;
-            yield return GameUI.TypeOut($"{unit.title} {GetActionStatement(unit, defendText, PlayerTitle)}.");
+            unit.onDefense = true;
+            yield return GameUI.TypeOut($"{unit.data.title} {GetActionStatement(unit, defendText, PlayerTitle)}.");
         }
         else if (choice == BattleUnit.TurnOptions.Item)
         {
@@ -575,10 +576,10 @@ public class BattleSystem : MonoBehaviour
             Items.DataSet data;
             {
                 // Get available items
-                string[] itemOptions = new string[unit.items.Count];
+                string[] itemOptions = new string[unit.data.items.Count];
                 for (int i = 0; i < itemOptions.Length; i++)
                 {
-                    itemOptions[i] = unit.items[i].ToString();
+                    itemOptions[i] = unit.data.items[i].ToString();
                 }
 
                 // Get choice
@@ -603,24 +604,24 @@ public class BattleSystem : MonoBehaviour
             }
 
             // Preliminary message
-            yield return GameUI.TypeOut($"{unit.title} tried using {data.Title}.");
+            yield return GameUI.TypeOut($"{unit.data.title} tried using {data.Title}.");
 
             // Remove item from inventory
-            unit.items.Remove(data.identity);
+            unit.data.items.Remove(data.identity);
 
             // Run Item
             yield return new WaitForEndOfFrame();
             if (data.scriptable.Type == ItemScriptable.ItemType.Attack)
             {
 
-                int hit = target.badges.GetDefenseChange(data.scriptable.Power, target.onDefence);
-                yield return GameUI.TypeOut($"{hit} damage to {target.title}.");
+                int hit = target.GetDefenseChange(data.scriptable.Power, target.onDefense);
+                yield return GameUI.TypeOut($"{hit} damage to {target.data.title}.");
                 yield return ChangeLifeOnPlayerUnit(target, -hit);
             }
             else if (data.scriptable.Type == ItemScriptable.ItemType.Heal)
             {
                 int heal = data.scriptable.Power;
-                yield return GameUI.TypeOut($"{target.title} gained {heal} HP.");
+                yield return GameUI.TypeOut($"{target.data.title} gained {heal} HP.");
                 yield return ChangeLifeOnEnemyUnit(target, heal);
             }
 
@@ -631,10 +632,10 @@ public class BattleSystem : MonoBehaviour
             Magic.DataSet data;
             {
                 // Get magic options
-                string[] magicOptions = new string[unit.magicOptionsForUnit.Count];
+                string[] magicOptions = new string[unit.data.magicOptionsForUnit.Count];
                 for (int i = 0; i < magicOptions.Length; i++)
                 {
-                    string stringName = unit.magicOptionsForUnit[i].ToString();
+                    string stringName = unit.data.magicOptionsForUnit[i].ToString();
                     magicOptions[i] = stringName;
                 }
 
@@ -668,12 +669,12 @@ public class BattleSystem : MonoBehaviour
             }
 
             // Preliminary message
-            yield return GameUI.TypeOut($"{unit.title} tried {data.Title}.");
+            yield return GameUI.TypeOut($"{unit.data.title} tried {data.Title}.");
 
             // Handel tax
-            if (unit.magic >= data.scriptable.Price)
+            if (unit.data.magic >= data.scriptable.Price)
             {
-                unit.magic -= data.scriptable.Price;
+                unit.data.magic -= data.scriptable.Price;
             }
             else
             {
@@ -687,8 +688,8 @@ public class BattleSystem : MonoBehaviour
             {
                 foreach (BattleUnit target in targets)
                 {
-                    int hit = target.badges.GetDefenseChange(data.scriptable.Power, target.onDefence);
-                    yield return GameUI.TypeOut($"{hit} damage to {target.title}.");
+                    int hit = target.GetDefenseChange(data.scriptable.Power, target.onDefense);
+                    yield return GameUI.TypeOut($"{hit} damage to {target.data.title}.");
                     yield return ChangeLifeOnPlayerUnit(target, -hit);
                 }
             }
@@ -697,7 +698,7 @@ public class BattleSystem : MonoBehaviour
                 foreach (BattleUnit target in targets)
                 {
                     int heal = data.scriptable.Power;
-                    yield return GameUI.TypeOut($"{target.title} gained {heal} HP.");
+                    yield return GameUI.TypeOut($"{target.data.title} gained {heal} HP.");
                     yield return ChangeLifeOnEnemyUnit(target, heal);
                 }
             }
@@ -716,7 +717,7 @@ public class BattleSystem : MonoBehaviour
             bool multipleAlive = false;
             for (int i = 0; i < units.Length; i++)
             {
-                if (units[i].Alive)
+                if (units[i].data.Alive)
                 {
                     if (selected == -1) selected = i;
                     else
@@ -754,12 +755,12 @@ public class BattleSystem : MonoBehaviour
 
                 case MyInput.Action.Cancel:
                     blinkUnit = false;
-                    selectedUnit.spr.color = Color.white;
+                    selectedUnit.spriteRenderer.color = Color.white;
                     selectedUnit = null;
                     yield break;
             }
 
-            selectedUnit.spr.color = Color.white;
+            selectedUnit.spriteRenderer.color = Color.white;
             selectedUnit = units[selected];
             yield return new WaitForEndOfFrame();
         }
@@ -771,29 +772,29 @@ public class BattleSystem : MonoBehaviour
         {
             for (int i = 0; i < 2; i++)
             {
-                unit.spr.color = Color.clear;
+                unit.spriteRenderer.color = Color.clear;
                 yield return new WaitForSecondsRealtime(0.05f);
-                unit.spr.color = Color.white;
+                unit.spriteRenderer.color = Color.white;
                 yield return new WaitForSecondsRealtime(0.05f);
             }
         }
 
-        unit.life += lifeChange;
-        if (unit.life >= unit.maxLife)
+        unit.data.life += lifeChange;
+        if (unit.data.life >= unit.data.maxLife)
         {
-            unit.life = unit.maxLife;
-            yield return GameUI.TypeOut($"{unit.title}'s life is maxed out.");
+            unit.data.life = unit.data.maxLife;
+            yield return GameUI.TypeOut($"{unit.data.title}'s life is maxed out.");
         }
-        if (!unit.Alive)
+        if (!unit.data.Alive)
         {
-            yield return GameUI.TypeOut($"{unit.title} has been destroyed.");
+            yield return GameUI.TypeOut($"{unit.data.title} has been destroyed.");
 
             int iterations = 6;
             for (float i = 0; i < iterations; i++)
             {
-                unit.spr.color = new Color(1, 1, 1, Mathf.Clamp(1 - (i / iterations), 0, 1));
+                unit.spriteRenderer.color = new Color(1, 1, 1, Mathf.Clamp(1 - (i / iterations), 0, 1));
                 yield return new WaitForSecondsRealtime(0.1f);
-                unit.spr.color = Color.clear;
+                unit.spriteRenderer.color = Color.clear;
                 yield return new WaitForSecondsRealtime(0.05f);
             }
 
@@ -807,22 +808,22 @@ public class BattleSystem : MonoBehaviour
         {
             for (int i = 0; i < 2; i++)
             {
-                unit.spr.color = Color.clear;
+                unit.spriteRenderer.color = Color.clear;
                 yield return new WaitForSecondsRealtime(0.05f);
-                unit.spr.color = Color.white;
+                unit.spriteRenderer.color = Color.white;
                 yield return new WaitForSecondsRealtime(0.05f);
             }
         }
 
-        unit.life += lifeChange;
-        if (unit.life >= unit.maxLife)
+        unit.data.life += lifeChange;
+        if (unit.data.life >= unit.data.maxLife)
         {
-            unit.life = unit.maxLife;
-            yield return GameUI.TypeOut($"{unit.title}'s life is maxed out.");
+            unit.data.life = unit.data.maxLife;
+            yield return GameUI.TypeOut($"{unit.data.title}'s life is maxed out.");
         }
-        if (!unit.Alive)
+        if (!unit.data.Alive)
         {
-            yield return GameUI.TypeOut($"{unit.title} died.");
+            yield return GameUI.TypeOut($"{unit.data.title} died.");
         }
     }
 
@@ -835,7 +836,16 @@ public class BattleSystem : MonoBehaviour
             case BattleFinish.PlayerWin:
                 Destroy(enemyGameObject);
                 GameManager.player.playerObject.SetInactive();
-                yield return GameUI.TypeOut($"{GameManager.player.Name} won the battle!");
+                yield return GameUI.TypeOut($"{PlayerTitle} won the battle!");
+
+                int exp = enemies.Sum(x => x.data.expAward);
+                yield return GameUI.TypeOut($"{PlayerTitle} gained {exp} experience.");
+                
+                foreach (BattleUnit player in players)
+                {
+                    player.data.exp += exp;
+                }
+
                 break;
 
             case BattleFinish.EnemyWin:
@@ -848,6 +858,7 @@ public class BattleSystem : MonoBehaviour
             case BattleFinish.PlayerRun:
                 GameManager.player.playerObject.SetInactive();
                 break;
+
             case BattleFinish.None:
                 throw new System.Exception("Battle finish may not be None");
         }
@@ -855,7 +866,7 @@ public class BattleSystem : MonoBehaviour
 
     BattleUnit.TurnOptions GetEnemyTurnChoice(BattleUnit enemy)
     {
-        EnemyAI ai = enemy.enemyAI;
+        EnemyAI ai = enemy.data.enemyAI;
         ai.CorrectData();
         int choiceInt = Random.Range(1, 101);
 
@@ -868,14 +879,14 @@ public class BattleSystem : MonoBehaviour
         bar += ai.item;
         if (choiceInt <= bar)
         {
-            if (enemy.items.Count == 0) return GetEnemyTurnChoice(enemy);
+            if (enemy.data.items.Count == 0) return GetEnemyTurnChoice(enemy);
             return BattleUnit.TurnOptions.Item;
         }
 
         bar += ai.magic;
         if (choiceInt <= bar)
         {
-            if (enemy.magicOptionsForUnit.Count == 0) return GetEnemyTurnChoice(enemy);
+            if (enemy.data.magicOptionsForUnit.Count == 0) return GetEnemyTurnChoice(enemy);
             return BattleUnit.TurnOptions.Magic;
         }
 
@@ -897,7 +908,7 @@ public class BattleSystem : MonoBehaviour
     {
         foreach (BattleUnit battleUnit in side)
         {
-            if (battleUnit.Alive) return false;
+            if (battleUnit.data.Alive) return false;
         }
         return true;
     }
@@ -905,7 +916,7 @@ public class BattleSystem : MonoBehaviour
     void ChooseUnitEnemy(BattleUnit[] units)
     {
         BattleUnit target = null;
-        while (target == null || !target.Alive)
+        while (target == null || !target.data.Alive)
         {
             target = units[Random.Range(0, units.Length)];
         }
@@ -916,7 +927,7 @@ public class BattleSystem : MonoBehaviour
     string GetActionStatement(BattleUnit unit, string[] statements, string opposition)
     {
         string choice = statements[Random.Range(0, statements.Length)];
-        choice = choice.Replace("himself", unit.refexive.ToString());
+        choice = choice.Replace("himself", unit.data.reflexive.ToString());
         if (opposition != null)
         {
             choice = choice.Replace("the enemy", opposition);
@@ -930,7 +941,7 @@ public class BattleSystem : MonoBehaviour
         if (selected > units.Length - 1) selected = 0;
         else if (selected < 0) selected = units.Length - 1;
 
-        if (!units[selected].Alive)
+        if (!units[selected].data.Alive)
         {
             return SkipToNextLivingUnit(units, selected, step);
         }

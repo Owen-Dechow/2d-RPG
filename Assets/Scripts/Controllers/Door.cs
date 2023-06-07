@@ -50,6 +50,7 @@ public class Door : MonoBehaviour
                 Mathf.Sin((int)doorOpening)
                 ) * 0.16f;
             GameManager.player.playerObject.transform.Translate(delta.x + 0.08f, delta.y, 0);
+
             CameraController.SetUpCamera();
         }
     }

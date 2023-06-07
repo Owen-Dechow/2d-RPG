@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 455d8703eb168eb4cb53709663df95ba, type: 3}
   m_Name: FlameThrow
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   canUseOutsideOfBattle: 0
-  price: 0
-  powerMin: 0
-  powerMax: 0
+  price: 9
+  powerMin: 4
+  powerMax: 7
+  effectsAll: 1

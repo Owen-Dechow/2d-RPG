@@ -5,9 +5,8 @@ public class Player : MonoBehaviour
 {
     [HideInInspector] public PlayerController playerObject;
     [HideInInspector] public BattleUnit playerBattleUnit;
-    public Badges.Inventory badgeInventory;
-    public List<Items.Options> Items { get => playerBattleUnit.items; }
-    public string Name { get => playerBattleUnit.title; }
+    public List<Items.Options> Items { get => playerBattleUnit.data.items; }
+    public string Name { get => playerBattleUnit.data.title; }
 
     private void Start()
     {

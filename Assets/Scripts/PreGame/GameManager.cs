@@ -84,11 +84,11 @@ public class GameManager : MonoBehaviour
     {
         SaveData data = SaveSystem.LoadData(id);
         SaveData.UnpackSaveData(data);
-        LoadLevel(data._levelScene, new Vector2(data._position[0], data._position[1]), AnimPlus.Direction.down);
+        LoadLevel(data.levelScene, new Vector2(data.position[0], data.position[1]), AnimPlus.Direction.down);
     }
     public static void LostBattle()
     {
-        static IEnumerator lostbattle()
+        static IEnumerator lostBattle()
         {
             Time.timeScale = 0;
             yield return GameUI.ToggleLoadingScreen(true, instant: true);
@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
             yield return GameUI.ToggleLoadingScreen(false);
             Time.timeScale = 1;
         }
-        i.StartCoroutine(lostbattle());
+        i.StartCoroutine(lostBattle());
     }
 
     public static void LoadLevel(LevelScene scene, Vector2 playerSpanPoint, AnimPlus.Direction playerSpanDirection)

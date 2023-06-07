@@ -140,7 +140,7 @@ BoxCollider2D:
   m_EdgeRadius: 0
 --- !u!95 &4326385105789543777
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -157,7 +157,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &4326385105789543776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,7 +212,7 @@ MonoBehaviour:
     direction: -53
     chaseRadius: 0.75
   battleEnterOptions:
-    maxNumberOfCohorts: 2
+    maxNumberOfCohorts: 1
     cohortOptions: []
 --- !u!114 &-3871556630239596928
 MonoBehaviour:
@@ -226,32 +227,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprite: {fileID: 1390960909, guid: 81c924155a1b8954e97c70c8eb074fdd, type: 3}
-  title: Purple Blob
-  life: 3
-  maxLife: 3
-  magic: 51
-  maxMagic: 29
-  escapePercentageAllowed: 80
-  magicOptionsForUnit: 0a000000
-  items: 
-  badges:
-    defense: 0
-    attack: 0
-    special: 0
-    extra1Kind: 0
-    extra2Kind: 0
-    extraAttack1: 0
-    extraAttack2: 0
-    extraDefense1: 0
-    extraDefense2: 0
-  enemyAI:
-    attack: 0
-    defend: 0
-    item: 0
-    magic: 100
-    run: 0
-    dataStatus: 1
-    lastCheck: 1
-  onDefence: 0
+  data:
+    title: Purple Blob
+    reflexive: 0
+    life: 3
+    maxLife: 3
+    magic: 0
+    maxMagic: 0
+    defense: 1
+    attack: 1
+    magicOptionsForUnit: 
+    items: 
+    exp: 0
+    level: 0
+    expAward: 3
+    enemyAI:
+      attack: 43
+      defend: 41
+      item: 0
+      magic: 0
+      run: 16
+      dataStatus: 1
+      lastCheck: 1
+    escapePercentageAllowed: 80
+  onDefense: 0
   stationGO: {fileID: 0}
-  spr: {fileID: 0}
+  spriteRenderer: {fileID: 0}

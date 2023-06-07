@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6483088251835158178}
   - component: {fileID: 6483088251835158179}
   - component: {fileID: 6483088251835158176}
+  - component: {fileID: 747861107}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -88,10 +89,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObject: {fileID: 0}
   playerBattleUnit: {fileID: 0}
-  badgeInventory:
-    defense: 
-    attack: 
-    special: 00000000
 --- !u!114 &6483088251835158179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,36 +102,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprite: {fileID: -306227685, guid: d2f9d1b539a0adb45afa02a160a916c1, type: 3}
-  title: Player
-  refexive: 0
-  life: 5
-  maxLife: 5
-  magic: 5
-  maxMagic: 5
-  escapePercentageAllowed: 50
-  magicOptionsForUnit: 0000000004000000
-  items: 00000000
-  badges:
-    defense: 0
-    attack: 0
-    special: 0
-    extra1Kind: 0
-    extra2Kind: 1
-    extraAttack1: 0
-    extraAttack2: 0
-    extraDefense1: 0
-    extraDefense2: 0
-  enemyAI:
-    attack: 20
-    defend: 20
-    item: 20
-    magic: 20
-    run: 20
-    dataStatus: 1
-    lastCheck: 1
-  onDefence: 0
+  data:
+    title: Owen
+    reflexive: 0
+    life: 10
+    maxLife: 10
+    magic: 5
+    maxMagic: 5
+    defense: 1
+    attack: 1
+    magicOptionsForUnit: 0000000004000000
+    items: 0000000002000000
+    exp: 0
+    level: 0
+    expAward: 0
+    enemyAI:
+      attack: 75
+      defend: 25
+      item: 0
+      magic: 0
+      run: 0
+      dataStatus: 1
+      lastCheck: 1
+    escapePercentageAllowed: 30
+  onDefense: 0
   stationGO: {fileID: 0}
-  spr: {fileID: 0}
+  spriteRenderer: {fileID: 0}
 --- !u!114 &6483088251835158176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,6 +141,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   checkpoints: []
+--- !u!114 &747861107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6483088251835158207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d23d4dc0682cd90418c6a5d7a9fa1ea1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelList:
+  - experienceNeeded: 1
+    life: 0
+    magic: 0
+    attack: 0
+    defense: 0
+  - experienceNeeded: 2
+    life: 0
+    magic: 0
+    attack: 0
+    defense: 0
 --- !u!1 &6483088252439544798
 GameObject:
   m_ObjectHideFlags: 0

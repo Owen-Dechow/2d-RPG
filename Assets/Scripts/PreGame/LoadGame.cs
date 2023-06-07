@@ -48,7 +48,7 @@ public class LoadGame : MonoBehaviour
             return;
         }
 
-        gameManager.GetComponent<BattleUnit>().title = fixedName;
+        gameManager.GetComponent<BattleUnit>().data.title = fixedName;
 
         getNamePanel.SetActive(false);
         IEnumerator startgame()

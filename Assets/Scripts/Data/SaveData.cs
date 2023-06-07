@@ -7,21 +7,12 @@ using UnityEngine.SceneManagement;
 [System.Serializable]
 public class SaveData
 {
-    public int _id;
-    public string _name;
-    public int _life;
-    public int _maxLife;
-    public int _magic;
-    public int _maxMagic;
-    public BattleUnit.UnitRefexive _reflexive;
-    public float[] _position;
-    public Magic.Options[] _magicOptions;
-    public Items.Options[] _items;
-    public Badges.Equip _badgesEquipped;
-    public Badges.Inventory _badgeInventory;
-    public LevelScene _levelScene;
-    public string[] _checkpoints;
-    public int[] _NPCActionTreeBranchProtectors;
+    public int id;
+    public BattleUnit.BattleUnitData battleUnitData;
+    public float[] position;
+    public LevelScene levelScene;
+    public string[] checkpoints;
+    public int[] NPCActionTreeBranchProtectors;
 
     public SaveData()
     {
@@ -29,30 +20,21 @@ public class SaveData
         BattleUnit playerBattleUnit = player.playerBattleUnit;
         Vector2 position = player.playerObject.transform.position;
 
-        _id = GameManager.id;
-        _name = playerBattleUnit.title;
-        _life = playerBattleUnit.life;
-        _maxLife = playerBattleUnit.maxLife;
-        _magic = playerBattleUnit.magic;
-        _maxMagic = playerBattleUnit.maxMagic;
-        _magicOptions = playerBattleUnit.magicOptionsForUnit.ToArray();
-        _items = playerBattleUnit.items.ToArray();
-        _badgesEquipped = playerBattleUnit.badges;
-        _reflexive = playerBattleUnit.refexive;
+        id = GameManager.id;
+        battleUnitData = playerBattleUnit.data;
 
-        _position = new float[2] { position.x, position.y };
-        _badgeInventory = player.badgeInventory;
+        this.position = new float[2] { position.x, position.y };
 
         List<string> checkpointsReached = new();
         foreach (CheckpointSystem.Checkpoint checkpoint in GameManager.checkpoints.checkpoints)
         {
             if (checkpoint.isReached) checkpointsReached.Add(checkpoint.checkpoint);
         }
-        _checkpoints = checkpointsReached.ToArray();
+        checkpoints = checkpointsReached.ToArray();
 
-        _levelScene = (LevelScene)System.Enum.Parse(typeof(LevelScene), SceneManager.GetActiveScene().name);
+        levelScene = (LevelScene)System.Enum.Parse(typeof(LevelScene), SceneManager.GetActiveScene().name);
 
-        _NPCActionTreeBranchProtectors = GameManager.NPCActionTreeBranchProtectors.ToArray();
+        NPCActionTreeBranchProtectors = GameManager.NPCActionTreeBranchProtectors.ToArray();
     }
 
     public static void UnpackSaveData(SaveData data)
@@ -60,21 +42,11 @@ public class SaveData
         Player player = GameManager.player;
         BattleUnit playerBattleUnit = player.playerBattleUnit;
 
-        GameManager.id = data._id;
-        GameManager.NPCActionTreeBranchProtectors = new(data._NPCActionTreeBranchProtectors);
-        playerBattleUnit.title = data._name;
-        playerBattleUnit.life = data._life;
-        playerBattleUnit.maxLife = data._maxLife;
-        playerBattleUnit.magic = data._magic;
-        playerBattleUnit.maxMagic = data._maxMagic;
-        playerBattleUnit.magicOptionsForUnit = new List<Magic.Options>(data._magicOptions);
-        playerBattleUnit.items = new List<Items.Options>(data._items);
-        playerBattleUnit.badges = data._badgesEquipped;
-        playerBattleUnit.refexive = data._reflexive;
+        GameManager.id = data.id;
+        GameManager.NPCActionTreeBranchProtectors = new(data.NPCActionTreeBranchProtectors);
+        playerBattleUnit.data = data.battleUnitData;
 
-        player.badgeInventory = data._badgeInventory;
-
-        foreach (string checkpoint in data._checkpoints)
+        foreach (string checkpoint in data.checkpoints)
         {
             GameManager.checkpoints.SetCheckpoint(checkpoint);
         }
@@ -98,7 +70,7 @@ public static class SaveSystem
             // Check if already save data 
             foreach (SaveData dataSlot in dataSlots)
             {
-                if (dataSlot._id == data._id)
+                if (dataSlot.id == data.id)
                 {
                     oldDataSlot = data;
                     break;
@@ -135,7 +107,7 @@ public static class SaveSystem
         // Find proper save profile
         foreach (SaveData data in dataSlots)
         {
-            if (data._id == id) return data;
+            if (data.id == id) return data;
         }
         Debug.LogError("Savedata not found at path: " + path);
         return null;
@@ -150,7 +122,7 @@ public static class SaveSystem
         // Find proper save profile
         foreach (SaveData data in dataSlots)
         {
-            if (data._id == id) return GetNewId();
+            if (data.id == id) return GetNewId();
         }
         return id;
     }
@@ -165,7 +137,7 @@ public static class SaveSystem
 
             foreach (SaveData data in dataSlots)
             {
-                profiles[data._id] = data._name;
+                profiles[data.id] = data.battleUnitData.title;
             }
         }
         return profiles;
@@ -180,7 +152,7 @@ public static class SaveSystem
         newDataSlots = new SaveData[dataSlots.Length - 1];
         foreach (SaveData dataSlot in dataSlots)
         {
-            if (dataSlot._id == key) continue;
+            if (dataSlot.id == key) continue;
             newDataSlots[idxOn] = dataSlot;
             idxOn += 1;
         }
@@ -214,7 +186,7 @@ public static class SaveSystem
         }
         catch
         {
-            Debug.Log("File saving error at path :" + path);
+            Debug.LogError("File saving error at path :" + path);
             return;
         }
     }
