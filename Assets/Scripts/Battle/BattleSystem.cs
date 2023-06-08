@@ -6,59 +6,25 @@ using UnityEngine;
 
 public class BattleSystem : MonoBehaviour
 {
-    #region Public
+    #region INSPECTOR_DATA
+
+    [Header("UI Settings")]
     public float playerSpread;
     public float panelSpread;
-
-    public GameObject enemyGameObject;
-    public BattleUnit[] players;
-    public BattleUnit[] enemies;
-
     [SerializeField] Transform playerBattleStation;
     [SerializeField] Transform enemyBattleStation;
     [SerializeField] GameObject panelPrefab;
     [SerializeField] Canvas canvas;
+
+    [Header("Action Messages")]
+    [SerializeField] string[] attackText;
+    [SerializeField] string[] defendText;
+    [SerializeField] string[] runText;
     #endregion
 
-    #region AltText
-    private readonly string[] attackText = {
-        "attacks",
-        "swings at the enemy",
-        "throws himself at the enemy",
-        "assaults the enemy",
-        "strikes at the enemy",
-        "bombards the enemy",
-        "rushes the enemy",
-        "charges the enemy",
-        "hurls himself at the enemy",
-        "pelts the enemy",
-        "bashes the enemy"
-    };
-    private readonly string[] defendText = {
-        "is on defense",
-        "is cowering in fear",
-        "takes a step back",
-        "shields himself",
-        "defends himself from the enemy",
-        "is on guard",
-        "protects himself from the enemy",
-        "screens himself from the enemy",
-        "walls himself from the enemy",
-        "recoils",
-        "shrinks in fear",
-        "whitens in fear",
-    };
-    private readonly string[] runText = {
-        "run",
-        "flee",
-        "get away",
-        "fly from the battle",
-        "scamper away from the battle",
-        "gallop away from the enemy",
-        "leave the battle",
-        "remove himself from the battle",
-    };
-    #endregion
+    [HideInInspector] public GameObject enemyGameObject;
+    [HideInInspector] public BattleUnit[] players;
+    [HideInInspector] public BattleUnit[] enemies;
 
     Panel[] playerPanels;
     BattleUnit selectedUnit = null;
@@ -844,6 +810,11 @@ public class BattleSystem : MonoBehaviour
                 foreach (BattleUnit player in players)
                 {
                     player.data.exp += exp;
+                    LevelUp.ExpToLevel expToLevel = LevelUp.CheckLevel(exp);
+                    if (player.data.level < expToLevel.level)
+                    {
+                        yield return GameUI.TypeOut($"{player.name} reached level {expToLevel.level}");
+                    }
                 }
 
                 break;

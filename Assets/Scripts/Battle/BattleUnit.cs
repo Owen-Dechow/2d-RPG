@@ -33,7 +33,7 @@ public class BattleUnit : MonoBehaviour
         [Header("Static")]
         public byte escapePercentageAllowed;
 
-
+        public readonly int ExpFromLastLevelUp { get => LevelUp.ExpFromLastLevelUp(exp); }
         public readonly bool Alive { get => life > 0; }
     }
 
