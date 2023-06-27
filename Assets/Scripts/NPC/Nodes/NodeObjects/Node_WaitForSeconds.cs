@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Node_WaitForSeconds : ActionNode
 {
-    public override string Classname => "other";
+    public override string ClassName => "other";
     public float seconds;
 
     protected override IEnumerator Execute()

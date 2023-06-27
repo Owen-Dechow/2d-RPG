@@ -5,7 +5,7 @@ using UnityEngine;
 public class OptionMenu : MonoBehaviour
 {
     [SerializeField] GameObject pointer;
-    [SerializeField] GameObject textareaPrefab;
+    [SerializeField] GameObject textAreaPrefab;
 
     [SerializeField] float pointerOriginY;
     [SerializeField] float pointerSpaceY;
@@ -15,6 +15,16 @@ public class OptionMenu : MonoBehaviour
 
     void SetUp(string[] options, Vector2 position, int cols)
     {
+        // Clear preexisting data
+        if (textboxes != null)
+        {
+            while (textboxes.Count > 0)
+            {
+                Destroy(textboxes[0].gameObject);
+                textboxes.RemoveAt(0);
+            }
+        }
+
         // Place in UI
         GameUI.RenderAtPosition(gameObject, position);
 
@@ -22,7 +32,7 @@ public class OptionMenu : MonoBehaviour
         textboxes = new();
         for (int i = 0; i < cols; i++)
         {
-            GameObject go = Instantiate(textareaPrefab, transform.Find("Background"));
+            GameObject go = Instantiate(textAreaPrefab, transform.Find("Background"));
             textboxes.Add(go.GetComponent<TMPro.TextMeshProUGUI>());
         }
 

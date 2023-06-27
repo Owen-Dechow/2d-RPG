@@ -8,8 +8,71 @@ using UnityEngine.UIElements;
 
 public class TreeGraph : GraphView
 {
-    BehaviourTree tree;
+    BehaviorTree tree;
 
+    public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
+    {
+        if (tree == null)
+        {
+            return;
+        }
+
+        Type[][] nodesInMenu = new Type[][]
+        {
+            // Actions
+            new Type[] {
+                typeof(Node_Say),
+                typeof(Node_AskYesNoQuestion),
+                typeof(Node_AskComplexQuestion),
+                typeof(Node_ComplexMenu),
+                typeof(Node_GiveItem),
+                typeof(Node_TakeItem),
+                typeof(Node_FulfillCheckpoint),
+                typeof(Node_TeachPower),
+            },
+
+            // Conditionals
+            new Type[]
+            {
+                typeof(Node_AnswerIs),
+                typeof(Node_AnswerIndexIs),
+                typeof(Node_CheckpointFulfilled),
+                typeof(Node_HasItem),
+                typeof(Node_PickRandom),
+                typeof(Node_FirstTimeDownThisBranch)
+            },
+
+            // Console
+            new Type[]
+            {
+                typeof(Node_DebugLog),
+                typeof(Node_DebugWarning),
+                typeof(Node_DebugError),
+            },
+
+            // Other
+            new Type[]
+            {
+                typeof(Node_DoNothing),
+                typeof(Node_WaitForSeconds)
+            }
+        };
+
+        foreach (Type[] nodeList in nodesInMenu)
+        {
+            foreach (Type node in nodeList)
+            {
+
+                VisualElement contentViewContainer = ElementAt(1);
+                Vector3 screenMousePosition = evt.localMousePosition;
+                Vector2 worldMousePosition = screenMousePosition - contentViewContainer.transform.position;
+                worldMousePosition *= 1 / contentViewContainer.transform.scale.x;
+
+                evt.menu.AppendAction(node.Name.Replace("Node_", ""), a => CreateNode(node, worldMousePosition));
+            }
+            evt.menu.AppendSeparator();
+        }
+    }
 
     public new class UxmlFactory : UxmlFactory<TreeGraph, GraphView.UxmlTraits> { }
     public TreeGraph()
@@ -38,13 +101,13 @@ public class TreeGraph : GraphView
         return GetNodeByGuid(node.guid) as NodeView;
     }
 
-    public void PopulateGraph(BehaviourTree tree)
+    public void PopulateGraph(BehaviorTree tree)
     {
         this.tree = tree;
 
-        graphViewChanged -= OnGraphViewChangeed;
+        graphViewChanged -= OnGraphViewChanged;
         DeleteElements(graphElements);
-        graphViewChanged += OnGraphViewChangeed;
+        graphViewChanged += OnGraphViewChanged;
 
         if (tree.rootNode == null)
         {
@@ -99,7 +162,7 @@ public class TreeGraph : GraphView
         && endPort.node != startPort.node).ToList();
     }
 
-    private GraphViewChange OnGraphViewChangeed(GraphViewChange graphViewChange)
+    private GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
     {
         graphViewChange.elementsToRemove?.ForEach(element =>
         {
@@ -152,67 +215,7 @@ public class TreeGraph : GraphView
         AddElement(nodeView);
     }
 
-    public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
-    {
-        if (tree == null)
-        {
-            return;
-        }
 
-        Type[][] nodesInMenu = new Type[][]
-        {
-            // Actions
-            new Type[] {
-                typeof(Node_Say),
-                typeof(Node_AskYesNoQuestion),
-                typeof(Node_AskComplexQuestion),
-                typeof(Node_GiveItem),
-                typeof(Node_TakeItem),
-                typeof(Node_FulfillCheckpoint)
-            },
-
-            // Conditionals
-            new Type[]
-            {
-                typeof(Node_AnswerIs),
-                typeof(Node_AnswerIndexIs),
-                typeof(Node_CheckpointFulfilled),
-                typeof(Node_HasItem),
-                typeof(Node_PickRandom),
-                typeof(Node_FirstTimeDownThisBranch)
-            },
-
-            // Console
-            new Type[]
-            {
-                typeof(Node_DebugLog),
-                typeof(Node_DebugWarning),
-                typeof(Node_DebugError),
-            },
-
-            // Other
-            new Type[]
-            {
-                typeof(Node_DoNothing),
-                typeof(Node_WaitForSeconds)
-            }
-        };
-
-        foreach (Type[] nodeList in nodesInMenu)
-        {
-            foreach (Type node in nodeList)
-            {
-
-                VisualElement contentViewContainer = ElementAt(1);
-                Vector3 screenMousePosition = evt.localMousePosition;
-                Vector2 worldMousePosition = screenMousePosition - contentViewContainer.transform.position;
-                worldMousePosition *= 1 / contentViewContainer.transform.scale.x;
-
-                evt.menu.AppendAction(node.Name.Replace("Node_", ""), a => CreateNode(node, worldMousePosition));
-            }
-            evt.menu.AppendSeparator();
-        }
-    }
 
     void CreateNode(System.Type type, Vector2 mousePosition)
     {

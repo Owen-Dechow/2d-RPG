@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager i;
 
-    [HideInInspector] public List<GameObject> playerUnits;
+    public static List<BattleUnit> playerBattleUnits;
     [SerializeField] GameObject battleSystemPrefab;
 
     [SerializeField] Items.DataSet[] itemData;
@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] Magic.DataSet[] magicData;
     public static Magic.DataSet[] MagicData { get => i.magicData; }
 
-    public static List<int> NPCActionTreeBranchProtectors = new();
+    public static List<int> NPCActionTreeBranchProtectors;
 
     public static int id;
     public static readonly float tileWidth = 0.16f;
@@ -33,6 +33,12 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(this);
+
+        playerBattleUnits = new()
+        {
+            GetComponent<BattleUnit>()
+        };
+        NPCActionTreeBranchProtectors = new();
 
         id = SaveSystem.GetNewId();
 
@@ -62,7 +68,7 @@ public class GameManager : MonoBehaviour
         string cleanedText = text.Trim();
         cleanedText = cleanedText.Replace("{{NAME}}", player.Name);
         cleanedText = cleanedText.Replace("{{ANSWER}}", Answer);
-        cleanedText = cleanedText.Replace("_", " ");
+        cleanedText = cleanedText.Replace('_', ' ');
         cleanedText = cleanedText.Replace("{{ANSWER_IDX}}", AnswerIndex.ToString());
 
         return cleanedText;

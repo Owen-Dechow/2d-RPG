@@ -19,7 +19,7 @@ public class NodeView : UnityEditor.Experimental.GraphView.Node
         style.left = node.position.x;
         style.top = node.position.y;
         title = node.name.Replace("Node_", "");
-        AddToClassList("t-" + node.Classname);
+        AddToClassList("t-" + node.ClassName);
 
         CreateInputPorts();
         CreateOutputPorts();

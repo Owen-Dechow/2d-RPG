@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,7 +34,6 @@ public class BattleUnit : MonoBehaviour
         [Header("Static")]
         public byte escapePercentageAllowed;
 
-        public readonly int ExpFromLastLevelUp { get => LevelUp.ExpFromLastLevelUp(exp); }
         public readonly bool Alive { get => life > 0; }
     }
 
@@ -106,12 +106,35 @@ public class BattleUnit : MonoBehaviour
         int maxTake = Mathf.CeilToInt(data.defense * 0.75f);
         int minTake = Mathf.FloorToInt(maxTake * 0.5f);
         int newAttack = power - Random.Range(minTake, maxTake + 1);
-        
+
         if (onDefense)
         {
             newAttack = Mathf.CeilToInt(newAttack * 0.6f);
         }
 
         return Mathf.Max(newAttack, 1);
+    }
+
+    public IEnumerator LevelUpUnit()
+    {
+        LevelUp.LevelData levelData = LevelUp.GetDataForLevelStatic(data.level + 1);
+        if (data.exp >= levelData.expNeeded)
+        {
+            data.exp -= levelData.expNeeded;
+
+            yield return GameUI.TypeOut($"{data.title} reached level {levelData.level}!");
+            yield return GameUI.TypeOut($"Max life is now {levelData.life}! ({levelData.life - data.maxLife:+#;-#;+0})");
+            yield return GameUI.TypeOut($"Max magic is now {levelData.magic}! ({levelData.magic - data.maxMagic:+#;-#;+0})");
+            yield return GameUI.TypeOut($"Attack is now {levelData.attack}! ({levelData.attack - data.attack:+#;-#;+0})");
+            yield return GameUI.TypeOut($"Defense is now {levelData.defense}! ({levelData.defense - data.defense:+#;-#;+0})");
+
+            data.level = levelData.level;
+            data.maxLife = levelData.life;
+            data.maxMagic = levelData.magic;
+            data.attack = levelData.attack;
+            data.defense = levelData.defense;
+
+            yield return LevelUpUnit();
+        }
     }
 }

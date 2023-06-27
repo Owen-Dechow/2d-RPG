@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 [CreateAssetMenu(menuName = "NPC Action Tree")]
-
-public class BehaviourTree : ScriptableObject
+public class BehaviorTree : ScriptableObject
 {
     [HideInInspector] public Node rootNode;
     [HideInInspector] public List<Node> nodes = new();

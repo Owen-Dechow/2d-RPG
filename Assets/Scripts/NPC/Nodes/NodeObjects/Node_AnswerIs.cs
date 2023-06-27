@@ -5,7 +5,7 @@ using UnityEngine;
 public class Node_AnswerIs : IFNode
 {
     [SerializeField] string[] answers;
-    protected override bool Eval()
+    protected override bool Evaluate()
     {
         foreach (string answer in answers)
         {

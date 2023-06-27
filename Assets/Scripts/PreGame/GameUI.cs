@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,8 +11,6 @@ public class GameUI : MonoBehaviour
     [SerializeField] GameObject optionArea;
     [SerializeField] GameObject loadingScreen;
 
-    [SerializeField] Vector2 autoPlaceOffset;
-
     void Awake()
     {
         i = this;
@@ -20,7 +19,7 @@ public class GameUI : MonoBehaviour
 
     public static void RenderAtPosition(GameObject go, Vector2 position)
     {
-        go.transform.SetParent(i.transform);
+        go.transform.SetParent(i.transform, false);
         (go.transform as RectTransform).anchoredPosition = position * new Vector2(1, -1) + new Vector2(5, -5);
     }
 
@@ -34,7 +33,7 @@ public class GameUI : MonoBehaviour
     }
 
     public static IEnumerator ChoiceMenu(string prompt, string[] options, int cols, bool allowCancel = false)
-    {   
+    {
         Vector2 position;
         GameObject textAreaObject;
         if (prompt != null && prompt != "")
@@ -44,9 +43,9 @@ public class GameUI : MonoBehaviour
 
             RectTransform rt = textAreaObject.GetComponent<RectTransform>();
             if (rt.sizeDelta.y > 200)
-                position = new Vector2(rt.sizeDelta.x + i.autoPlaceOffset.x, 0);
+                position = new Vector2(rt.anchorMax.x + rt.offsetMax.x, 0);
             else
-                position = new Vector2(0, rt.sizeDelta.y + i.autoPlaceOffset.y);
+                position = new Vector2(0, rt.anchorMin.y + rt.offsetMin.y * -1);
         }
         else
         {
@@ -103,6 +102,116 @@ public class GameUI : MonoBehaviour
                 loadingScreenImage.color = new Color(0, 0, 0, Mathf.Clamp(loadingScreenImage.color.a - Time.unscaledDeltaTime, 0, 1));
                 yield return new WaitForEndOfFrame();
             }
+        }
+    }
+
+    static void AddOptionPathToMenu(FullMenuOption fullMenu, string optionPath)
+    {
+        FullMenuOption depth = fullMenu;
+        string[] optionPathArray = optionPath.Split('\\');
+        for (int i = 0; i < optionPathArray.Length - 1; i++)
+        {
+            string pathSection = optionPathArray[i];
+
+            FullMenuOption selectedPath = null;
+            foreach (FullMenuOption possibleSelection in depth.options)
+            {
+                if (possibleSelection.displayText == pathSection)
+                {
+                    selectedPath = possibleSelection;
+                    break;
+                }
+            }
+
+            if (selectedPath == null)
+            {
+                selectedPath = new FullMenuOption(pathSection);
+                depth.options.Add(selectedPath);
+            }
+
+            depth = selectedPath;
+        }
+        depth.options.Add(new(optionPathArray[^1]));
+    }
+
+    public static IEnumerator FullMenu(string[] options, bool allowCancel)
+    {
+
+        FullMenuOption fullMenu = new("");
+
+        foreach (string option in options)
+        {
+            AddOptionPathToMenu(fullMenu, option);
+        }
+
+        yield return fullMenu.RunMenu(0, allowCancel);
+
+        if (GameManager.AnswerIndex != -1)
+        {
+            GameManager.Answer = GameManager.Answer.Trim('\\');
+            GameManager.AnswerIndex = System.Array.IndexOf(options, GameManager.Answer);
+        }
+
+        fullMenu.DestroyMenu();
+        yield return new WaitForEndOfFrame();
+    }
+
+    class FullMenuOption
+    {
+        public string displayText;
+        public List<FullMenuOption> options;
+        readonly GameObject choicePanel;
+        public bool IsWrapper { get => options.Count > 0; }
+
+        public FullMenuOption(string displayText)
+        {
+            this.displayText = displayText;
+            options = new List<FullMenuOption>();
+            choicePanel = Instantiate(i.optionArea);
+            choicePanel.SetActive(false);
+        }
+
+        public IEnumerator RunMenu(float choicePanelOffset, bool allowCancel)
+        {
+            choicePanel.SetActive(true);
+
+            string[] stringOptions = options.Select(x => x.displayText).ToArray();
+            yield return choicePanel.GetComponent<OptionMenu>().Options(stringOptions, new Vector2(choicePanelOffset, 0), 1, allowCancel);
+
+            if (GameManager.AnswerIndex != -1)
+            {
+                FullMenuOption selectedOption = options[GameManager.AnswerIndex];
+                if (selectedOption.IsWrapper)
+                {
+                    RectTransform rt = choicePanel.transform as RectTransform;
+                    float xOffset = rt.anchorMax.x + rt.offsetMax.x;
+                    yield return selectedOption.RunMenu(xOffset, true);
+
+                    if (GameManager.AnswerIndex != -1)
+                    {
+                        GameManager.Answer = displayText + '\\' + GameManager.Answer;
+                    }
+                    else
+                    {
+                        yield return RunMenu(choicePanelOffset, allowCancel);
+                    }
+                }
+                else
+                {
+                    GameManager.Answer = displayText + '\\' + GameManager.Answer;
+                }
+            }
+
+            choicePanel.SetActive(false);
+        }
+
+        public void DestroyMenu()
+        {
+            foreach (FullMenuOption option in options)
+            {
+                option.DestroyMenu();
+            }
+            Destroy(choicePanel);
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 public abstract class ActionNode : Node
 {
     [HideInInspector] public Node child;
-    public override string Classname => "action";
+    public override string ClassName => "action";
 
     public override IEnumerator Run()
     {

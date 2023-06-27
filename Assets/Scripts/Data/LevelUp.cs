@@ -1,21 +1,25 @@
-﻿using System.Collections;
+﻿using UnityEditor;
 using UnityEngine;
-using System.Linq;
 
 public class LevelUp : MonoBehaviour
 {
-    public ExpToLevel[] levelList;
+    public AnimationCurve expNeeded;
+    public AnimationCurve life;
+    public AnimationCurve magic;
+    public AnimationCurve attack;
+    public AnimationCurve defense;
+
     static LevelUp i;
 
-    private void Start()
+    private void Awake()
     {
         i = this;
     }
 
     [System.Serializable]
-    public struct ExpToLevel
+    public struct LevelData
     {
-        public int experienceNeeded;
+        public int expNeeded;
         public int life;
         public int magic;
         public int attack;
@@ -23,13 +27,24 @@ public class LevelUp : MonoBehaviour
         public int level;
     }
 
-    public static ExpToLevel CheckLevel(int exp)
+    public LevelData GetDataForLevel(int level)
     {
-        return i.levelList.Where(x => x.experienceNeeded <= exp).Last();
+        if (level > 100)
+            return new LevelData() { expNeeded = int.MaxValue };
+
+        return new LevelData
+        {
+            level = level,
+            life = (int)life.Evaluate(level),
+            magic = (int)magic.Evaluate(level),
+            attack = (int)attack.Evaluate(level),
+            defense = (int)defense.Evaluate(level),
+            expNeeded = (int)expNeeded.Evaluate(level),
+        };
     }
 
-    public static int ExpFromLastLevelUp(int exp)
+    public static LevelData GetDataForLevelStatic(int level)
     {
-        return exp - i.levelList.Where(x => x.experienceNeeded <= exp).ToArray()[^2].experienceNeeded;
+        return i.GetDataForLevel(level);
     }
 }

@@ -166,10 +166,10 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        return (Vector2)GetAngeledVector();
+        return (Vector2)GetAngledVector();
     }
 
-    private Vector3 GetAngeledVector(bool trueForward = false)
+    private Vector3 GetAngledVector(bool trueForward = false)
     {
         Vector3 vector = Quaternion.Euler(0, 0, -movementOptions.direction) * Vector3.up;
         if (!trueForward) vector = Quaternion.Euler(0, 0, Mathf.Sin(Time.time * 10) * 40 * movementOptions.speed) * vector;
@@ -183,8 +183,8 @@ public class Enemy : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, movementOptions.chaseRadius);
 
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + GetAngeledVector(true) * Mathf.Clamp(movementOptions.chaseRadius, 0.5f, 5));
-        Gizmos.DrawLine(transform.position, transform.position + GetAngeledVector() * Mathf.Clamp(movementOptions.chaseRadius / 2, 0.25f, 5));
+        Gizmos.DrawLine(transform.position, transform.position + GetAngledVector(true) * Mathf.Clamp(movementOptions.chaseRadius, 0.5f, 5));
+        Gizmos.DrawLine(transform.position, transform.position + GetAngledVector() * Mathf.Clamp(movementOptions.chaseRadius / 2, 0.25f, 5));
     }
     private void OnValidate()
     {

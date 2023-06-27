@@ -181,17 +181,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpread: 0.3
   panelSpread: 240
-  battleState: 0
-  players:
-  - {fileID: 4707637379865257669, guid: 1f23aa7a7f9967e40937e5ac4c578ea1, type: 3}
-  - {fileID: 4707637379865257669, guid: 1f23aa7a7f9967e40937e5ac4c578ea1, type: 3}
-  - {fileID: 4707637379865257669, guid: 1f23aa7a7f9967e40937e5ac4c578ea1, type: 3}
-  enemies:
-  - {fileID: 1993165372090150831, guid: 6f2697a14dc78d74ea7026b95c3f43fc, type: 3}
   playerBattleStation: {fileID: 840418514222877001}
   enemyBattleStation: {fileID: 5124029721335508288}
   panelPrefab: {fileID: 5994181634638268432, guid: d4d882bf2c4bc834fb5652ac308cc2cd, type: 3}
   canvas: {fileID: 3272117985069180634}
+  attackText:
+  - attacks the enemy
+  defendText:
+  - is on defence
+  runText:
+  - run from the enemy
+  enemyGameObject: {fileID: 0}
+  players:
+  - {fileID: 0}
+  enemies:
+  - {fileID: 0}
 --- !u!1 &5597018415150720055
 GameObject:
   m_ObjectHideFlags: 0

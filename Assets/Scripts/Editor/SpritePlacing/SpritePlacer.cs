@@ -108,7 +108,7 @@ public class SpritePlacer : EditorWindow
                 if (m_NPC)
                 {
                     go.name = go.name + "(" + go.GetInstanceID() + ")";
-                    BehaviourTree behaviourTree = ScriptableObject.CreateInstance<BehaviourTree>();
+                    BehaviorTree behaviourTree = ScriptableObject.CreateInstance<BehaviorTree>();
                     AssetDatabase.CreateAsset(behaviourTree, $"Assets/Prefabs/NPCs/Trees/{go.name}.asset");
                     AssetDatabase.SaveAssets();
                     go.GetComponent<Npc>().behaviorTree = behaviourTree;

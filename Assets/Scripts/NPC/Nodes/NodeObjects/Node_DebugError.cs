@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Node_DebugError : ActionNode
 {
-    public override string Classname => "console";
+    public override string ClassName => "console";
     [SerializeField] string message;
 
     protected override IEnumerator Execute()

@@ -806,16 +806,9 @@ public class BattleSystem : MonoBehaviour
 
                 int exp = enemies.Sum(x => x.data.expAward);
                 yield return GameUI.TypeOut($"{PlayerTitle} gained {exp} experience.");
-                
-                foreach (BattleUnit player in players)
-                {
-                    player.data.exp += exp;
-                    LevelUp.ExpToLevel expToLevel = LevelUp.CheckLevel(exp);
-                    if (player.data.level < expToLevel.level)
-                    {
-                        yield return GameUI.TypeOut($"{player.name} reached level {expToLevel.level}");
-                    }
-                }
+
+                players[0].data.exp += exp;
+                yield return players[0].LevelUpUnit();
 
                 break;
 

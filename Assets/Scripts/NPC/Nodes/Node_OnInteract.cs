@@ -4,7 +4,7 @@ using UnityEngine;
 public class Node_OnInteract : Node
 {
     [HideInInspector] public Node child;
-    public override string Classname => "root";
+    public override string ClassName => "root";
 
     protected override IEnumerator Execute()
     {

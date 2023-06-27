@@ -67,7 +67,7 @@ public static class MyInput
     }
     public static IEnumerator WaitForClickSelect()
     {
-        yield return new WaitUntil(() => GetSelectDown() == 1);
-        yield return new WaitWhile(() => GetSelect() == 1);
+        yield return new WaitUntil(() => GetSelectDown() != 0);
+        yield return new WaitWhile(() => GetSelect() != 0);
     }
 }

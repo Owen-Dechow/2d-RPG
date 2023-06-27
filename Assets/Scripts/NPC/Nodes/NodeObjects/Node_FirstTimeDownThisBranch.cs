@@ -5,7 +5,7 @@ public class Node_FirstTimeDownThisBranch : IFNode
 {
     [SerializeField] int uniqueId;
 
-    protected override bool Eval()
+    protected override bool Evaluate()
     {
         if (GameManager.NPCActionTreeBranchProtectors.Contains(uniqueId))
         {

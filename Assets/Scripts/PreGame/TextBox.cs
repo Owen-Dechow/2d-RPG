@@ -55,6 +55,6 @@ public class TextBox : MonoBehaviour
         }
 
         // Wait for space click
-        yield return MyInput.WaitForMenuNavigation();
+        yield return MyInput.WaitForClickSelect();
     }
 }

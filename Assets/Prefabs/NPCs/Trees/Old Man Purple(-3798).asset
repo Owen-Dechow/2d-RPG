@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Node_GiveItem
   m_EditorClassIdentifier: 
   guid: 225df7db78ecfed4e905668cb9e92540
-  position: {x: 2022, y: 305}
-  child: {fileID: -83169634161051680}
+  position: {x: 2015, y: 48.499928}
+  child: {fileID: -5707677542192486085}
   item: 0
 --- !u!114 &-6468432650696736690
 MonoBehaviour:
@@ -29,7 +29,7 @@ MonoBehaviour:
   m_Name: Node_DoNothing
   m_EditorClassIdentifier: 
   guid: 27c5c334eb0f8634280007bd75c55edc
-  position: {x: 2060, y: 87.12}
+  position: {x: 3145, y: -170}
   child: {fileID: -83169634161051680}
 --- !u!114 &-6183751070623937507
 MonoBehaviour:
@@ -48,6 +48,21 @@ MonoBehaviour:
   if: {fileID: 4560251451386777665}
   else: {fileID: -3742199233918939628}
   uniqueId: -1469569657
+--- !u!114 &-5707677542192486085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed3ab0e9a4647364fb0de67eb14e5fa4, type: 3}
+  m_Name: Node_DoNothing
+  m_EditorClassIdentifier: 
+  guid: 3274de9e01237204a87f438c04bad50e
+  position: {x: 3145, y: 49.000015}
+  child: {fileID: -83169634161051680}
 --- !u!114 &-3742199233918939628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,6 +79,53 @@ MonoBehaviour:
   position: {x: 794, y: 168}
   child: {fileID: 78110423595088280}
   text: Back again.
+--- !u!114 &-3627481803062527788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d05db6d631bd5d242b8151debd141186, type: 3}
+  m_Name: Node_TeachPower
+  m_EditorClassIdentifier: 
+  guid: 623aacfbd7237804aaa39806883971ec
+  position: {x: 2789, y: 237}
+  child: {fileID: 3485897731256965918}
+  magic: 0
+--- !u!114 &-3286412710079965390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed3ab0e9a4647364fb0de67eb14e5fa4, type: 3}
+  m_Name: Node_DoNothing
+  m_EditorClassIdentifier: 
+  guid: a9eb9442304ad9c488a59dc2c068b14b
+  position: {x: 3145.0002, y: 422.5}
+  child: {fileID: -83169634161051680}
+--- !u!114 &-1176049608149256679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6eaa618f23ed4478cdf2a70b45d04b, type: 3}
+  m_Name: Node_Say
+  m_EditorClassIdentifier: 
+  guid: 5644bb18abe24ea4c8cf565c31a77942
+  position: {x: 2418, y: 237}
+  child: {fileID: -3627481803062527788}
+  text: I guess if you really want, I can teach you some new tricks!
 --- !u!114 &-528086995887071821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,7 +139,7 @@ MonoBehaviour:
   m_Name: Node_Say
   m_EditorClassIdentifier: 
   guid: 5bbd4c9900d9a5c44af28f59703add3c
-  position: {x: 1356.28, y: 51.999985}
+  position: {x: 1219, y: -170}
   child: {fileID: -6468432650696736690}
   text: Nice to meet you {{ANSWER}}.
 --- !u!114 &-83169634161051680
@@ -93,7 +155,7 @@ MonoBehaviour:
   m_Name: Node_Say
   m_EditorClassIdentifier: 
   guid: 9187ef66c2cb5bc49b283d16247ea0d4
-  position: {x: 2630, y: 366}
+  position: {x: 3847, y: 117.5}
   child: {fileID: 0}
   text: Well See you later!
 --- !u!114 &11400000
@@ -121,6 +183,14 @@ MonoBehaviour:
   - {fileID: -83169634161051680}
   - {fileID: -6468432650696736690}
   - {fileID: 365822353370177026}
+  - {fileID: -1176049608149256679}
+  - {fileID: 7265857854274031392}
+  - {fileID: 3968456095685167371}
+  - {fileID: -3286412710079965390}
+  - {fileID: -3627481803062527788}
+  - {fileID: 3485897731256965918}
+  - {fileID: -5707677542192486085}
+  - {fileID: 5022669025163572071}
 --- !u!114 &78110423595088280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,10 +204,10 @@ MonoBehaviour:
   m_Name: Node_FirstTimeDownThisBranch
   m_EditorClassIdentifier: 
   guid: 60cb8a5cb488c6043b28b3b7439fd8cd
-  position: {x: 1219, y: 330}
+  position: {x: 1219, y: 168}
   if: {fileID: 2420322237010301417}
-  else: {fileID: 365822353370177026}
-  uniqueId: 1550675403
+  else: {fileID: 7265857854274031392}
+  uniqueId: -622892625
 --- !u!114 &365822353370177026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,8 +221,8 @@ MonoBehaviour:
   m_Name: Node_Say
   m_EditorClassIdentifier: 
   guid: 9ab98f25413e4f44fbfa09d7b61f5e0d
-  position: {x: 1807, y: 503}
-  child: {fileID: -83169634161051680}
+  position: {x: 2015, y: 236.49997}
+  child: {fileID: -1176049608149256679}
   text: I'm no giving you any more food if thats what your after.
 --- !u!114 &2420322237010301417
 MonoBehaviour:
@@ -167,9 +237,41 @@ MonoBehaviour:
   m_Name: Node_Say
   m_EditorClassIdentifier: 
   guid: 7a58dd3f98d1aaf4388005864319b2e5
-  position: {x: 1629, y: 305}
+  position: {x: 1629, y: 48.499928}
   child: {fileID: -8201156932416638746}
   text: Well take this Beef Jerky.
+--- !u!114 &3485897731256965918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d05db6d631bd5d242b8151debd141186, type: 3}
+  m_Name: Node_TeachPower
+  m_EditorClassIdentifier: 
+  guid: 3bdca03e2386e7a48a998b9d46cf48e1
+  position: {x: 3144.9998, y: 237}
+  child: {fileID: -83169634161051680}
+  magic: 4
+--- !u!114 &3968456095685167371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6eaa618f23ed4478cdf2a70b45d04b, type: 3}
+  m_Name: Node_Say
+  m_EditorClassIdentifier: 
+  guid: 6dbccfd6b19c4734d8f6d25c6fa88c13
+  position: {x: 2015.0001, y: 422.5}
+  child: {fileID: -3286412710079965390}
+  text: Sorry, I can't do anything else for you.
 --- !u!114 &4560251451386777665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,7 +285,7 @@ MonoBehaviour:
   m_Name: Node_AskComplexQuestion
   m_EditorClassIdentifier: 
   guid: 6dce55012657ce34f9cfd63e3cca19e7
-  position: {x: 862.74005, y: -203.31204}
+  position: {x: 794, y: -170}
   child: {fileID: -528086995887071821}
   prompt: Hi what's your name?
   choices:
@@ -192,6 +294,43 @@ MonoBehaviour:
   - Jimbo
   - Owen
   allowNoAnswer: 0
+--- !u!114 &5022669025163572071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b37447e9cfc6434086b785a2f6fa289, type: 3}
+  m_Name: Node_ComplexMenu
+  m_EditorClassIdentifier: 
+  guid: 0edc76f1e1329d744bcebae475f1f541
+  position: {x: 337.7069, y: 263.68896}
+  child: {fileID: 0}
+  choices:
+  - 1\2\3\4\5\6\7\8\9\10
+  - 1\2\3\4\5\6\seven\8\9\10
+  - 1\2\3\4\5\6\seven\8_8\9\10
+  allowNoAnswer: 0
+--- !u!114 &7265857854274031392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8d861fd9d47f4409d8241e1f19d8c4, type: 3}
+  m_Name: Node_FirstTimeDownThisBranch
+  m_EditorClassIdentifier: 
+  guid: bbafb04fb519d084b8dacaf757cab0e1
+  position: {x: 1628.9996, y: 273.5}
+  if: {fileID: 365822353370177026}
+  else: {fileID: 3968456095685167371}
+  uniqueId: 2137738314
 --- !u!114 &8035131107815348298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,4 +345,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: f64bd283b4abcb74c8823e0dd4556ab1
   position: {x: 0, y: 0}
-  child: {fileID: -6183751070623937507}
+  child: {fileID: 5022669025163572071}

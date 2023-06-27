@@ -6,12 +6,12 @@ public abstract class IFNode : Node
 {
     [HideInInspector] public Node @if;
     [HideInInspector] public Node @else;
-    public override string Classname => "if";
+    public override string ClassName => "if";
 
     public override IEnumerator Run()
     {
         yield return new WaitForEndOfFrame();
-        if (Eval())
+        if (Evaluate())
         {
             if (@if != null) yield return @if.Run();
         }
@@ -26,5 +26,5 @@ public abstract class IFNode : Node
         yield return null;
     }
 
-    protected abstract bool Eval();
+    protected abstract bool Evaluate();
 }

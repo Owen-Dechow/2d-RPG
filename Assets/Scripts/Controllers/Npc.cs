@@ -22,7 +22,7 @@ public class Npc : MonoBehaviour
         XAndY,
     }
     [SerializeField] MovementType movementType;
-    public BehaviourTree behaviorTree;
+    public BehaviorTree behaviorTree;
 
     private bool inPlayerInteractionZone = false;
     private bool runningInteraction = false;

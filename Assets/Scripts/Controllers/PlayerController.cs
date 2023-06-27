@@ -91,7 +91,26 @@ public class PlayerController : MonoBehaviour
         Time.timeScale = 0;
         yield return new WaitUntil(() => MyInput.Select == 0);
 
+        List<string> options = new();
+        
+        foreach(BattleUnit unit in GameManager.playerBattleUnits)
+        {
+            string tag;
 
+            tag = $"{unit.data.title}\\Items\\";
+            foreach (Items.Options item in unit.data.items)
+            {
+                options.Add(tag + GameManager.GetCleanedText(item.ToString()));
+            }
+
+            tag = $"{unit.data.title}\\Magic\\";
+            foreach (Magic.Options magic in unit.data.magicOptionsForUnit)
+            {
+                options.Add(tag + GameManager.GetCleanedText(magic.ToString()));
+            }
+        }
+
+        yield return GameUI.FullMenu(options.ToArray(), true);
 
         yield return new WaitUntil(() => MyInput.Select == 0);
         Time.timeScale = 1;

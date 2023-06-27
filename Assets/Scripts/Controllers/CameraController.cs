@@ -12,9 +12,9 @@ public class CameraController : MonoBehaviour
 
     void SetUpMainCamera()
     {
-        Vector3 postion = GameManager.player.playerObject.transform.position;
-        postion.z = transform.position.z;
-        if (followPlayer) transform.position = postion;
+        Vector3 position = GameManager.player.playerObject.transform.position;
+        position.z = transform.position.z;
+        if (followPlayer) transform.position = position;
     }
 
     void Start()

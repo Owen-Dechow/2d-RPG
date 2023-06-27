@@ -22,7 +22,7 @@ public class NPCActionTreeEditor : EditorWindow
     public static bool OnOpenAsset(int instanceId, int line)
     {
 
-        if (Selection.activeObject is BehaviourTree)
+        if (Selection.activeObject is BehaviorTree)
         {
             ShowExample();
             return true;
@@ -51,7 +51,7 @@ public class NPCActionTreeEditor : EditorWindow
 
     private void OnSelectionChange()
     {
-        BehaviourTree tree = Selection.activeObject as BehaviourTree;
+        BehaviorTree tree = Selection.activeObject as BehaviorTree;
         Label title = rootVisualElement.Q<Label>("tree-name");
         Label info = rootVisualElement.Q<Label>("tree-info");
 

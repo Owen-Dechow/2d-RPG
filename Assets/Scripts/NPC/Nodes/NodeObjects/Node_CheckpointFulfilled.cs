@@ -5,7 +5,7 @@ using UnityEngine;
 public class Node_CheckpointFulfilled : IFNode
 {
     [SerializeField] string checkpointName;
-    protected override bool Eval()
+    protected override bool Evaluate()
     {
         return GameManager.checkpoints.GetCheckpoint(checkpointName);
     }

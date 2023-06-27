@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6483088251835158178}
   - component: {fileID: 6483088251835158179}
   - component: {fileID: 6483088251835158176}
-  - component: {fileID: 747861107}
+  - component: {fileID: 3284732620931629977}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -49,7 +49,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be08f41484d2d5c4fa16cf886ec2aa58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerUnits: []
   battleSystemPrefab: {fileID: 3272117986164641667, guid: 5fd7af94004125744b97b20aeca8d890, type: 3}
   itemData:
   - identity: 0
@@ -111,7 +110,7 @@ MonoBehaviour:
     maxMagic: 5
     defense: 1
     attack: 1
-    magicOptionsForUnit: 0000000004000000
+    magicOptionsForUnit: 
     items: 0000000002000000
     exp: 0
     level: 0
@@ -141,7 +140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   checkpoints: []
---- !u!114 &747861107
+--- !u!114 &3284732620931629977
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,17 +152,126 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d23d4dc0682cd90418c6a5d7a9fa1ea1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelList:
-  - experienceNeeded: 1
-    life: 0
-    magic: 0
-    attack: 0
-    defense: 0
-  - experienceNeeded: 2
-    life: 0
-    magic: 0
-    attack: 0
-    defense: 0
+  expNeeded:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 1
+      value: 3
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 100
+      value: 10000
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  life:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 1
+      value: 5
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 100
+      value: 500
+      inSlope: -124.39653
+      outSlope: -124.39653
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  magic:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 1
+      value: 5
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 100
+      value: 250
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  attack:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 100
+      value: 100
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  defense:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 100
+      value: 100
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &6483088252439544798
 GameObject:
   m_ObjectHideFlags: 0
@@ -281,7 +389,7 @@ MonoBehaviour:
   textArea: {fileID: 5274386076459265888, guid: ddf324af1ee15cc4da15036adb156c41, type: 3}
   optionArea: {fileID: 5970641827195594597, guid: 5940cd7e63b53704ab1533c64907c9f2, type: 3}
   loadingScreen: {fileID: 8042831398115974259}
-  autoPlaceOffset: {x: 2, y: 5}
+  autoPlaceOffset: {x: 5, y: 8}
 --- !u!1 &8042831398115974259
 GameObject:
   m_ObjectHideFlags: 0

@@ -51,7 +51,7 @@ public class LoadGame : MonoBehaviour
         gameManager.GetComponent<BattleUnit>().data.title = fixedName;
 
         getNamePanel.SetActive(false);
-        IEnumerator startgame()
+        IEnumerator startGame()
         {
             DontDestroyOnLoad(gameObject);
             yield return GameUI.ToggleLoadingScreen(true);
@@ -60,10 +60,11 @@ public class LoadGame : MonoBehaviour
             GameManager.LoadLevel(LevelScene.Level_0, Vector2.zero, AnimPlus.Direction.down);
 
             yield return GameUI.ToggleLoadingScreen(false);
+            GameManager.player.UpdateToLevel1();
             GameManager.SaveGame();
             Destroy(gameObject);
         }
-        StartCoroutine(startgame());
+        StartCoroutine(startGame());
     }
 
     public void Yes_ConfirmDelete()
@@ -137,7 +138,7 @@ public class LoadGame : MonoBehaviour
     void LoadFromSavePoint(int key)
     {
         buttonsContainer.gameObject.SetActive(false);
-        IEnumerator startgame()
+        IEnumerator startGame()
         {
             DontDestroyOnLoad(gameObject);
             yield return GameUI.ToggleLoadingScreen(true);
@@ -148,6 +149,6 @@ public class LoadGame : MonoBehaviour
             yield return GameUI.ToggleLoadingScreen(false);
             Destroy(gameObject);
         }
-        StartCoroutine(startgame());
+        StartCoroutine(startGame());
     }
 }
