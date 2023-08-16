@@ -180,17 +180,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpread: 0.3
-  panelSpread: 240
+  panelSpread: 145
   playerBattleStation: {fileID: 840418514222877001}
   enemyBattleStation: {fileID: 5124029721335508288}
   panelPrefab: {fileID: 5994181634638268432, guid: d4d882bf2c4bc834fb5652ac308cc2cd, type: 3}
   canvas: {fileID: 3272117985069180634}
   attackText:
-  - attacks the enemy
+  - Player attacks Enemy.
   defendText:
-  - is on defence
+  - Player is on defense.
   runText:
-  - run from the enemy
+  - Player attempts to run from Enemy.
   enemyGameObject: {fileID: 0}
   players:
   - {fileID: 0}

@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class BattleSystem : MonoBehaviour
 {
-    #region INSPECTOR_DATA
-
     [Header("UI Settings")]
     public float playerSpread;
     public float panelSpread;
@@ -20,7 +18,6 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] string[] attackText;
     [SerializeField] string[] defendText;
     [SerializeField] string[] runText;
-    #endregion
 
     [HideInInspector] public GameObject enemyGameObject;
     [HideInInspector] public BattleUnit[] players;
@@ -58,6 +55,7 @@ public class BattleSystem : MonoBehaviour
         playerPanels = new Panel[players.Length];
         for (int i = 0; i < players.Length; i++)
         {
+            // Player sprite
             players[i].stationGO = new($"PlayerBattleUnit_{i}", new System.Type[] { typeof(SpriteRenderer) });
             players[i].stationGO.transform.parent = playerBattleStation;
 
@@ -71,6 +69,8 @@ public class BattleSystem : MonoBehaviour
             players[i].stationGO.transform.localPosition = Vector3.zero;
             players[i].stationGO.transform.Translate(playerMove, 0, 0);
 
+
+            // Player panel
             float panelMove;
             panelMove = (i * panelSpread) - (players.Length * panelSpread / 2);
             panelMove += panelSpread / 2;
@@ -249,7 +249,7 @@ public class BattleSystem : MonoBehaviour
         if (choice == BattleUnit.TurnOptions.Run)
         {
             // Attempt message
-            yield return GameUI.TypeOut($"{unit.data.title} attempts to {GetActionStatement(unit, runText, EnemyTitle)}.");
+            yield return GameUI.TypeOut(GetActionStatement(unit, runText, EnemyTitle));
 
             // Check if run is successful
             bool run;
@@ -283,14 +283,14 @@ public class BattleSystem : MonoBehaviour
             int attack = selectedUnit.GetDefenseChange(preDefenseAttack, selectedUnit.onDefense);
 
             // Send message
-            yield return GameUI.TypeOut($"{unit.data.title} {GetActionStatement(unit, attackText, selectedUnit.data.title)}!");
+            yield return GameUI.TypeOut(GetActionStatement(unit, attackText, selectedUnit.data.title));
             yield return GameUI.TypeOut($"{attack} damage to {selectedUnit.data.title}.");
             yield return ChangeLifeOnEnemyUnit(selectedUnit, -attack);
         }
         else if (choice == BattleUnit.TurnOptions.Defend)
         {
             unit.onDefense = true;
-            yield return GameUI.TypeOut($"{unit.data.title} {GetActionStatement(unit, defendText, EnemyTitle)}.");
+            yield return GameUI.TypeOut(GetActionStatement(unit, defendText, EnemyTitle));
         }
         else if (choice == BattleUnit.TurnOptions.Item)
         {
@@ -496,7 +496,7 @@ public class BattleSystem : MonoBehaviour
         if (choice == BattleUnit.TurnOptions.Run)
         {
             // Attempt message
-            yield return GameUI.TypeOut($"{unit.data.title} attempts to {GetActionStatement(unit, runText, PlayerTitle)}.");
+            yield return GameUI.TypeOut(GetActionStatement(unit, runText, PlayerTitle));
 
             // Check if run is successful
             bool run;
@@ -523,14 +523,14 @@ public class BattleSystem : MonoBehaviour
             int attack = selectedUnit.GetDefenseChange(preDefenseAttack, selectedUnit.onDefense);
 
             // Send message
-            yield return GameUI.TypeOut($"{unit.data.title} {GetActionStatement(unit, attackText, selectedUnit.data.title)}!");
+            yield return GameUI.TypeOut(GetActionStatement(unit, attackText, selectedUnit.data.title));
             yield return GameUI.TypeOut($"{attack} damage to {selectedUnit.data.title}.");
             yield return ChangeLifeOnPlayerUnit(selectedUnit, -attack);
         }
         else if (choice == BattleUnit.TurnOptions.Defend)
         {
             unit.onDefense = true;
-            yield return GameUI.TypeOut($"{unit.data.title} {GetActionStatement(unit, defendText, PlayerTitle)}.");
+            yield return GameUI.TypeOut(GetActionStatement(unit, defendText, PlayerTitle));
         }
         else if (choice == BattleUnit.TurnOptions.Item)
         {
@@ -886,12 +886,15 @@ public class BattleSystem : MonoBehaviour
 
     string GetActionStatement(BattleUnit unit, string[] statements, string opposition)
     {
-        string choice = statements[Random.Range(0, statements.Length)];
-        choice = choice.Replace("himself", unit.data.reflexive.ToString());
-        if (opposition != null)
+        string reflexive = unit.data.sex switch
         {
-            choice = choice.Replace("the enemy", opposition);
-        }
+            BattleUnit.UnitSex.Male => "himself",
+            BattleUnit.UnitSex.Female => "herself",
+            _ => throw new System.NotImplementedException(),
+        };
+
+        string choice = statements[Random.Range(0, statements.Length)];
+        choice = choice.Replace("himself", reflexive).Replace("Player", unit.data.title).Replace("Enemy", opposition);
         return choice;
     }
 

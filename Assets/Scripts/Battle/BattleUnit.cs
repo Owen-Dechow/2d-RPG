@@ -9,7 +9,7 @@ public class BattleUnit : MonoBehaviour
     {
         [Header("Appearance Options")]
         public string title;
-        public UnitReflexive reflexive;
+        public UnitSex sex;
 
         [Header("Stat Options")]
         public int life;
@@ -52,10 +52,10 @@ public class BattleUnit : MonoBehaviour
     [HideInInspector] public GameObject stationGO;
     [HideInInspector] public SpriteRenderer spriteRenderer;
 
-    public enum UnitReflexive
+    public enum UnitSex
     {
-        himself,
-        herself,
+        Male,
+        Female,
     }
 
     #region AI_VALIDATOR
