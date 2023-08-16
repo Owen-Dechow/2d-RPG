@@ -29,6 +29,7 @@ public class TreeGraph : GraphView
                 typeof(Node_TakeItem),
                 typeof(Node_FulfillCheckpoint),
                 typeof(Node_TeachPower),
+                typeof(Node_JoinPlayer),
             },
 
             // Conditionals

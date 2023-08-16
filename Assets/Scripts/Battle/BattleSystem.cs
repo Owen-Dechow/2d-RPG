@@ -174,6 +174,12 @@ public class BattleSystem : MonoBehaviour
                     // Run player
                     yield return PlayerUnitTurn(player);
 
+                    if (CheckLoss(enemies))
+                    {
+                        battleState = BattleState.Exit;
+                        battleFinish = BattleFinish.PlayerWin;
+                    }
+
                     if (battleState == BattleState.Exit)
                     {
                         break;
@@ -182,15 +188,7 @@ public class BattleSystem : MonoBehaviour
 
                 if (battleState != BattleState.Exit)
                 {
-                    if (CheckLoss(enemies))
-                    {
-                        battleState = BattleState.Exit;
-                        battleFinish = BattleFinish.PlayerWin;
-                    }
-                    else
-                    {
-                        battleState = BattleState.EnemyTurn;
-                    }
+                    battleState = BattleState.EnemyTurn;
                 }
             }
 
@@ -208,6 +206,12 @@ public class BattleSystem : MonoBehaviour
                     // Run enemy
                     yield return EnemyUnitTurn(enemy);
 
+                    if (CheckLoss(players))
+                    {
+                        battleState = BattleState.Exit;
+                        battleFinish = BattleFinish.EnemyWin;
+                    }
+
                     if (battleState == BattleState.Exit)
                     {
                         break;
@@ -216,15 +220,7 @@ public class BattleSystem : MonoBehaviour
 
                 if (battleState != BattleState.Exit)
                 {
-                    if (CheckLoss(players))
-                    {
-                        battleState = BattleState.Exit;
-                        battleFinish = BattleFinish.EnemyWin;
-                    }
-                    else
-                    {
-                        battleState = BattleState.PlayerTurn;
-                    }
+                    battleState = BattleState.PlayerTurn;
                 }
             }
         }

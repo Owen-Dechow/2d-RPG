@@ -5,6 +5,8 @@ public class Player : MonoBehaviour
 {
     [HideInInspector] public PlayerController playerObject;
     [HideInInspector] public BattleUnit playerBattleUnit;
+    [HideInInspector] public List<BattleUnit> playerComradeBattleUnits;
+
     public List<Items.Options> Items { get => playerBattleUnit.data.items; }
     public string Name { get => playerBattleUnit.data.title; }
 
@@ -26,8 +28,22 @@ public class Player : MonoBehaviour
         playerBattleUnit.data.magic = levelData.magic;
     }
 
+    public void AddBattleUnit(BattleUnit.BattleUnitData battleUnit, Sprite sprite)
+    {
+        BattleUnit bu = gameObject.AddComponent<BattleUnit>();
+        bu.data = battleUnit;
+        bu.sprite = sprite;
+        playerComradeBattleUnits.Add(bu);
+    }
+
     public BattleUnit[] GetBattleUnits()
     {
-        return new BattleUnit[] { playerBattleUnit };
+        List<BattleUnit> playerBattleUnits = new()
+        {
+            playerBattleUnit
+        };
+        playerBattleUnits.AddRange(playerComradeBattleUnits);
+
+        return playerBattleUnits.ToArray();
     }
 }

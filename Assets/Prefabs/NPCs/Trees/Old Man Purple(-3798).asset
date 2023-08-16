@@ -31,6 +31,45 @@ MonoBehaviour:
   guid: 27c5c334eb0f8634280007bd75c55edc
   position: {x: 3145, y: -170}
   child: {fileID: -83169634161051680}
+--- !u!114 &-6199560216062628684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4522f84260a9d51419d08244e0fc502c, type: 3}
+  m_Name: Node_JoinPlayer
+  m_EditorClassIdentifier: 
+  guid: b20b624da24c49842a880e8888b622fe
+  position: {x: 2418, y: 423}
+  child: {fileID: 0}
+  sprite: {fileID: -839745521, guid: 8fa60a061494d8d4b848fc7cc6708638, type: 3}
+  battleUnit:
+    title: John
+    reflexive: 0
+    life: 15
+    maxLife: 15
+    magic: 7
+    maxMagic: 7
+    defense: 1
+    attack: 2
+    magicOptionsForUnit: 0000000004000000
+    items: 0000000000000000
+    exp: 0
+    level: 0
+    expAward: 0
+    enemyAI:
+      attack: 20
+      defend: 20
+      item: 20
+      magic: 20
+      run: 20
+      dataStatus: 0
+      lastCheck: 0
+    escapePercentageAllowed: 0
 --- !u!114 &-6183751070623937507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95,21 +134,6 @@ MonoBehaviour:
   position: {x: 2789, y: 237}
   child: {fileID: 3485897731256965918}
   magic: 0
---- !u!114 &-3286412710079965390
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed3ab0e9a4647364fb0de67eb14e5fa4, type: 3}
-  m_Name: Node_DoNothing
-  m_EditorClassIdentifier: 
-  guid: a9eb9442304ad9c488a59dc2c068b14b
-  position: {x: 3145.0002, y: 422.5}
-  child: {fileID: -83169634161051680}
 --- !u!114 &-1176049608149256679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,11 +210,10 @@ MonoBehaviour:
   - {fileID: -1176049608149256679}
   - {fileID: 7265857854274031392}
   - {fileID: 3968456095685167371}
-  - {fileID: -3286412710079965390}
   - {fileID: -3627481803062527788}
   - {fileID: 3485897731256965918}
   - {fileID: -5707677542192486085}
-  - {fileID: 5022669025163572071}
+  - {fileID: -6199560216062628684}
 --- !u!114 &78110423595088280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,8 +293,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: 6dbccfd6b19c4734d8f6d25c6fa88c13
   position: {x: 2015.0001, y: 422.5}
-  child: {fileID: -3286412710079965390}
-  text: Sorry, I can't do anything else for you.
+  child: {fileID: -6199560216062628684}
+  text: Evidently, because you keep coming back, you need me to go with you!
 --- !u!114 &4560251451386777665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293,26 +316,6 @@ MonoBehaviour:
   - Billy
   - Jimbo
   - Owen
-  allowNoAnswer: 0
---- !u!114 &5022669025163572071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b37447e9cfc6434086b785a2f6fa289, type: 3}
-  m_Name: Node_ComplexMenu
-  m_EditorClassIdentifier: 
-  guid: 0edc76f1e1329d744bcebae475f1f541
-  position: {x: 337.7069, y: 263.68896}
-  child: {fileID: 0}
-  choices:
-  - 1\2\3\4\5\6\7\8\9\10
-  - 1\2\3\4\5\6\seven\8\9\10
-  - 1\2\3\4\5\6\seven\8_8\9\10
   allowNoAnswer: 0
 --- !u!114 &7265857854274031392
 MonoBehaviour:
@@ -345,4 +348,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: f64bd283b4abcb74c8823e0dd4556ab1
   position: {x: 0, y: 0}
-  child: {fileID: 5022669025163572071}
+  child: {fileID: -6183751070623937507}

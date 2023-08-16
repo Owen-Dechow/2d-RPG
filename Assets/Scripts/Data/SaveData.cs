@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,6 +10,8 @@ public class SaveData
 {
     public int id;
     public BattleUnit.BattleUnitData battleUnitData;
+    public BattleUnit.BattleUnitData[] comradeBattleUnitData;
+    public byte[] comradeBattleUnitSpriteIDX;
     public float[] position;
     public LevelScene levelScene;
     public string[] checkpoints;
@@ -16,15 +19,21 @@ public class SaveData
 
     public SaveData()
     {
+        // Get player ref
         Player player = GameManager.player;
-        BattleUnit playerBattleUnit = player.playerBattleUnit;
+
+        // Save player position
         Vector2 position = player.playerObject.transform.position;
-
-        id = GameManager.id;
-        battleUnitData = playerBattleUnit.data;
-
         this.position = new float[2] { position.x, position.y };
+        levelScene = (LevelScene)System.Enum.Parse(typeof(LevelScene), SceneManager.GetActiveScene().name);
 
+        // Save GameManager
+        id = GameManager.id;
+
+        // Save player data
+        battleUnitData = player.playerBattleUnit.data;
+
+        // Save checkpoints
         List<string> checkpointsReached = new();
         foreach (CheckpointSystem.Checkpoint checkpoint in GameManager.checkpoints.checkpoints)
         {
@@ -32,23 +41,32 @@ public class SaveData
         }
         checkpoints = checkpointsReached.ToArray();
 
-        levelScene = (LevelScene)System.Enum.Parse(typeof(LevelScene), SceneManager.GetActiveScene().name);
-
+        // Save NPCs talked to
         NPCActionTreeBranchProtectors = GameManager.NPCActionTreeBranchProtectors.ToArray();
+
+        // Save player comrades
+        comradeBattleUnitData = player.playerComradeBattleUnits.Select(x => x.data).ToArray();
+        comradeBattleUnitSpriteIDX = player.playerComradeBattleUnits.Select(x => NPCSpriteIDMap.GetID(x.sprite)).ToArray();
     }
 
     public static void UnpackSaveData(SaveData data)
     {
         Player player = GameManager.player;
-        BattleUnit playerBattleUnit = player.playerBattleUnit;
 
         GameManager.id = data.id;
         GameManager.NPCActionTreeBranchProtectors = new(data.NPCActionTreeBranchProtectors);
-        playerBattleUnit.data = data.battleUnitData;
+        player.playerBattleUnit.data = data.battleUnitData;
 
         foreach (string checkpoint in data.checkpoints)
         {
             GameManager.checkpoints.SetCheckpoint(checkpoint);
+        }
+
+        for (int i=0; i < data.comradeBattleUnitData.Length; i++)
+        {
+            byte spriteID = data.comradeBattleUnitSpriteIDX[i];
+            BattleUnit.BattleUnitData battleUnitData = data.comradeBattleUnitData[i];
+            GameManager.player.AddBattleUnit(battleUnitData, NPCSpriteIDMap.GetSprite(spriteID));
         }
     }
 

@@ -4,6 +4,9 @@ using UnityEngine.SceneManagement;
 
 public static class PlayFromTheFirstScene
 {
+
+    // https://github.com/AiFuYou/UnityDemo/blob/master/Assets/Plugins/Editor/PlayFromTheFirstScene.cs
+
     const string playFromFirstMenuStr = "Custom/Always Start From LoadScene &p";
 
     public static int currentScene;
