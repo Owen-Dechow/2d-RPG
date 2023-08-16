@@ -35,7 +35,7 @@ public class SaveData
 
         // Save checkpoints
         List<string> checkpointsReached = new();
-        foreach (CheckpointSystem.Checkpoint checkpoint in GameManager.checkpoints.checkpoints)
+        foreach (CheckpointSystem.Checkpoint checkpoint in CheckpointSystem.Checkpoints)
         {
             if (checkpoint.isReached) checkpointsReached.Add(checkpoint.checkpoint);
         }
@@ -59,7 +59,7 @@ public class SaveData
 
         foreach (string checkpoint in data.checkpoints)
         {
-            GameManager.checkpoints.SetCheckpoint(checkpoint);
+            CheckpointSystem.SetCheckpoint(checkpoint);
         }
 
         for (int i=0; i < data.comradeBattleUnitData.Length; i++)

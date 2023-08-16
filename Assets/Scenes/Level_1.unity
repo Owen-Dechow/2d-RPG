@@ -182,6 +182,14 @@ PrefabInstance:
       propertyPath: behaviourTree
       value: 
       objectReference: {fileID: 11400000, guid: 7ebeaaa9179418049b28a9b8f7c4dcf2, type: 2}
+    - target: {fileID: 5621261868703214586, guid: a4ab5718524268341982353c740ffecf, type: 3}
+      propertyPath: NPCEnabledCheckpointWindowOpen
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5621261868703214586, guid: a4ab5718524268341982353c740ffecf, type: 3}
+      propertyPath: NPCEnabledCheckpointWindowClose
+      value: old_man_purple_joined
+      objectReference: {fileID: 0}
     - target: {fileID: 5621261868703214589, guid: a4ab5718524268341982353c740ffecf, type: 3}
       propertyPath: m_Name
       value: Old Man Purple(-3798)

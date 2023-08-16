@@ -49,7 +49,7 @@ MonoBehaviour:
   sprite: {fileID: -839745521, guid: 8fa60a061494d8d4b848fc7cc6708638, type: 3}
   battleUnit:
     title: John
-    reflexive: 0
+    sex: 0
     life: 15
     maxLife: 15
     magic: 7
@@ -70,6 +70,7 @@ MonoBehaviour:
       dataStatus: 0
       lastCheck: 0
     escapePercentageAllowed: 0
+  joinedPlayerCheckpoint: 
 --- !u!114 &-6183751070623937507
 MonoBehaviour:
   m_ObjectHideFlags: 0

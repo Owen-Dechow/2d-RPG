@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     public List<Items.Options> Items { get => playerBattleUnit.data.items; }
     public string Name { get => playerBattleUnit.data.title; }
 
-    private void Awake()
+    private void Start()
     {
         playerBattleUnit = GetComponent<BattleUnit>();
     }

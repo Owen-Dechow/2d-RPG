@@ -16,7 +16,7 @@ public class CheckpointEditor : PropertyDrawer
         textPos.height = EditorGUIUtility.singleLineHeight;
         textPos.min = position.min;
         SerializedProperty textProperty = property.FindPropertyRelative("checkpoint");
-        textProperty.stringValue = EditorGUI.TextField(textPos, textProperty.stringValue);
+        textProperty.stringValue = EditorGUI.TextField(textPos, textProperty.stringValue).ToLower().Replace(' ', '_');
 
         Rect boolPos = position;
         boolPos.height = EditorGUIUtility.singleLineHeight;

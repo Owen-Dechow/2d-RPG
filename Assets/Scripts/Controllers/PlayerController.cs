@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour
 
         List<string> options = new();
         
-        foreach(BattleUnit unit in GameManager.playerBattleUnits)
+        foreach(BattleUnit unit in GameManager.player.GetBattleUnits())
         {
             string tag;
 

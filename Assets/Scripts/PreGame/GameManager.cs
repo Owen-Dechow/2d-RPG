@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager i;
 
-    public static List<BattleUnit> playerBattleUnits;
     [SerializeField] GameObject battleSystemPrefab;
 
     [SerializeField] Items.DataSet[] itemData;
@@ -23,7 +22,6 @@ public class GameManager : MonoBehaviour
     public static readonly float tileWidth = 0.16f;
 
     public static Player player;
-    public static CheckpointSystem checkpoints;
 
     public static string Answer { get; set; }
     public static int AnswerIndex { get; set; }
@@ -34,17 +32,12 @@ public class GameManager : MonoBehaviour
     {
         DontDestroyOnLoad(this);
 
-        playerBattleUnits = new()
-        {
-            GetComponent<BattleUnit>()
-        };
         NPCActionTreeBranchProtectors = new();
 
         id = SaveSystem.GetNewId();
 
         i = this;
         player = GetComponent<Player>();
-        checkpoints = GetComponent<CheckpointSystem>();
     }
 
     public static void SaveGame()

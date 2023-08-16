@@ -7,6 +7,6 @@ public class Node_CheckpointFulfilled : IFNode
     [SerializeField] string checkpointName;
     protected override bool Evaluate()
     {
-        return GameManager.checkpoints.GetCheckpoint(checkpointName);
+        return CheckpointSystem.GetCheckpoint(checkpointName);
     }
 }
