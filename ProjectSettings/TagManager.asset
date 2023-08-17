@@ -56,3 +56,6 @@ TagManager:
   - name: Battle
     uniqueID: 3270603285
     locked: 0
+  - name: EditorOver
+    uniqueID: 2485433869
+    locked: 0

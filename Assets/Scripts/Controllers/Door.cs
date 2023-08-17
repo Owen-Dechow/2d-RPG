@@ -14,21 +14,17 @@ public class Door : MonoBehaviour
     [SerializeField] LevelScene toLevel;
 
     [SerializeField] DoorOpenDir doorOpening;
-    [SerializeField] bool betweenTiles;
 
     [SerializeField] string doorTag;
     [SerializeField] string connectedDoor;
 
     [SerializeField] string disallowEnterText;
 
-    private void OnValidate()
-    {
-        Position();
-    }
-
     private void Start()
     {
-        Position();
+
+        Destroy(GetComponent<SpriteRenderer>());
+
         if (GameManager.PlayerPlacementSettings.Relocation != PlayerController.PlacementSettings.RelocateType.Door)
             return;
 
@@ -55,10 +51,9 @@ public class Door : MonoBehaviour
         }
     }
 
-    private void Position()
+    private void OnValidate()
     {
         transform.rotation = Quaternion.Euler(0, 0, (int)doorOpening);
-        GameManager.SnapTransformToGrid(transform, betweenTiles);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

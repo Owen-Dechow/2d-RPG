@@ -3,7 +3,7 @@
 using System;
 using UnityEngine;
 
-public class Magic : MonoBehaviour
+public class GameMagic : MonoBehaviour
 {
     public enum Options
     {

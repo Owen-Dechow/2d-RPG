@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Node_HasItem : IFNode
 {
-    [SerializeField] Items.Options item;
+    [SerializeField] GameItems.Options item;
 
     protected override bool Evaluate()
     {

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Node_TeachPower : ActionNode
 {
-    [SerializeField] Magic.Options magic;
+    [SerializeField] GameMagic.Options magic;
 
     protected override IEnumerator Execute()
     {

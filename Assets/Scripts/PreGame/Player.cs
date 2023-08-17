@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public BattleUnit playerBattleUnit;
     [HideInInspector] public List<BattleUnit> playerComradeBattleUnits;
 
-    public List<Items.Options> Items { get => playerBattleUnit.data.items; }
+    public List<GameItems.Options> Items { get => playerBattleUnit.data.items; }
     public string Name { get => playerBattleUnit.data.title; }
 
     private void Start()

@@ -20,8 +20,8 @@ public class BattleUnit : MonoBehaviour
         public int attack;
 
         [Header("Items/Magic")]
-        public List<Magic.Options> magicOptionsForUnit;
-        public List<Items.Options> items;
+        public List<GameMagic.Options> magicOptionsForUnit;
+        public List<GameItems.Options> items;
 
         [Header("Player Only")]
         public int exp;

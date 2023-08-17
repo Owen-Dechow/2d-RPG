@@ -14069,11 +14069,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 973764888, guid: c6c634c6408e1e14bae5176c9166fb94, type: 3}
       propertyPath: doorTag
-      value: level enter
-      objectReference: {fileID: 0}
-    - target: {fileID: 973764888, guid: c6c634c6408e1e14bae5176c9166fb94, type: 3}
-      propertyPath: doorOpening
-      value: 180
+      value: hut_door
       objectReference: {fileID: 0}
     - target: {fileID: 973764888, guid: c6c634c6408e1e14bae5176c9166fb94, type: 3}
       propertyPath: betweenTiles
@@ -14085,11 +14081,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 973764888, guid: c6c634c6408e1e14bae5176c9166fb94, type: 3}
       propertyPath: connectedDoor
-      value: level enter
-      objectReference: {fileID: 0}
-    - target: {fileID: 973764888, guid: c6c634c6408e1e14bae5176c9166fb94, type: 3}
-      propertyPath: disallowEnterText
-      value: 
+      value: hut_door
       objectReference: {fileID: 0}
     - target: {fileID: 973764888, guid: c6c634c6408e1e14bae5176c9166fb94, type: 3}
       propertyPath: toLevel.buildIndex
@@ -15909,14 +15901,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 973764888, guid: c6c634c6408e1e14bae5176c9166fb94, type: 3}
-      propertyPath: doorTag
-      value: can't enter
-      objectReference: {fileID: 0}
-    - target: {fileID: 973764888, guid: c6c634c6408e1e14bae5176c9166fb94, type: 3}
-      propertyPath: doorOpening
-      value: 180
-      objectReference: {fileID: 0}
     - target: {fileID: 973764888, guid: c6c634c6408e1e14bae5176c9166fb94, type: 3}
       propertyPath: betweenTiles
       value: 0

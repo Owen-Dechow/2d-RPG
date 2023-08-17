@@ -3,7 +3,7 @@
 using System;
 using UnityEngine;
 
-public class Items
+public class GameItems
 {
     public enum Options
     {

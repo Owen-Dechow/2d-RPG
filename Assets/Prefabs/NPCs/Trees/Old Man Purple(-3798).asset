@@ -70,7 +70,7 @@ MonoBehaviour:
       dataStatus: 0
       lastCheck: 0
     escapePercentageAllowed: 0
-  joinedPlayerCheckpoint: 
+  joinedPlayerCheckpoint: old_man_purple_joined
 --- !u!114 &-6183751070623937507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,7 +87,7 @@ MonoBehaviour:
   position: {x: 380.0675, y: -19.964966}
   if: {fileID: 4560251451386777665}
   else: {fileID: -3742199233918939628}
-  uniqueId: -1469569657
+  uniqueId: -1926233774
 --- !u!114 &-5707677542192486085
 MonoBehaviour:
   m_ObjectHideFlags: 0

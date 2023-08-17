@@ -10,16 +10,15 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] GameObject battleSystemPrefab;
 
-    [SerializeField] Items.DataSet[] itemData;
-    public static Items.DataSet[] ItemData { get => i.itemData; }
+    [SerializeField] GameItems.DataSet[] itemData;
+    public static GameItems.DataSet[] ItemData { get => i.itemData; }
 
-    [SerializeField] Magic.DataSet[] magicData;
-    public static Magic.DataSet[] MagicData { get => i.magicData; }
+    [SerializeField] GameMagic.DataSet[] magicData;
+    public static GameMagic.DataSet[] MagicData { get => i.magicData; }
 
     public static List<int> NPCActionTreeBranchProtectors;
 
     public static int id;
-    public static readonly float tileWidth = 0.16f;
 
     public static Player player;
 
@@ -66,19 +65,7 @@ public class GameManager : MonoBehaviour
 
         return cleanedText;
     }
-    public static void SnapTransformToGrid(Transform transform, bool betweenTilesX=false, bool betweenTilesY=false)
-    {
-        Vector3 positionIDX = (transform.position / tileWidth);
-        positionIDX.x = Mathf.Floor(positionIDX.x);
-        positionIDX.y = Mathf.Floor(positionIDX.y);
-        positionIDX.z = 0;
 
-        Vector3 newPosition = positionIDX * tileWidth;
-        if (!betweenTilesX) newPosition.x += tileWidth / 2;
-        if (!betweenTilesY) newPosition.y += tileWidth / 2;
-
-        transform.position = newPosition;
-    }
     public static void LoadFromSavePoint(int id)
     {
         SaveData data = SaveSystem.LoadData(id);

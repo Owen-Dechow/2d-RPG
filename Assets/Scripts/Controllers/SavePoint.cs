@@ -6,19 +6,9 @@ public class SavePoint : MonoBehaviour
 {
     float active = 0;
 
-    void Start()
-    {
-        GameManager.SnapTransformToGrid(transform);
-    }
-
     private void Update()
     {
         active += Time.deltaTime;
-    }
-
-    private void OnValidate()
-    {
-        GameManager.SnapTransformToGrid(transform);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

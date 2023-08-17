@@ -98,13 +98,13 @@ public class PlayerController : MonoBehaviour
             string tag;
 
             tag = $"{unit.data.title}\\Items\\";
-            foreach (Items.Options item in unit.data.items)
+            foreach (GameItems.Options item in unit.data.items)
             {
                 options.Add(tag + GameManager.GetCleanedText(item.ToString()));
             }
 
             tag = $"{unit.data.title}\\Magic\\";
-            foreach (Magic.Options magic in unit.data.magicOptionsForUnit)
+            foreach (GameMagic.Options magic in unit.data.magicOptionsForUnit)
             {
                 options.Add(tag + GameManager.GetCleanedText(magic.ToString()));
             }

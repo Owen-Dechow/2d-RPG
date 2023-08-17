@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(Items.DataSet))]
-[CustomPropertyDrawer(typeof(Magic.DataSet))]
+[CustomPropertyDrawer(typeof(GameItems.DataSet))]
+[CustomPropertyDrawer(typeof(GameMagic.DataSet))]
 public class ItemMagicEditor : PropertyDrawer
 {
     public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

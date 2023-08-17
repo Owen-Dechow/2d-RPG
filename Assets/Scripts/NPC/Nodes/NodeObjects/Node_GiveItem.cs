@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Node_GiveItem : ActionNode
 {
-    [SerializeField] Items.Options item;
+    [SerializeField] GameItems.Options item;
     protected override IEnumerator Execute()
     {
         GameManager.player.Items.Add(item);
