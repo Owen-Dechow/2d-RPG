@@ -8,6 +8,6 @@ public class Node_HasItem : IFNode
 
     protected override bool Evaluate()
     {
-        return GameManager.player.Items.Contains(item);
+        return Player.Items.Contains(item);
     }
 }

@@ -22,7 +22,6 @@ public class Door : MonoBehaviour
 
     private void Start()
     {
-
         Destroy(GetComponent<SpriteRenderer>());
 
         if (GameManager.PlayerPlacementSettings.Relocation != PlayerController.PlacementSettings.RelocateType.Door)
@@ -30,23 +29,7 @@ public class Door : MonoBehaviour
 
         if (GameManager.PlayerPlacementSettings.DoorTag == doorTag)
         {
-            var direction = doorOpening switch
-            {
-                DoorOpenDir.top => AnimPlus.Direction.up,
-                DoorOpenDir.bottom => AnimPlus.Direction.down,
-                DoorOpenDir.left => AnimPlus.Direction.left,
-                DoorOpenDir.right => AnimPlus.Direction.right,
-                _ => throw new System.NotImplementedException(),
-            };
-            GameManager.player.playerObject.GetComponent<AnimPlus>().SetDirection(direction);
-
-            GameManager.player.playerObject.transform.position = transform.position;
-            Vector2 delta = new Vector2(
-                Mathf.Cos((int)doorOpening),
-                Mathf.Sin((int)doorOpening)
-                ) * 0.16f;
-            GameManager.player.playerObject.transform.Translate(delta.x + 0.08f, delta.y, 0);
-
+            Player.MoveToDoor(transform.position, doorOpening); 
             CameraController.SetUpCamera();
         }
     }

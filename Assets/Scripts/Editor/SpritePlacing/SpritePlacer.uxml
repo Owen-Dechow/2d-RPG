@@ -4,4 +4,6 @@
     <ui:VisualElement name="NPCs" style="flex-grow: initial; flex-direction: row; flex-wrap: wrap;" />
     <ui:Label text="Enemies" display-tooltip-when-elided="true" style="font-size: 15px; -unity-font-style: bold; margin-left: 0; margin-right: 0; margin-top: 20px; margin-bottom: 5px; -unity-text-align: upper-center; background-color: rgb(78, 78, 78);" />
     <ui:VisualElement name="enemies" style="flex-grow: initial; flex-direction: row; flex-wrap: wrap;" />
+    <ui:Label text="Other" display-tooltip-when-elided="true" style="font-size: 15px; -unity-font-style: bold; margin-left: 0; margin-right: 0; margin-top: 20px; margin-bottom: 5px; -unity-text-align: upper-center; background-color: rgb(78, 78, 78);" />
+    <ui:VisualElement name="other" style="flex-grow: initial; flex-direction: row; flex-wrap: wrap;" />
 </ui:UXML>

@@ -8,6 +8,7 @@ public class PlacerSettings : ScriptableObject
     public Vector2 margin;
     public GameObject[] NPCs;
     public GameObject[] enemies;
-    public string NPCTransform;
-    public string enemyTransform;
+    public GameObject[] other;
+    public string NPCTransformName;
+    public string enemyTransformName;
 }

@@ -21,14 +21,16 @@ public class BattleUnit : MonoBehaviour
 
         [Header("Items/Magic")]
         public List<GameMagic.Options> magicOptionsForUnit;
-        public List<GameItems.Options> items;
+        public List<GameItems.Options> itemOptionsForUnit;
 
         [Header("Player Only")]
         public int exp;
         public int level;
+        public int gold;
 
         [Header("Enemy Only")]
         public int expAward;
+        public int goldAward;
         public EnemyAI enemyAI;
 
         [Header("Static")]
@@ -101,15 +103,15 @@ public class BattleUnit : MonoBehaviour
         return Mathf.Max(attack, 1);
     }
 
-    public int GetDefenseChange(int power, bool onDefense)
+    public int GetDefenseChange(int power)
     {
-        int maxTake = Mathf.CeilToInt(data.defense * 0.75f);
+        int maxTake = Mathf.CeilToInt(data.defense * 1);
         int minTake = Mathf.FloorToInt(maxTake * 0.5f);
         int newAttack = power - Random.Range(minTake, maxTake + 1);
 
         if (onDefense)
         {
-            newAttack = Mathf.CeilToInt(newAttack * 0.6f);
+            newAttack = Mathf.CeilToInt(newAttack * 0.75f);
         }
 
         return Mathf.Max(newAttack, 1);

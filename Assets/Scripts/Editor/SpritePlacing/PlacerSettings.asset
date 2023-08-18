@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83ca7f16c8cf1ab448b765245e0b7fcc, type: 3}
   m_Name: PlacerSettings
   m_EditorClassIdentifier: 
-  previewSize: {x: 50, y: 50}
-  margin: {x: 0, y: 2}
+  previewSize: {x: 45, y: 45}
+  margin: {x: 3, y: 3}
   NPCs:
   - {fileID: 866745542581061411, guid: 47b748f49bf48ea44946767709eb36c8, type: 3}
   - {fileID: 5621261868703214589, guid: a4ab5718524268341982353c740ffecf, type: 3}
   enemies:
   - {fileID: 4326385105789543782, guid: 6a2287e54c2a4b4498197bd184196ae7, type: 3}
-  NPCTransform: NPCs
-  enemyTransform: Enemies
+  other:
+  - {fileID: 8153163655817150943, guid: c6c634c6408e1e14bae5176c9166fb94, type: 3}
+  - {fileID: 5486956140826741577, guid: c4d90170bc0c6fd4b9a49845bb874837, type: 3}
+  NPCTransformName: NPCs
+  enemyTransformName: Enemies

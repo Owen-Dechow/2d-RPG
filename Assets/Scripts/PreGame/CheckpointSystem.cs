@@ -37,8 +37,11 @@ public class CheckpointSystem : MonoBehaviour
         checkpointName = checkpointName.ToLower().Replace(' ', '_');
         foreach (Checkpoint checkpoint in i.checkpoint_flags)
         {
-            if (checkpoint.checkpoint == checkpointName) checkpoint.isReached = setTo;
-            return;
+            if (checkpoint.checkpoint == checkpointName)
+            {
+                checkpoint.isReached = setTo;
+                return;
+            }
         }
 
         Debug.Log($"Unknown Checkpoint: {checkpointName}");

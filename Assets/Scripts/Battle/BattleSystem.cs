@@ -30,7 +30,7 @@ public class BattleSystem : MonoBehaviour
     BattleState battleState;
     BattleFinish battleFinish;
 
-    string PlayerTitle { get => $"{GameManager.player.playerBattleUnit.data.title}{(players.Length == 1 ? "" : " and his companion" + (players.Length == 2 ? "" : "s"))}"; }
+    string PlayerTitle { get => $"{Player.Name}{(players.Length == 1 ? "" : " and his companion" + (players.Length == 2 ? "" : "s"))}"; }
     string EnemyTitle { get => $"the {enemies[0].data.title}{(enemies.Length == 1 ? "" : enemies.Length == 2 ? " and his brother" : "'s mob")}"; }
 
     enum BattleState
@@ -142,11 +142,11 @@ public class BattleSystem : MonoBehaviour
             else enemyGroupName = "a " + enemyGroupName;
 
             // Display Message
-            yield return GameUI.TypeOut($"{GameManager.player.Name} engages {enemyGroupName}.");
+            yield return GameUI.TypeOut($"{Player.Name} engages {enemyGroupName}.");
         }
 
         // Pick randomly who goes first
-        if (Random.Range(0, 2) == 0) battleState = BattleState.PlayerTurn;
+        if (Random.Range(0, 1) == 0) battleState = BattleState.PlayerTurn;
         else battleState = BattleState.EnemyTurn;
 
         // Clear extra data extra data
@@ -229,6 +229,181 @@ public class BattleSystem : MonoBehaviour
         Time.timeScale = 1;
         Destroy(gameObject);
     }
+    IEnumerator EndBattle()
+    {
+        yield return new WaitForEndOfFrame();
+
+        switch (battleFinish)
+        {
+            case BattleFinish.PlayerWin:
+                Destroy(enemyGameObject);
+                Player.PlayerController.SetInactive();
+                yield return GameUI.TypeOut($"{PlayerTitle} won the battle!");
+
+                int exp = enemies.Sum(x => x.data.expAward);
+                yield return GameUI.TypeOut($"{PlayerTitle} gained {exp} experience.");
+
+                int gold = enemies.Sum(x => x.data.goldAward);
+                yield return GameUI.TypeOut($"{PlayerTitle} gained {gold} gold.");
+                Player.Gold += gold;
+
+                players[0].data.exp += exp;
+                yield return players[0].LevelUpUnit();
+
+                foreach (BattleUnit player in players)
+                {
+                    if (player.data.life < 1)
+                        player.data.life = 1;
+                }
+
+                break;
+
+            case BattleFinish.EnemyWin:
+                yield return GameUI.TypeOut($"{PlayerTitle} lost the battle!");
+                GameManager.LostBattle();
+                yield return new WaitWhile(() => true);
+                break;
+
+            case BattleFinish.Run:
+                Player.SetInactive();
+                break;
+
+            case BattleFinish.None:
+                throw new System.Exception("Battle finish may not be None");
+        }
+    }
+
+    IEnumerator ChooseUnitPlayer(BattleUnit[] units)
+    {
+        // Clear Selected
+        yield return new WaitForEndOfFrame();
+        selectedUnit = null;
+
+        // Select first alive
+        int selected = -1;
+        {
+            bool multipleAlive = false;
+            for (int i = 0; i < units.Length; i++)
+            {
+                if (units[i].data.Alive)
+                {
+                    if (selected == -1) selected = i;
+                    else
+                    {
+                        multipleAlive = true;
+                        break;
+                    }
+                }
+            }
+            selectedUnit = units[selected];
+
+            if (!multipleAlive) yield break;
+            else blinkUnit = true;
+        }
+
+        while (true)
+        {
+            yield return MyInput.WaitForMenuNavigation();
+
+            switch (MyInput.MenuNavigation)
+            {
+                case MyInput.Action.Left:
+                case MyInput.Action.Up:
+                    selected = SkipToNextLivingUnit(units, selected, 1);
+                    break;
+
+                case MyInput.Action.Right:
+                case MyInput.Action.Down:
+                    selected = SkipToNextLivingUnit(units, selected, -1);
+                    break;
+
+                case MyInput.Action.Select:
+                    blinkUnit = false;
+                    selectedUnit.spriteRenderer.color = Color.white;
+                    yield break;
+
+                case MyInput.Action.Cancel:
+                    blinkUnit = false;
+                    selectedUnit.spriteRenderer.color = Color.white;
+                    selectedUnit = null;
+                    yield break;
+            }
+
+            selectedUnit.spriteRenderer.color = Color.white;
+            selectedUnit = units[selected];
+            yield return new WaitForEndOfFrame();
+        }
+    }
+    void ChooseUnitEnemy(BattleUnit[] units)
+    {
+        BattleUnit target = null;
+        while (target == null || !target.data.Alive)
+        {
+            target = units[Random.Range(0, units.Length)];
+        }
+
+        selectedUnit = target;
+    }
+
+    IEnumerator ChangeLifeOnEnemyUnit(BattleUnit unit, int lifeChange)
+    {
+        if (lifeChange < 0)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                unit.spriteRenderer.color = Color.clear;
+                yield return new WaitForSecondsRealtime(0.05f);
+                unit.spriteRenderer.color = Color.white;
+                yield return new WaitForSecondsRealtime(0.05f);
+            }
+        }
+
+        unit.data.life += lifeChange;
+        if (unit.data.life >= unit.data.maxLife)
+        {
+            unit.data.life = unit.data.maxLife;
+            yield return GameUI.TypeOut($"{unit.data.title}'s life is maxed out.");
+        }
+        if (!unit.data.Alive)
+        {
+            yield return GameUI.TypeOut($"{unit.data.title} has been destroyed.");
+
+            int iterations = 6;
+            for (float i = 0; i < iterations; i++)
+            {
+                unit.spriteRenderer.color = new Color(1, 1, 1, Mathf.Clamp(1 - (i / iterations), 0, 1));
+                yield return new WaitForSecondsRealtime(0.1f);
+                unit.spriteRenderer.color = Color.clear;
+                yield return new WaitForSecondsRealtime(0.05f);
+            }
+
+        }
+
+    }
+    IEnumerator ChangeLifeOnPlayerUnit(BattleUnit unit, int lifeChange)
+    {
+        if (lifeChange < 0)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                unit.spriteRenderer.color = Color.clear;
+                yield return new WaitForSecondsRealtime(0.05f);
+                unit.spriteRenderer.color = Color.white;
+                yield return new WaitForSecondsRealtime(0.05f);
+            }
+        }
+
+        unit.data.life += lifeChange;
+        if (unit.data.life >= unit.data.maxLife)
+        {
+            unit.data.life = unit.data.maxLife;
+            yield return GameUI.TypeOut($"{unit.data.title}'s life is maxed out.");
+        }
+        if (!unit.data.Alive)
+        {
+            yield return GameUI.TypeOut($"{unit.data.title} died.");
+        }
+    }
 
     IEnumerator PlayerUnitTurn(BattleUnit unit)
     {
@@ -274,7 +449,7 @@ public class BattleSystem : MonoBehaviour
                         // Get display settings
                         int cols;
                         {
-                            int itemCount = unit.data.items.Count;
+                            int itemCount = unit.data.itemOptionsForUnit.Count;
                             if (itemCount <= 3) cols = 1;
                             else if (itemCount <= 6) cols = 2;
                             else cols = 3;
@@ -396,7 +571,6 @@ public class BattleSystem : MonoBehaviour
                 }
         }
     }
-
     IEnumerator EnemyUnitTurn(BattleUnit unit)
     {
         // Wait for end of frame
@@ -496,164 +670,6 @@ public class BattleSystem : MonoBehaviour
                 }
         }
     }
-
-    IEnumerator ChooseUnitPlayer(BattleUnit[] units)
-    {
-        // Clear Selected
-        yield return new WaitForEndOfFrame();
-        selectedUnit = null;
-
-        // Select first alive
-        int selected = -1;
-        {
-            bool multipleAlive = false;
-            for (int i = 0; i < units.Length; i++)
-            {
-                if (units[i].data.Alive)
-                {
-                    if (selected == -1) selected = i;
-                    else
-                    {
-                        multipleAlive = true;
-                        break;
-                    }
-                }
-            }
-            selectedUnit = units[selected];
-
-            if (!multipleAlive) yield break;
-            else blinkUnit = true;
-        }
-
-        while (true)
-        {
-            yield return MyInput.WaitForMenuNavigation();
-
-            switch (MyInput.MenuNavigation)
-            {
-                case MyInput.Action.Left:
-                case MyInput.Action.Up:
-                    selected = SkipToNextLivingUnit(units, selected, 1);
-                    break;
-
-                case MyInput.Action.Right:
-                case MyInput.Action.Down:
-                    selected = SkipToNextLivingUnit(units, selected, -1);
-                    break;
-
-                case MyInput.Action.Select:
-                    blinkUnit = false;
-                    selectedUnit.spriteRenderer.color = Color.white;
-                    yield break;
-
-                case MyInput.Action.Cancel:
-                    blinkUnit = false;
-                    selectedUnit.spriteRenderer.color = Color.white;
-                    selectedUnit = null;
-                    yield break;
-            }
-
-            selectedUnit.spriteRenderer.color = Color.white;
-            selectedUnit = units[selected];
-            yield return new WaitForEndOfFrame();
-        }
-    }
-
-    IEnumerator ChangeLifeOnEnemyUnit(BattleUnit unit, int lifeChange)
-    {
-        if (lifeChange < 0)
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                unit.spriteRenderer.color = Color.clear;
-                yield return new WaitForSecondsRealtime(0.05f);
-                unit.spriteRenderer.color = Color.white;
-                yield return new WaitForSecondsRealtime(0.05f);
-            }
-        }
-
-        unit.data.life += lifeChange;
-        if (unit.data.life >= unit.data.maxLife)
-        {
-            unit.data.life = unit.data.maxLife;
-            yield return GameUI.TypeOut($"{unit.data.title}'s life is maxed out.");
-        }
-        if (!unit.data.Alive)
-        {
-            yield return GameUI.TypeOut($"{unit.data.title} has been destroyed.");
-
-            int iterations = 6;
-            for (float i = 0; i < iterations; i++)
-            {
-                unit.spriteRenderer.color = new Color(1, 1, 1, Mathf.Clamp(1 - (i / iterations), 0, 1));
-                yield return new WaitForSecondsRealtime(0.1f);
-                unit.spriteRenderer.color = Color.clear;
-                yield return new WaitForSecondsRealtime(0.05f);
-            }
-
-        }
-
-    }
-
-    IEnumerator ChangeLifeOnPlayerUnit(BattleUnit unit, int lifeChange)
-    {
-        if (lifeChange < 0)
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                unit.spriteRenderer.color = Color.clear;
-                yield return new WaitForSecondsRealtime(0.05f);
-                unit.spriteRenderer.color = Color.white;
-                yield return new WaitForSecondsRealtime(0.05f);
-            }
-        }
-
-        unit.data.life += lifeChange;
-        if (unit.data.life >= unit.data.maxLife)
-        {
-            unit.data.life = unit.data.maxLife;
-            yield return GameUI.TypeOut($"{unit.data.title}'s life is maxed out.");
-        }
-        if (!unit.data.Alive)
-        {
-            yield return GameUI.TypeOut($"{unit.data.title} died.");
-        }
-    }
-
-    IEnumerator EndBattle()
-    {
-        yield return new WaitForEndOfFrame();
-
-        switch (battleFinish)
-        {
-            case BattleFinish.PlayerWin:
-                Destroy(enemyGameObject);
-                GameManager.player.playerObject.SetInactive();
-                yield return GameUI.TypeOut($"{PlayerTitle} won the battle!");
-
-                int exp = enemies.Sum(x => x.data.expAward);
-                yield return GameUI.TypeOut($"{PlayerTitle} gained {exp} experience.");
-
-                players[0].data.exp += exp;
-                yield return players[0].LevelUpUnit();
-
-                break;
-
-            case BattleFinish.EnemyWin:
-                yield return GameUI.TypeOut($"{GameManager.player.Name} lost the battle!");
-                GameManager.LostBattle();
-                yield return new WaitWhile(() => true);
-                break;
-
-            case BattleFinish.Run:
-                GameManager.player.playerObject.SetInactive();
-                break;
-
-            case BattleFinish.None:
-                throw new System.Exception("Battle finish may not be None");
-        }
-    }
-
     BattleUnit.TurnOptions GetEnemyTurnChoice(BattleUnit enemy)
     {
         EnemyAI ai = enemy.data.enemyAI;
@@ -669,7 +685,7 @@ public class BattleSystem : MonoBehaviour
         bar += ai.item;
         if (choiceInt <= bar)
         {
-            if (enemy.data.items.Count == 0) return GetEnemyTurnChoice(enemy);
+            if (enemy.data.itemOptionsForUnit.Count == 0) return GetEnemyTurnChoice(enemy);
             return BattleUnit.TurnOptions.Item;
         }
 
@@ -686,99 +702,6 @@ public class BattleSystem : MonoBehaviour
         throw new System.Exception("AI did not find correct turn option.");
     }
 
-    void DisplayUnitsOnPanel()
-    {
-        foreach (Panel panel in playerPanels)
-        {
-            panel.DisplayUnit();
-        }
-    }
-
-    bool CheckLoss(BattleUnit[] side)
-    {
-        foreach (BattleUnit battleUnit in side)
-        {
-            if (battleUnit.data.Alive) return false;
-        }
-        return true;
-    }
-
-    void ChooseUnitEnemy(BattleUnit[] units)
-    {
-        BattleUnit target = null;
-        while (target == null || !target.data.Alive)
-        {
-            target = units[Random.Range(0, units.Length)];
-        }
-
-        selectedUnit = target;
-    }
-
-    string GetActionStatement(BattleUnit unit, string[] statements, string opposition)
-    {
-        string reflexive = unit.data.sex switch
-        {
-            BattleUnit.UnitSex.Male => "himself",
-            BattleUnit.UnitSex.Female => "herself",
-            _ => throw new System.NotImplementedException(),
-        };
-
-        string choice = statements[Random.Range(0, statements.Length)];
-        choice = choice.Replace("himself", reflexive).Replace("Player", unit.data.title).Replace("Enemy", opposition);
-        return choice;
-    }
-
-    int SkipToNextLivingUnit(BattleUnit[] units, int selected, int step)
-    {
-        selected += step;
-        if (selected > units.Length - 1) selected = 0;
-        else if (selected < 0) selected = units.Length - 1;
-
-        if (!units[selected].data.Alive)
-        {
-            return SkipToNextLivingUnit(units, selected, step);
-        }
-
-        return selected;
-    }
-
-    string[] GetPossibleActions(BattleUnit unit)
-    {
-        List<string> possibleActions = new(System.Enum.GetNames(typeof(BattleUnit.TurnOptions)));
-        if (unit.data.magicOptionsForUnit.Count == 0) possibleActions.Remove("Magic");
-        if (unit.data.items.Count == 0) possibleActions.Remove("Item");
-        return possibleActions.ToArray();
-    }
-
-    string[] GetPossibleItems(BattleUnit unit)
-    {
-        string[] itemOptions = new string[unit.data.items.Count];
-        for (int i = 0; i < itemOptions.Length; i++)
-        {
-            itemOptions[i] = unit.data.items[i].ToString();
-        }
-        return itemOptions;
-    }
-
-    string[] GetPossibleMagic(BattleUnit unit)
-    {
-        string[] magicOptions = new string[unit.data.magicOptionsForUnit.Count];
-        for (int i = 0; i < magicOptions.Length; i++)
-        {
-            string stringName = unit.data.magicOptionsForUnit[i].ToString();
-            magicOptions[i] = stringName;
-        }
-        return magicOptions;
-    }
-
-    bool GetCanRun(BattleUnit enemyUnit)
-    {
-        bool run;
-        if (enemyUnit.data.escapePercentageAllowed == 0) run = false;
-        else run = Random.Range(0, 100 / enemyUnit.data.escapePercentageAllowed) == 0;
-        return run;
-    }
-
     IEnumerator Run(bool run)
     {
         if (run)
@@ -792,12 +715,12 @@ public class BattleSystem : MonoBehaviour
             yield return GameUI.TypeOut("But couldn't get away.");
         }
     }
-
-    int GetAttackPower(BattleUnit attacking, BattleUnit defending)
+    bool GetCanRun(BattleUnit enemyUnit)
     {
-        int preDefenseAttack = attacking.GetAttack();
-        int attack = defending.GetDefenseChange(preDefenseAttack, defending.onDefense);
-        return attack;
+        bool run;
+        if (enemyUnit.data.escapePercentageAllowed == 0) run = false;
+        else run = Random.Range(0, 100 / enemyUnit.data.escapePercentageAllowed) == 0;
+        return run;
     }
 
     IEnumerator Attack(BattleUnit attacking, BattleUnit defending, System.Func<BattleUnit, int, IEnumerator> lifeChangeFunc)
@@ -807,6 +730,12 @@ public class BattleSystem : MonoBehaviour
         yield return GameUI.TypeOut($"{attackPower} damage to {defending.data.title}.");
         yield return lifeChangeFunc(defending, -attackPower);
     }
+    int GetAttackPower(BattleUnit attacking, BattleUnit defending)
+    {
+        int preDefenseAttack = attacking.GetAttack();
+        int attack = defending.GetDefenseChange(preDefenseAttack);
+        return attack;
+    }
 
     IEnumerator Item(BattleUnit unit, BattleUnit target, GameItems.DataSet itemData, System.Func<BattleUnit, int, IEnumerator> changeLifeOnFriendFunc, System.Func<BattleUnit, int, IEnumerator> changeLifeOnOpponentFunc)
     {
@@ -814,14 +743,14 @@ public class BattleSystem : MonoBehaviour
         yield return GameUI.TypeOut($"{unit.data.title} tried using {itemData.Title}.");
 
         // Remove item from inventory
-        unit.data.items.Remove(itemData.identity);
+        unit.data.itemOptionsForUnit.Remove(itemData.identity);
 
         // Run Item
         yield return new WaitForEndOfFrame();
         if (itemData.scriptable.Type == ItemScriptable.ItemType.Attack)
         {
 
-            int hit = target.GetDefenseChange(itemData.scriptable.Power, target.onDefense);
+            int hit = target.GetDefenseChange(itemData.scriptable.Power);
             yield return GameUI.TypeOut($"{hit} damage to {target.data.title}.");
             yield return changeLifeOnOpponentFunc(target, -hit);
         }
@@ -831,6 +760,15 @@ public class BattleSystem : MonoBehaviour
             yield return GameUI.TypeOut($"{target.data.title} gained {heal} HP.");
             yield return changeLifeOnFriendFunc(target, heal);
         }
+    }
+    string[] GetPossibleItems(BattleUnit unit)
+    {
+        string[] itemOptions = new string[unit.data.itemOptionsForUnit.Count];
+        for (int i = 0; i < itemOptions.Length; i++)
+        {
+            itemOptions[i] = unit.data.itemOptionsForUnit[i].ToString();
+        }
+        return itemOptions;
     }
 
     IEnumerator Magic(BattleUnit unit, BattleUnit[] targets, GameMagic.DataSet magicData, System.Func<BattleUnit, int, IEnumerator> changeLifeOnFriendFunc, System.Func<BattleUnit, int, IEnumerator> changeLifeOnOpponentFunc)
@@ -855,7 +793,7 @@ public class BattleSystem : MonoBehaviour
         {
             foreach (BattleUnit target in targets)
             {
-                int hit = target.GetDefenseChange(magicData.scriptable.Power, target.onDefense);
+                int hit = target.GetDefenseChange(magicData.scriptable.Power);
                 yield return GameUI.TypeOut($"{hit} damage to {target.data.title}.");
                 yield return changeLifeOnOpponentFunc(target, -hit);
             }
@@ -868,6 +806,72 @@ public class BattleSystem : MonoBehaviour
                 yield return GameUI.TypeOut($"{target.data.title} gained {heal} HP.");
                 yield return changeLifeOnFriendFunc(target, heal);
             }
+        }
+    }
+    string[] GetPossibleMagic(BattleUnit unit)
+    {
+        string[] magicOptions = new string[unit.data.magicOptionsForUnit.Count];
+        for (int i = 0; i < magicOptions.Length; i++)
+        {
+            string stringName = unit.data.magicOptionsForUnit[i].ToString();
+            magicOptions[i] = stringName;
+        }
+        return magicOptions;
+    }
+
+    string[] GetPossibleActions(BattleUnit unit)
+    {
+        List<string> possibleActions = new(System.Enum.GetNames(typeof(BattleUnit.TurnOptions)));
+
+        if (unit.data.magicOptionsForUnit.Count == 0)
+            possibleActions.Remove("Magic");
+
+        if (unit.data.itemOptionsForUnit.Count == 0)
+            possibleActions.Remove("Item");
+
+        return possibleActions.ToArray();
+
+    }
+
+    int SkipToNextLivingUnit(BattleUnit[] units, int selected, int step)
+    {
+        selected += step;
+        if (selected > units.Length - 1) selected = 0;
+        else if (selected < 0) selected = units.Length - 1;
+
+        if (!units[selected].data.Alive)
+        {
+            return SkipToNextLivingUnit(units, selected, step);
+        }
+
+        return selected;
+    }
+    string GetActionStatement(BattleUnit unit, string[] statements, string opposition)
+    {
+        string reflexive = unit.data.sex switch
+        {
+            BattleUnit.UnitSex.Male => "himself",
+            BattleUnit.UnitSex.Female => "herself",
+            _ => throw new System.NotImplementedException(),
+        };
+
+        string choice = statements[Random.Range(0, statements.Length)];
+        choice = choice.Replace("himself", reflexive).Replace("Player", unit.data.title).Replace("Enemy", opposition);
+        return choice;
+    }
+    bool CheckLoss(BattleUnit[] side)
+    {
+        foreach (BattleUnit battleUnit in side)
+        {
+            if (battleUnit.data.Alive) return false;
+        }
+        return true;
+    }
+    void DisplayUnitsOnPanel()
+    {
+        foreach (Panel panel in playerPanels)
+        {
+            panel.DisplayUnit();
         }
     }
 }

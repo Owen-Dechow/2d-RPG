@@ -19,11 +19,8 @@ public class SaveData
 
     public SaveData()
     {
-        // Get player ref
-        Player player = GameManager.player;
-
         // Save player position
-        Vector2 position = player.playerObject.transform.position;
+        Vector2 position = Player.Position;
         this.position = new float[2] { position.x, position.y };
         levelScene = (LevelScene)System.Enum.Parse(typeof(LevelScene), SceneManager.GetActiveScene().name);
 
@@ -31,7 +28,7 @@ public class SaveData
         id = GameManager.id;
 
         // Save player data
-        battleUnitData = player.playerBattleUnit.data;
+        battleUnitData = Player.GetBattleUnitData();
 
         // Save checkpoints
         List<string> checkpointsReached = new();
@@ -45,17 +42,15 @@ public class SaveData
         NPCActionTreeBranchProtectors = GameManager.NPCActionTreeBranchProtectors.ToArray();
 
         // Save player comrades
-        comradeBattleUnitData = player.playerComradeBattleUnits.Select(x => x.data).ToArray();
-        comradeBattleUnitSpriteIDX = player.playerComradeBattleUnits.Select(x => NPCSpriteIDMap.GetID(x.sprite)).ToArray();
+        comradeBattleUnitData = Player.ComradeBattleUnits.Select(x => x.data).ToArray();
+        comradeBattleUnitSpriteIDX = Player.ComradeBattleUnits.Select(x => NPCSpriteIDMap.GetID(x.sprite)).ToArray();
     }
 
     public static void UnpackSaveData(SaveData data)
     {
-        Player player = GameManager.player;
-
         GameManager.id = data.id;
         GameManager.NPCActionTreeBranchProtectors = new(data.NPCActionTreeBranchProtectors);
-        player.playerBattleUnit.data = data.battleUnitData;
+        Player.SetBattleUnitData(data.battleUnitData);
 
         foreach (string checkpoint in data.checkpoints)
         {
@@ -66,7 +61,7 @@ public class SaveData
         {
             byte spriteID = data.comradeBattleUnitSpriteIDX[i];
             BattleUnit.BattleUnitData battleUnitData = data.comradeBattleUnitData[i];
-            GameManager.player.AddBattleUnit(battleUnitData, NPCSpriteIDMap.GetSprite(spriteID));
+            Player.AddBattleUnit(battleUnitData, NPCSpriteIDMap.GetSprite(spriteID));
         }
     }
 
@@ -74,7 +69,7 @@ public class SaveData
 
 public static class SaveSystem
 {
-    public static readonly string path = Application.persistentDataPath + "/dechow-rpg.savedata";
+    public static string Path => Application.persistentDataPath + "/game.savedata";
 
     public static void SaveData(SaveData data)
     {
@@ -83,7 +78,7 @@ public static class SaveSystem
         SaveData oldDataSlot = null;
         int oldDataSlotIDX = 0;
 
-        if (File.Exists(path))
+        if (File.Exists(Path))
         {
             // Check if already save data 
             foreach (SaveData dataSlot in dataSlots)
@@ -127,7 +122,7 @@ public static class SaveSystem
         {
             if (data.id == id) return data;
         }
-        Debug.LogError("Savedata not found at path: " + path);
+        Debug.LogError("Savedata not found at path: " + Path);
         return null;
     }
 
@@ -148,7 +143,7 @@ public static class SaveSystem
     public static Dictionary<int, string> GetSaveProfiles()
     {
         Dictionary<int, string> profiles = new();
-        if (File.Exists(path))
+        if (File.Exists(Path))
         {
             // Get save data
             SaveData[] dataSlots = GetDataSlots();
@@ -180,14 +175,14 @@ public static class SaveSystem
 
     private static SaveData[] GetDataSlots()
     {
-        if (!File.Exists(path))
+        if (!File.Exists(Path))
         {
-            Debug.Log("No file found at path :" + path);
+            Debug.Log("No file found at path :" + Path);
             return new SaveData[0];
         }
 
         BinaryFormatter formatter = new();
-        FileStream stream = new(path, FileMode.Open);
+        FileStream stream = new(Path, FileMode.Open);
 
         SaveData[] data = formatter.Deserialize(stream) as SaveData[];
         stream.Close();
@@ -198,13 +193,13 @@ public static class SaveSystem
         try
         {
             BinaryFormatter formatter = new();
-            FileStream stream = new(path, FileMode.Create);
+            FileStream stream = new(Path, FileMode.Create);
             formatter.Serialize(stream, dataSlots);
             stream.Close();
         }
         catch
         {
-            Debug.LogError("File saving error at path :" + path);
+            Debug.LogError("File saving error at path :" + Path);
             return;
         }
     }

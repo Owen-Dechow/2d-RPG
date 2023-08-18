@@ -5,10 +5,17 @@ using UnityEngine.UIElements;
 
 public class SpritePlacer : EditorWindow
 {
+    enum GameObjectType
+    {
+        Enemy,
+        NPC,
+        Other,
+    }
+
     PlacerSettings placerSettings;
     bool m_IsDragPerformed = false;
     bool m_IsDragging = false;
-    bool m_NPC;
+    GameObjectType m_GameObjectType;
 
     [MenuItem("Custom/SpritePlacer")]
     public static void ShowWindow()
@@ -32,31 +39,44 @@ public class SpritePlacer : EditorWindow
 
         foreach (GameObject prefab in placerSettings.NPCs)
         {
-            CreateDragAndDrop(prefab, placerSettings, "NPCs", true);
+            CreateDragAndDrop(prefab, placerSettings, "NPCs", GameObjectType.NPC);
         }
         foreach (GameObject prefab in placerSettings.enemies)
         {
-            CreateDragAndDrop(prefab, placerSettings, "enemies", false);
+            CreateDragAndDrop(prefab, placerSettings, "enemies", GameObjectType.Enemy);
+        }
+        foreach(GameObject prefab in placerSettings.other)
+        {
+            CreateDragAndDrop(prefab, placerSettings, "other", GameObjectType.Other);
         }
 
         SceneView.duringSceneGui += sv => OnDragEnd();
         EditorApplication.hierarchyWindowItemOnGUI += (id, rect) => OnDragEnd();
     }
 
-    void CreateDragAndDrop(GameObject prefab, PlacerSettings settings, string container, bool unpackAfterDrag)
+    void CreateDragAndDrop(GameObject prefab, PlacerSettings settings, string container, GameObjectType gameObjectType)
     {
         VisualElement box = new();
         
-
         Sprite sprite = prefab.GetComponent<SpriteRenderer>().sprite;
 
         Image image = new() { sprite=sprite };
+        image.style.backgroundColor = Color.gray;
+        image.style.paddingTop = 2;
+        image.style.paddingBottom = 2;
+        image.style.paddingLeft = 2;
+        image.style.paddingRight = 2;
         image.style.height = settings.previewSize.y;
         image.style.width = settings.previewSize.x;
         box.Add(image);
         
+        Label label = new() { text = prefab.name };
+        label.style.whiteSpace = WhiteSpace.Normal;
+        label.style.fontSize = 10;
+        label.AddToClassList("text-align-center");
+        box.Add(label);
+
         box.style.width = settings.previewSize.x;
-        box.style.height = settings.previewSize.y;
 
         box.style.marginLeft = settings.margin.x;
         box.style.marginRight = settings.margin.x;
@@ -70,7 +90,7 @@ public class SpritePlacer : EditorWindow
             DragAndDrop.objectReferences = new Object[] { prefab };
             m_IsDragPerformed = false;
             m_IsDragging = true;
-            m_NPC = unpackAfterDrag;
+            m_GameObjectType = gameObjectType;
         });
 
         box.RegisterCallback<DragUpdatedEvent>(evt =>
@@ -97,21 +117,29 @@ public class SpritePlacer : EditorWindow
                 m_IsDragging = false;
                 m_IsDragPerformed = false;
 
-                var go = Selection.activeGameObject;
+                GameObject go = Selection.activeGameObject;
 
-
-                string parentTransformName = m_NPC ? placerSettings.NPCTransform : placerSettings.enemyTransform;
-                Transform parentTransform = go.transform.Find("/" + parentTransformName);
-                if (parentTransform == null) parentTransform = new GameObject(parentTransformName).transform;
-                go.transform.SetParent(parentTransform.transform);
-
-                if (m_NPC)
+                if (m_GameObjectType != GameObjectType.Other)
                 {
-                    go.name = go.name + "(" + go.GetInstanceID() + ")";
-                    BehaviorTree behaviourTree = ScriptableObject.CreateInstance<BehaviorTree>();
-                    AssetDatabase.CreateAsset(behaviourTree, $"Assets/Prefabs/NPCs/Trees/{go.name}.asset");
-                    AssetDatabase.SaveAssets();
-                    go.GetComponent<Npc>().behaviorTree = behaviourTree;
+                    string parentTransformName = m_GameObjectType switch
+                    {
+                        GameObjectType.Enemy => placerSettings.enemyTransformName,
+                        GameObjectType.NPC => placerSettings.NPCTransformName,
+                        _ => throw new System.NotImplementedException()
+                    };
+                    
+                    Transform parentTransform = go.transform.Find("/" + parentTransformName);
+                    if (parentTransform == null) parentTransform = new GameObject(parentTransformName).transform;
+                    go.transform.SetParent(parentTransform.transform);
+
+                    if (m_GameObjectType == GameObjectType.NPC)
+                    {
+                        go.name = go.name + "(" + go.GetInstanceID() + ")";
+                        BehaviorTree behaviorTree = ScriptableObject.CreateInstance<BehaviorTree>();
+                        AssetDatabase.CreateAsset(behaviorTree, $"Assets/Prefabs/NPCs/Trees/{go.name}.asset");
+                        AssetDatabase.SaveAssets();
+                        go.GetComponent<Npc>().behaviorTree = behaviorTree;
+                    }
                 }
             }
         }

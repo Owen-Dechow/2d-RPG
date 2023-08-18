@@ -9,8 +9,8 @@ public class Node_JoinPlayer : ActionNode
 
     protected override IEnumerator Execute()
     {
-        yield return GameUI.TypeOut($"{battleUnit.title} joined {GameManager.player.playerBattleUnit.data.title}");
-        GameManager.player.AddBattleUnit(battleUnit, sprite);
+        yield return GameUI.TypeOut($"{battleUnit.title} joined {Player.Name}");
+        Player.AddBattleUnit(battleUnit, sprite);
         CheckpointSystem.SetCheckpoint(joinedPlayerCheckpoint);
     }
 }

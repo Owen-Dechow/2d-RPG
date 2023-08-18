@@ -6,9 +6,9 @@ public class Node_TakeItem : ActionNode
     [SerializeField] GameItems.Options item;
     protected override IEnumerator Execute()
     {
-        if (GameManager.player.Items.Contains(item))
+        if (Player.Items.Contains(item))
         {
-            GameManager.player.Items.Remove(item);
+            Player.Items.Remove(item);
         }
         yield return null;
     }

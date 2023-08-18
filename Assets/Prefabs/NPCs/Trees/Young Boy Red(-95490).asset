@@ -1,0 +1,459 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7175986237535572238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5df793855cbdee34baccd8fdae043593, type: 3}
+  m_Name: Node_FulfillCheckpoint
+  m_EditorClassIdentifier: 
+  guid: 911cc8034ab921c4396f791709e5871c
+  position: {x: 4032, y: -418}
+  child: {fileID: 0}
+  checkpoint: passed_number_guessing_game
+--- !u!114 &-6823025436988968297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f827acdc3bc342d40869a8399b90304f, type: 3}
+  m_Name: Node_OnInteract
+  m_EditorClassIdentifier: 
+  guid: 91e43c51ca15fec49b43fc1cf2c4eb16
+  position: {x: -1102.5565, y: -196.76779}
+  child: {fileID: 1375727919953307297}
+--- !u!114 &-6792019263092088638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6872397b211a2f2429686d8f0b002510, type: 3}
+  m_Name: Node_AnswerIndexIs
+  m_EditorClassIdentifier: 
+  guid: c7dcd3cb98c85ce4aa6067c30eff54b9
+  position: {x: 2056.4814, y: -70.43013}
+  if: {fileID: -4515134959770467688}
+  else: {fileID: 3756216908903413675}
+  answerIndexes: 03000000
+--- !u!114 &-5947281081556929679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 451a730cb07774844af6a9a5ff6409db, type: 3}
+  m_Name: Node_PickRandom
+  m_EditorClassIdentifier: 
+  guid: 536bfba0a51570a43b03b5b705f0090e
+  position: {x: 1577, y: -634}
+  if: {fileID: -4947294340910849911}
+  else: {fileID: 3863139165233826366}
+--- !u!114 &-4947294340910849911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6872397b211a2f2429686d8f0b002510, type: 3}
+  m_Name: Node_AnswerIndexIs
+  m_EditorClassIdentifier: 
+  guid: 2cf8f6a6945e66945bf9baee38439396
+  position: {x: 2056.4814, y: -705.4301}
+  if: {fileID: -4515134959770467688}
+  else: {fileID: 3756216908903413675}
+  answerIndexes: 00000000
+--- !u!114 &-4515134959770467688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6eaa618f23ed4478cdf2a70b45d04b, type: 3}
+  m_Name: Node_Say
+  m_EditorClassIdentifier: 
+  guid: addabad5e5fedbe458db705618d0cb56
+  position: {x: 2963.786, y: -417.99994}
+  child: {fileID: 7642901258244911507}
+  text: That is correct, {{ANSWER}} is the right number!
+--- !u!114 &-4240487383512534598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6872397b211a2f2429686d8f0b002510, type: 3}
+  m_Name: Node_AnswerIndexIs
+  m_EditorClassIdentifier: 
+  guid: 6d7eb26d8b168c04aabb086441ddbae3
+  position: {x: 2056.4814, y: 353.56985}
+  if: {fileID: -4515134959770467688}
+  else: {fileID: 3756216908903413675}
+  answerIndexes: 05000000
+--- !u!114 &-3301207894294158483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 451a730cb07774844af6a9a5ff6409db, type: 3}
+  m_Name: Node_PickRandom
+  m_EditorClassIdentifier: 
+  guid: f75a541ca50047d458071f29b78da72c
+  position: {x: 600, y: 1}
+  if: {fileID: -174989232507347106}
+  else: {fileID: -88653038340236476}
+--- !u!114 &-2838511738438311765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5df793855cbdee34baccd8fdae043593, type: 3}
+  m_Name: Node_FulfillCheckpoint
+  m_EditorClassIdentifier: 
+  guid: 1613f0ab277327e44a096e789c3fa187
+  position: {x: 460, y: -411}
+  child: {fileID: 0}
+  checkpoint: 
+--- !u!114 &-951965147637915647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6872397b211a2f2429686d8f0b002510, type: 3}
+  m_Name: Node_AnswerIndexIs
+  m_EditorClassIdentifier: 
+  guid: c7fbe4ff4bd651f44a88796fd863bf93
+  position: {x: 2056.4814, y: 565.5698}
+  if: {fileID: -4515134959770467688}
+  else: {fileID: 3756216908903413675}
+  answerIndexes: 06000000
+--- !u!114 &-174989232507347106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 451a730cb07774844af6a9a5ff6409db, type: 3}
+  m_Name: Node_PickRandom
+  m_EditorClassIdentifier: 
+  guid: bf8f54ee3fb30cb4cb921d1f546c8c67
+  position: {x: 1148, y: -422.0001}
+  if: {fileID: -5947281081556929679}
+  else: {fileID: 3415568229830060141}
+--- !u!114 &-88653038340236476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 451a730cb07774844af6a9a5ff6409db, type: 3}
+  m_Name: Node_PickRandom
+  m_EditorClassIdentifier: 
+  guid: f0870aa20d7966f418ade1826b13639c
+  position: {x: 1115.9999, y: 425.00003}
+  if: {fileID: 4750584355928738472}
+  else: {fileID: 722619138121984161}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c42512dadd5be304e808057306f73b0a, type: 3}
+  m_Name: Young Boy Red(-95490)
+  m_EditorClassIdentifier: 
+  rootNode: {fileID: -6823025436988968297}
+  nodes:
+  - {fileID: -6823025436988968297}
+  - {fileID: 5211783521557700431}
+  - {fileID: -3301207894294158483}
+  - {fileID: -174989232507347106}
+  - {fileID: -88653038340236476}
+  - {fileID: -5947281081556929679}
+  - {fileID: 3415568229830060141}
+  - {fileID: 4750584355928738472}
+  - {fileID: 722619138121984161}
+  - {fileID: 3863139165233826366}
+  - {fileID: 8126222496247433055}
+  - {fileID: -6792019263092088638}
+  - {fileID: 5342168758694168922}
+  - {fileID: -4240487383512534598}
+  - {fileID: -951965147637915647}
+  - {fileID: 3670152681175303616}
+  - {fileID: -4947294340910849911}
+  - {fileID: -4515134959770467688}
+  - {fileID: 3756216908903413675}
+  - {fileID: 7642901258244911507}
+  - {fileID: 5676809485931853037}
+  - {fileID: 5500912774438567826}
+  - {fileID: -7175986237535572238}
+  - {fileID: 1375727919953307297}
+  - {fileID: -2838511738438311765}
+--- !u!114 &722619138121984161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 451a730cb07774844af6a9a5ff6409db, type: 3}
+  m_Name: Node_PickRandom
+  m_EditorClassIdentifier: 
+  guid: 9389c36cfd5ba5e4c87dda2d0bfdaf84
+  position: {x: 1577, y: 707.49994}
+  if: {fileID: -951965147637915647}
+  else: {fileID: 3670152681175303616}
+--- !u!114 &1375727919953307297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8d33cd71e339d4ca9d3c57f27c1790, type: 3}
+  m_Name: Node_CheckpointFulfilled
+  m_EditorClassIdentifier: 
+  guid: a4fd898eaebb5824b955e3a43d0197cd
+  position: {x: -689.5564, y: -196.76779}
+  if: {fileID: 5500912774438567826}
+  else: {fileID: 5211783521557700431}
+  checkpointName: passed_number_guessing_game
+--- !u!114 &3415568229830060141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 451a730cb07774844af6a9a5ff6409db, type: 3}
+  m_Name: Node_PickRandom
+  m_EditorClassIdentifier: 
+  guid: 03c74deca7d8880478b6742ac6c933d2
+  position: {x: 1604.5312, y: -210.00009}
+  if: {fileID: 8126222496247433055}
+  else: {fileID: -6792019263092088638}
+--- !u!114 &3670152681175303616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6872397b211a2f2429686d8f0b002510, type: 3}
+  m_Name: Node_AnswerIndexIs
+  m_EditorClassIdentifier: 
+  guid: 52d3c8e530e52004589203496cc406ea
+  position: {x: 2056.4814, y: 777.5698}
+  if: {fileID: -4515134959770467688}
+  else: {fileID: 3756216908903413675}
+  answerIndexes: 07000000
+--- !u!114 &3756216908903413675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6eaa618f23ed4478cdf2a70b45d04b, type: 3}
+  m_Name: Node_Say
+  m_EditorClassIdentifier: 
+  guid: abb0c8e7e4c826c48917df6f7bf393aa
+  position: {x: 2963.9998, y: 424.99994}
+  child: {fileID: 0}
+  text: Nope, {{ANSWER}} is the wrong number.
+--- !u!114 &3863139165233826366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6872397b211a2f2429686d8f0b002510, type: 3}
+  m_Name: Node_AnswerIndexIs
+  m_EditorClassIdentifier: 
+  guid: f0275116b60d06948b37b31d01ec6cd4
+  position: {x: 2056.4814, y: -493.43018}
+  if: {fileID: -4515134959770467688}
+  else: {fileID: 3756216908903413675}
+  answerIndexes: 01000000
+--- !u!114 &4750584355928738472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 451a730cb07774844af6a9a5ff6409db, type: 3}
+  m_Name: Node_PickRandom
+  m_EditorClassIdentifier: 
+  guid: 6f6c2d4ed63ea4540bda726bb6838827
+  position: {x: 1577, y: 213.00006}
+  if: {fileID: 5342168758694168922}
+  else: {fileID: -4240487383512534598}
+--- !u!114 &5211783521557700431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d73e22eb8c976a42994cd26cbf8b660, type: 3}
+  m_Name: Node_AskComplexQuestion
+  m_EditorClassIdentifier: 
+  guid: 0ecad747dd01e1942b02c945f9f3cc8b
+  position: {x: 215, y: 1}
+  child: {fileID: -3301207894294158483}
+  prompt: Pick a number!
+  choices:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  allowNoAnswer: 0
+--- !u!114 &5342168758694168922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6872397b211a2f2429686d8f0b002510, type: 3}
+  m_Name: Node_AnswerIndexIs
+  m_EditorClassIdentifier: 
+  guid: fe19bf126480f5d4c8c2a548089a4d82
+  position: {x: 2056.4814, y: 141.5698}
+  if: {fileID: -4515134959770467688}
+  else: {fileID: 3756216908903413675}
+  answerIndexes: 04000000
+--- !u!114 &5500912774438567826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6eaa618f23ed4478cdf2a70b45d04b, type: 3}
+  m_Name: Node_Say
+  m_EditorClassIdentifier: 
+  guid: 5333cf1dbf2e418478c31ba431ef14a4
+  position: {x: 103.973076, y: -411.29395}
+  child: {fileID: -2838511738438311765}
+  text: Sorry but you've played too many times.
+--- !u!114 &5676809485931853037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78d2e0be2ad61644fb14b2c91d6e874d, type: 3}
+  m_Name: Node_GiveItem
+  m_EditorClassIdentifier: 
+  guid: 746ebb393103e3f44992e36577f20bc6
+  position: {x: 3676, y: -418}
+  child: {fileID: -7175986237535572238}
+  item: 0
+--- !u!114 &7642901258244911507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6eaa618f23ed4478cdf2a70b45d04b, type: 3}
+  m_Name: Node_Say
+  m_EditorClassIdentifier: 
+  guid: 95748628fbf42b748afca0a30b508e4a
+  position: {x: 3320, y: -418}
+  child: {fileID: 5676809485931853037}
+  text: Here take this beef jerky as an award!
+--- !u!114 &8126222496247433055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6872397b211a2f2429686d8f0b002510, type: 3}
+  m_Name: Node_AnswerIndexIs
+  m_EditorClassIdentifier: 
+  guid: 8b131a7dd3d13364485b05825e406cd4
+  position: {x: 2056.4814, y: -281.43015}
+  if: {fileID: -4515134959770467688}
+  else: {fileID: 3756216908903413675}
+  answerIndexes: 02000000

@@ -20,14 +20,12 @@ public class GameManager : MonoBehaviour
 
     public static int id;
 
-    public static Player player;
-
     public static string Answer { get; set; }
     public static int AnswerIndex { get; set; }
 
     public static PlayerController.PlacementSettings PlayerPlacementSettings { get; set; }
 
-    void Awake()
+    void Start()
     {
         DontDestroyOnLoad(this);
 
@@ -36,14 +34,13 @@ public class GameManager : MonoBehaviour
         id = SaveSystem.GetNewId();
 
         i = this;
-        player = GetComponent<Player>();
     }
 
     public static void SaveGame()
     {
         SaveData saveData = new();
         SaveSystem.SaveData(saveData);
-        Debug.Log("Game Saved: [path] " + SaveSystem.path);
+        Debug.Log("Game Saved: [path] " + SaveSystem.Path);
     }
 
     public static void StartBattle(BattleUnit[] enemyUnits, GameObject enemyGameObject)
@@ -51,14 +48,14 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         BattleSystem battleSystem = i.battleSystemPrefab.GetComponent<BattleSystem>();
         battleSystem.enemies = enemyUnits;
-        battleSystem.players = player.GetBattleUnits();
+        battleSystem.players = Player.GetBattleUnits();
         battleSystem.enemyGameObject = enemyGameObject;
         Instantiate(i.battleSystemPrefab);
     }
     public static string GetCleanedText(string text)
     {
         string cleanedText = text.Trim();
-        cleanedText = cleanedText.Replace("{{NAME}}", player.Name);
+        cleanedText = cleanedText.Replace("{{NAME}}", Player.Name);
         cleanedText = cleanedText.Replace("{{ANSWER}}", Answer);
         cleanedText = cleanedText.Replace('_', ' ');
         cleanedText = cleanedText.Replace("{{ANSWER_IDX}}", AnswerIndex.ToString());

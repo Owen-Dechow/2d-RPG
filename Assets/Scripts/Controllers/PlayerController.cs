@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 {
 
     [HideInInspector] public bool moving = false;
-    public bool CanAttack { get => inactiveSeconds >= 2; }
+    public bool CanAttack => inactiveSeconds >= 2;
 
     public BoxCollider2D interactionCollider;
 
@@ -20,21 +20,21 @@ public class PlayerController : MonoBehaviour
     private AnimPlus animPlus;
     private float inactiveSeconds;
 
-
-    void Awake()
+    void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
         spr = GetComponent<SpriteRenderer>();
         animPlus = GetComponent<AnimPlus>();
         inactiveSeconds = 99;
 
-        GameManager.player.playerObject = this;
+        Player.SetController(this);
 
         if (GameManager.PlayerPlacementSettings.Relocation == PlacementSettings.RelocateType.Position)
         {
             transform.position = GameManager.PlayerPlacementSettings.Position;
             animPlus.SetDirection(GameManager.PlayerPlacementSettings.Direction);
         }
+
     }
 
     public void Update()
@@ -76,44 +76,15 @@ public class PlayerController : MonoBehaviour
         MenuClick();
     }
 
+
     void MenuClick()
     {
         if (Time.timeScale <= 0) return;
 
         if (MyInput.OpenMenu)
         {
-            StartCoroutine(Menu());
+            StartCoroutine(MenuController.Menu());
         }
-    }
-
-    IEnumerator Menu()
-    {
-        Time.timeScale = 0;
-        yield return new WaitUntil(() => MyInput.Select == 0);
-
-        List<string> options = new();
-        
-        foreach(BattleUnit unit in GameManager.player.GetBattleUnits())
-        {
-            string tag;
-
-            tag = $"{unit.data.title}\\Items\\";
-            foreach (GameItems.Options item in unit.data.items)
-            {
-                options.Add(tag + GameManager.GetCleanedText(item.ToString()));
-            }
-
-            tag = $"{unit.data.title}\\Magic\\";
-            foreach (GameMagic.Options magic in unit.data.magicOptionsForUnit)
-            {
-                options.Add(tag + GameManager.GetCleanedText(magic.ToString()));
-            }
-        }
-
-        yield return GameUI.FullMenu(options.ToArray(), true);
-
-        yield return new WaitUntil(() => MyInput.Select == 0);
-        Time.timeScale = 1;
     }
 
     public void SetInactive()

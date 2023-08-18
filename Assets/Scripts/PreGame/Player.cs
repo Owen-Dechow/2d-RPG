@@ -1,49 +1,108 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static Door;
 
 public class Player : MonoBehaviour
 {
-    [HideInInspector] public PlayerController playerObject;
-    [HideInInspector] public BattleUnit playerBattleUnit;
-    [HideInInspector] public List<BattleUnit> playerComradeBattleUnits;
+    static Player i;
 
-    public List<GameItems.Options> Items { get => playerBattleUnit.data.items; }
-    public string Name { get => playerBattleUnit.data.title; }
+    public static string Name => i.playerBattleUnit.data.title; 
+    public static PlayerController PlayerController => i.playerController;
+    public static int Gold { get => i.playerBattleUnit.data.gold; set => i.playerBattleUnit.data.gold = value; }
+    public static List<GameItems.Options> Items => i.playerBattleUnit.data.itemOptionsForUnit;
+    public static List<GameMagic.Options> Magic => i.playerBattleUnit.data.magicOptionsForUnit;
+    public static List<BattleUnit> ComradeBattleUnits => i.comradeBattleUnits;
+    public static Vector2 Position => i.playerController.transform.position;
+    public static bool CanAttack => i.playerController.CanAttack;
+    public static bool Moving => i.playerController.moving;
+
+    PlayerController playerController;
+    BattleUnit playerBattleUnit;
+    List<BattleUnit> comradeBattleUnits;
 
     private void Start()
     {
+        i = this;
         playerBattleUnit = GetComponent<BattleUnit>();
+        comradeBattleUnits = new();
     }
 
-    public void UpdateToLevel1()
+    public static void UpdateToLevel1()
     {
         LevelUp.LevelData levelData = LevelUp.GetDataForLevelStatic(1);
-        playerBattleUnit.data.level = levelData.level;
-        playerBattleUnit.data.maxLife = levelData.life;
-        playerBattleUnit.data.maxMagic = levelData.magic;
-        playerBattleUnit.data.attack = levelData.attack;
-        playerBattleUnit.data.defense = levelData.defense;
+        i.playerBattleUnit.data.level = levelData.level;
+        i.playerBattleUnit.data.maxLife = levelData.life;
+        i.playerBattleUnit.data.maxMagic = levelData.magic;
+        i.playerBattleUnit.data.attack = levelData.attack;
+        i.playerBattleUnit.data.defense = levelData.defense;
 
-        playerBattleUnit.data.life = levelData.life;
-        playerBattleUnit.data.magic = levelData.magic;
+        i.playerBattleUnit.data.life = levelData.life;
+        i.playerBattleUnit.data.magic = levelData.magic;
     }
 
-    public void AddBattleUnit(BattleUnit.BattleUnitData battleUnit, Sprite sprite)
+    public static void AddBattleUnit(BattleUnit.BattleUnitData battleUnit, Sprite sprite)
     {
-        BattleUnit bu = gameObject.AddComponent<BattleUnit>();
+        GameObject go = new(battleUnit.title);
+        go.transform.parent = i.transform;
+
+        BattleUnit bu = go.AddComponent<BattleUnit>();
         bu.data = battleUnit;
         bu.sprite = sprite;
-        playerComradeBattleUnits.Add(bu);
+        i.comradeBattleUnits.Add(bu);
     }
 
-    public BattleUnit[] GetBattleUnits()
+    public static BattleUnit[] GetBattleUnits()
     {
         List<BattleUnit> playerBattleUnits = new()
         {
-            playerBattleUnit
+            i.playerBattleUnit
         };
-        playerBattleUnits.AddRange(playerComradeBattleUnits);
+        playerBattleUnits.AddRange(i.comradeBattleUnits);
 
         return playerBattleUnits.ToArray();
+    }
+
+    public static void SetController(PlayerController playerController)
+    {
+        i.playerController = playerController;
+    }
+
+    public static void SetInactive()
+    {
+        i.playerController.SetInactive();
+    }
+
+    public static BattleUnit.BattleUnitData GetBattleUnitData() => i.playerBattleUnit.data;
+
+    public static void SetBattleUnitData(BattleUnit.BattleUnitData battleUnitData)
+    {
+        i.playerBattleUnit.data = battleUnitData;
+    }
+
+    public static void MoveToDoor(Vector3 position, Door.DoorOpenDir doorOpening)
+    {
+        AnimPlus.Direction direction = doorOpening switch
+        {
+            DoorOpenDir.top => AnimPlus.Direction.up,
+            DoorOpenDir.bottom => AnimPlus.Direction.down,
+            DoorOpenDir.left => AnimPlus.Direction.left,
+            DoorOpenDir.right => AnimPlus.Direction.right,
+            _ => throw new System.NotImplementedException(),
+        };
+
+        i.playerController.GetComponent<AnimPlus>().SetDirection(direction);
+
+        i.playerController.transform.position = position;
+        Vector2 delta = new Vector2(
+            Mathf.Cos((int)doorOpening),
+            Mathf.Sin((int)doorOpening)
+            ) * 0.16f;
+        i.playerController.transform.Translate(delta.x + 0.08f, delta.y, 0);
+    }
+
+    public static void SetName(string name)
+    {
+        i.playerBattleUnit.data.title = name;
     }
 }

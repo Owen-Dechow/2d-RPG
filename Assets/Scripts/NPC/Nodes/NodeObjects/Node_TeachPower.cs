@@ -7,8 +7,8 @@ public class Node_TeachPower : ActionNode
 
     protected override IEnumerator Execute()
     {
-        yield return GameUI.TypeOut($"{GameManager.player.Name} learned the power of {GameManager.GetCleanedText(magic.ToString())}!");
-        GameManager.player.playerBattleUnit.data.magicOptionsForUnit.Add(magic);
-        GameManager.player.playerBattleUnit.data.magicOptionsForUnit.Sort();
+        yield return GameUI.TypeOut($"{Player.Name} learned the power of {GameManager.GetCleanedText(magic.ToString())}!");
+        Player.Magic.Add(magic);
+        Player.Magic.Sort();
     }
 }

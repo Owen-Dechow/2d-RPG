@@ -48,8 +48,8 @@ public class LoadGame : MonoBehaviour
             return;
         }
 
-        gameManager.GetComponent<BattleUnit>().data.title = fixedName;
-
+        Player.SetName(fixedName);
+ 
         getNamePanel.SetActive(false);
         IEnumerator startGame()
         {
@@ -60,7 +60,7 @@ public class LoadGame : MonoBehaviour
             GameManager.LoadLevel(LevelScene.Level_0, Vector2.zero, AnimPlus.Direction.down);
 
             yield return GameUI.ToggleLoadingScreen(false);
-            GameManager.player.UpdateToLevel1();
+            Player.UpdateToLevel1();
             GameManager.SaveGame();
             Destroy(gameObject);
         }
