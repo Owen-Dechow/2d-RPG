@@ -61,7 +61,7 @@ public class LoadGame : MonoBehaviour
 
             yield return GameUI.ToggleLoadingScreen(false);
             Player.UpdateToLevel1();
-            GameManager.SaveGame();
+            SaveSystem.SaveGame();
             Destroy(gameObject);
         }
         StartCoroutine(startGame());

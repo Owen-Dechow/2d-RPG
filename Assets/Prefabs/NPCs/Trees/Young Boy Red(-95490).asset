@@ -145,7 +145,7 @@ MonoBehaviour:
   guid: 1613f0ab277327e44a096e789c3fa187
   position: {x: 460, y: -411}
   child: {fileID: 0}
-  checkpoint: 
+  checkpoint: number_guessing_game_removed
 --- !u!114 &-951965147637915647
 MonoBehaviour:
   m_ObjectHideFlags: 0

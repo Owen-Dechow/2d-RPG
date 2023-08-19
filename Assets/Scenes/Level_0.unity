@@ -243,6 +243,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 9019105052490559692, guid: d77d4c7b6b676f44bacd4adfca41b02a, type: 3}
+      propertyPath: m_RefResolutionX
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 9019105052490559692, guid: d77d4c7b6b676f44bacd4adfca41b02a, type: 3}
+      propertyPath: m_RefResolutionY
+      value: 300
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d77d4c7b6b676f44bacd4adfca41b02a, type: 3}
 --- !u!1 &765446786
@@ -15127,6 +15135,71 @@ TilemapCollider2D:
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0.00001
+--- !u!1001 &1296891514
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1357900459}
+    m_Modifications:
+    - target: {fileID: 866745542581061411, guid: 47b748f49bf48ea44946767709eb36c8, type: 3}
+      propertyPath: m_Name
+      value: Young Boy Red(-108724)
+      objectReference: {fileID: 0}
+    - target: {fileID: 866745542581061412, guid: 47b748f49bf48ea44946767709eb36c8, type: 3}
+      propertyPath: behaviorTree
+      value: 
+      objectReference: {fileID: 11400000, guid: e3ed6f8b6fb64e3459ed4b6d911b8522, type: 2}
+    - target: {fileID: 866745542581061412, guid: 47b748f49bf48ea44946767709eb36c8, type: 3}
+      propertyPath: NPCEnabledCheckpointWindowClose
+      value: number_guessing_game_removed
+      objectReference: {fileID: 0}
+    - target: {fileID: 866745542581061414, guid: 47b748f49bf48ea44946767709eb36c8, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 866745542581061414, guid: 47b748f49bf48ea44946767709eb36c8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 866745542581061414, guid: 47b748f49bf48ea44946767709eb36c8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.588
+      objectReference: {fileID: 0}
+    - target: {fileID: 866745542581061414, guid: 47b748f49bf48ea44946767709eb36c8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 866745542581061414, guid: 47b748f49bf48ea44946767709eb36c8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 866745542581061414, guid: 47b748f49bf48ea44946767709eb36c8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 866745542581061414, guid: 47b748f49bf48ea44946767709eb36c8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 866745542581061414, guid: 47b748f49bf48ea44946767709eb36c8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 866745542581061414, guid: 47b748f49bf48ea44946767709eb36c8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 866745542581061414, guid: 47b748f49bf48ea44946767709eb36c8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 866745542581061414, guid: 47b748f49bf48ea44946767709eb36c8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 47b748f49bf48ea44946767709eb36c8, type: 3}
 --- !u!1 &1357900458
 GameObject:
   m_ObjectHideFlags: 0
@@ -15154,7 +15227,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2047719670}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15872,6 +15946,11 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!4 &2047719670 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 866745542581061414, guid: 47b748f49bf48ea44946767709eb36c8, type: 3}
+  m_PrefabInstance: {fileID: 1296891514}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &661084307358719136
 PrefabInstance:
   m_ObjectHideFlags: 0

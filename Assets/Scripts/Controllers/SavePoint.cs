@@ -22,7 +22,7 @@ public class SavePoint : MonoBehaviour
     {
         Time.timeScale = 0;
         yield return GameUI.GetYesNo("Save Game?");
-        if (GameManager.Answer == "Yes") GameManager.SaveGame();
+        if (GameManager.Answer == "Yes") SaveSystem.SaveGame();
         Time.timeScale = 1;
     }
 }

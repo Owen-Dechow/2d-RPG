@@ -20,6 +20,11 @@ public class PlayerController : MonoBehaviour
     private AnimPlus animPlus;
     private float inactiveSeconds;
 
+    private void Awake()
+    {
+        Player.SetController(this);
+    }
+
     void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
@@ -27,7 +32,6 @@ public class PlayerController : MonoBehaviour
         animPlus = GetComponent<AnimPlus>();
         inactiveSeconds = 99;
 
-        Player.SetController(this);
 
         if (GameManager.PlayerPlacementSettings.Relocation == PlacementSettings.RelocateType.Position)
         {

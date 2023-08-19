@@ -36,13 +36,6 @@ public class GameManager : MonoBehaviour
         i = this;
     }
 
-    public static void SaveGame()
-    {
-        SaveData saveData = new();
-        SaveSystem.SaveData(saveData);
-        Debug.Log("Game Saved: [path] " + SaveSystem.Path);
-    }
-
     public static void StartBattle(BattleUnit[] enemyUnits, GameObject enemyGameObject)
     {
         Time.timeScale = 0;
@@ -65,8 +58,8 @@ public class GameManager : MonoBehaviour
 
     public static void LoadFromSavePoint(int id)
     {
-        SaveData data = SaveSystem.LoadData(id);
-        SaveData.UnpackSaveData(data);
+        SaveDataSerializable data = SaveSystem.LoadData(id);
+        SaveDataSerializable.UnpackSaveData(data);
         LoadLevel(data.levelScene, new Vector2(data.position[0], data.position[1]), AnimPlus.Direction.down);
     }
     public static void LostBattle()
