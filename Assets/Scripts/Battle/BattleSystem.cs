@@ -430,6 +430,14 @@ public class BattleSystem : MonoBehaviour
             case BattleUnit.TurnOptions.Attack:
                 {
                     yield return ChooseUnitPlayer(enemies);
+                    
+                    // Check if player changes mind
+                    if (selectedUnit == null)
+                    {
+                        yield return PlayerUnitTurn(unit);
+                        yield break;
+                    }
+
                     yield return Attack(unit, selectedUnit, ChangeLifeOnEnemyUnit);
                     break;
                 }

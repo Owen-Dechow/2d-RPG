@@ -104,4 +104,8 @@ public class AnimPlus : MonoBehaviour
     {
         currentDirection = direction;
     }
+    public void SetUseRigidBody(bool value)
+    {
+        useRigidBody = value;
+    }
 }

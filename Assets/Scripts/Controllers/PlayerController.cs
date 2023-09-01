@@ -69,9 +69,11 @@ public class PlayerController : MonoBehaviour
 
         // rigid body
         delta = delta.normalized;
-        if (running) delta *= dashSpeed;
-        else delta *= normalSpeed;
-        rb2D.velocity = normalSpeed * (Vector3)delta;
+        if
+            (running) delta *= dashSpeed;
+        else
+            delta *= normalSpeed;
+        rb2D.velocity = normalSpeed * delta;
 
         // Moving
         moving = delta.magnitude > 0;

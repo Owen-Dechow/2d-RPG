@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5621261868703214586}
   - component: {fileID: 5621261868703214566}
   - component: {fileID: 5621261868703214564}
+  - component: {fileID: 4642137448286071928}
   m_Layer: 0
   m_Name: Old Man Purple
   m_TagString: Untagged
@@ -150,6 +151,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementType: 0
   behaviorTree: {fileID: 0}
+  NPCEnabledCheckpointWindowOpen: 
+  NPCEnabledCheckpointWindowClose: 
 --- !u!114 &5621261868703214566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,7 +177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d559f75e8e6a2c409c733415ec03e20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveUp: {fileID: 7400000, guid: 4d0a8aaf654327c4b9f8c7ff5d6b96bb, type: 2}
+  moveUp: {fileID: 7400000, guid: 1918dd90ee072f242aaeb613cf80d157, type: 2}
   moveDown: {fileID: 7400000, guid: 0a901386506335849be18c889ad98f17, type: 2}
   moveHorizontal: {fileID: 7400000, guid: 6e71eef0c69bef74480ff9d1636cbfb7, type: 2}
   idleUp: {fileID: 7400000, guid: 4d0a8aaf654327c4b9f8c7ff5d6b96bb, type: 2}
@@ -182,3 +185,24 @@ MonoBehaviour:
   idleHorizontal: {fileID: 7400000, guid: 7c53b042740c63b4286ddf97212c9388, type: 2}
   speedAdded: 0
   useRigidBody: 0
+--- !u!50 &4642137448286071928
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5621261868703214589}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
