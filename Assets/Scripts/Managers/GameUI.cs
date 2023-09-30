@@ -19,8 +19,9 @@ public class GameUI : MonoBehaviour
 
     public static void RenderAtPosition(GameObject go, Vector2 position)
     {
+        Vector2 padding = new Vector2(20, -20);
         go.transform.SetParent(i.transform, false);
-        (go.transform as RectTransform).anchoredPosition = position * new Vector2(1, -1) + new Vector2(5, -5);
+        (go.transform as RectTransform).anchoredPosition = position * new Vector2(1, -1) + padding;
     }
 
     public static IEnumerator TypeOut(string text, bool instant = false)

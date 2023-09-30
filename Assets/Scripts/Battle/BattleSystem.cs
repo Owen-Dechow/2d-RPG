@@ -75,7 +75,7 @@ public class BattleSystem : MonoBehaviour
             panelMove += panelSpread / 2;
 
             playerPanels[i] = Instantiate(panelPrefab, canvas.transform).GetComponent<Panel>();
-            playerPanels[i].unit = players[i];
+            playerPanels[i].Unit = players[i];
             playerPanels[i].transform.Translate(panelMove, 0, 0);
         }
 
@@ -113,6 +113,7 @@ public class BattleSystem : MonoBehaviour
         DisplayUnitsOnPanel();
         StartCoroutine(Battle());
     }
+
     private void Update()
     {
         foreach (Panel panel in playerPanels) { panel.DisplayUnitGradual(Time.unscaledDeltaTime * 4); }
@@ -407,6 +408,10 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator PlayerUnitTurn(BattleUnit unit)
     {
+        // Indicate which player is going
+        Panel playerPanel = playerPanels.Where(p => p.Unit == unit).First();
+        playerPanel.Bump = true;
+
         // Wait for end of frame
         yield return new WaitForEndOfFrame();
 
@@ -578,6 +583,9 @@ public class BattleSystem : MonoBehaviour
                     break;
                 }
         }
+
+        // Return player panel to original position
+        playerPanel.Bump = false;
     }
     IEnumerator EnemyUnitTurn(BattleUnit unit)
     {
@@ -879,7 +887,7 @@ public class BattleSystem : MonoBehaviour
     {
         foreach (Panel panel in playerPanels)
         {
-            panel.DisplayUnit();
+            panel.InstantiateToUnit();
         }
     }
 }
