@@ -19,7 +19,18 @@ public class GameUI : MonoBehaviour
 
     public static void RenderAtPosition(GameObject go, Vector2 position)
     {
-        Vector2 padding = new Vector2(20, -20);
+        float borderPad = 20;
+        float normalPad = 5;
+        Vector2 padding = new(1, -1);
+        if (position.x == 0)
+            padding.x *= borderPad;
+        else
+            padding.x *= normalPad;
+        if (position.y == 0)
+            padding.y *= borderPad;
+        else
+            padding.y *= normalPad;
+
         go.transform.SetParent(i.transform, false);
         (go.transform as RectTransform).anchoredPosition = position * new Vector2(1, -1) + padding;
     }

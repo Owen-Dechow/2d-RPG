@@ -13,6 +13,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] Transform enemyBattleStation;
     [SerializeField] GameObject panelPrefab;
     [SerializeField] Canvas canvas;
+    [SerializeField] GameObject pointer;
 
     [Header("Action Messages")]
     [SerializeField] string[] attackText;
@@ -411,6 +412,7 @@ public class BattleSystem : MonoBehaviour
         // Indicate which player is going
         Panel playerPanel = playerPanels.Where(p => p.Unit == unit).First();
         playerPanel.Bump = true;
+        PositionPointer(unit);
 
         // Wait for end of frame
         yield return new WaitForEndOfFrame();
@@ -435,7 +437,7 @@ public class BattleSystem : MonoBehaviour
             case BattleUnit.TurnOptions.Attack:
                 {
                     yield return ChooseUnitPlayer(enemies);
-                    
+
                     // Check if player changes mind
                     if (selectedUnit == null)
                     {
@@ -587,10 +589,16 @@ public class BattleSystem : MonoBehaviour
         // Return player panel to original position
         playerPanel.Bump = false;
     }
+
+
+
     IEnumerator EnemyUnitTurn(BattleUnit unit)
     {
         // Wait for end of frame
         yield return new WaitForEndOfFrame();
+
+        // Indicate which player is going
+        PositionPointer(unit);
 
         // Get possible actions
         string[] possibleActions = GetPossibleActions(unit);
@@ -889,5 +897,23 @@ public class BattleSystem : MonoBehaviour
         {
             panel.InstantiateToUnit();
         }
+    }
+
+    private void PositionPointer(BattleUnit unit)
+    {
+        pointer.transform.position = unit.spriteRenderer.transform.position;
+
+        int moveDir;
+        if (Camera.main.WorldToScreenPoint(pointer.transform.position).y - Camera.main.scaledPixelHeight / 2 > 0)
+        {
+            moveDir = 1;
+        }
+        else
+        {
+            moveDir = -1;
+        }
+
+        pointer.transform.position += .2f * moveDir * Vector3.up;
+        pointer.transform.rotation = Quaternion.Euler(0, 0, moveDir * -90);
     }
 }
