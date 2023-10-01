@@ -976,7 +976,6 @@ GameObject:
   - component: {fileID: 3782088522993670909}
   - component: {fileID: 8867076351479533626}
   - component: {fileID: 4056860665960299834}
-  - component: {fileID: 6589268364935730508}
   - component: {fileID: 265705088306453298}
   - component: {fileID: 7913963163605877383}
   m_Layer: 5
@@ -1007,7 +1006,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 20}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 140, y: 90}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &3782088522993670909
 CanvasRenderer:
@@ -1066,20 +1065,6 @@ MonoBehaviour:
   panelName: {fileID: 2355833091760061821}
   background: {fileID: 8867076351479533626}
   deathColor: {r: 0.2924528, g: 0, b: 0, a: 1}
---- !u!114 &6589268364935730508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5994181634638268432}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 2
-  m_VerticalFit: 2
 --- !u!114 &265705088306453298
 MonoBehaviour:
   m_ObjectHideFlags: 0
