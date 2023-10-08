@@ -73,8 +73,8 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        if (!Player.CanAttack) return;
-        Vector2 delta = GetDelta(transform.position, Player.Position);
+        if (!PlayerController.playerController.CanAttack) return;
+        Vector2 delta = GetDelta(transform.position, PlayerController.playerController.transform.position);
         delta = delta.normalized;
         rb.velocity = movementOptions.speed * (Vector3)delta;
 
@@ -92,7 +92,7 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D collider)
     {
-        if (!Player.CanAttack) return;
+        if (!PlayerController.playerController.CanAttack) return;
 
         if (!collider.CompareTag("Player")) return;
         if (Time.timeScale < 0.1) return;
@@ -123,7 +123,7 @@ public class Enemy : MonoBehaviour
         float distanceToPlayer = Vector2.Distance(target, position);
 
         if (movementOptions.movementTrigger == MovementTrigger.WhenPlayerMoving)
-            if (!Player.Moving)
+            if (!PlayerController.playerController.moving)
                 return Vector2.zero;
 
         if (distanceToPlayer <= movementOptions.chaseRadius)

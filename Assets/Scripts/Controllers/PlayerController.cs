@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public bool moving = false;
     public bool CanAttack => inactiveSeconds >= 2;
 
+    public static PlayerController playerController;
+
     public BoxCollider2D interactionCollider;
 
     [SerializeField] float normalSpeed;
@@ -20,13 +22,13 @@ public class PlayerController : MonoBehaviour
     private AnimPlus animPlus;
     private float inactiveSeconds;
 
-    private void Awake()
-    {
-        Player.SetController(this);
-    }
+    private Vector2 delta;
+    private bool running;
+    private bool openMenu;
 
     void Start()
     {
+        playerController = this;
         rb2D = GetComponent<Rigidbody2D>();
         spr = GetComponent<SpriteRenderer>();
         animPlus = GetComponent<AnimPlus>();
@@ -38,18 +40,21 @@ public class PlayerController : MonoBehaviour
             transform.position = GameManager.PlayerPlacementSettings.Position;
             animPlus.SetDirection(GameManager.PlayerPlacementSettings.Direction);
         }
-
     }
 
-    public void Update()
+    void Update()
     {
-        bool running = MyInput.Select == 1;
-        animPlus.speedAdded = running;
-        Vector2 delta = new()
+        // Input
+        running = MyInput.Select == 1;
+        delta = new()
         {
             x = MyInput.MoveHorizontal,
             y = MyInput.MoveVertical
         };
+        openMenu = MyInput.OpenMenu;
+
+
+        animPlus.speedAdded = running;
 
         // inactive
         if (!CanAttack)
@@ -66,30 +71,24 @@ public class PlayerController : MonoBehaviour
             else if (delta.x == -1) spr.flipX = true;
         }
 
-
         // rigid body
         delta = delta.normalized;
+
         if
             (running) delta *= dashSpeed;
         else
             delta *= normalSpeed;
+
         rb2D.velocity = normalSpeed * delta;
 
         // Moving
         moving = delta.magnitude > 0;
 
         // Handel Menu
-        MenuClick();
-    }
-
-
-    void MenuClick()
-    {
-        if (Time.timeScale <= 0) return;
-
-        if (MyInput.OpenMenu)
+        if (openMenu)
         {
-            StartCoroutine(MenuController.Menu());
+            if (Time.timeScale > 0)
+                StartCoroutine(MenuController.Menu());
         }
     }
 

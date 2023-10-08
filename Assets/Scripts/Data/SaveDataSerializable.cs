@@ -20,7 +20,7 @@ public class SaveDataSerializable
     public SaveDataSerializable()
     {
         // Save player position
-        Vector2 position = Player.Position;
+        Vector2 position = PlayerController.playerController.transform.position;
         this.position = new float[2] { position.x, position.y };
         levelScene = (LevelScene)System.Enum.Parse(typeof(LevelScene), SceneManager.GetActiveScene().name);
 

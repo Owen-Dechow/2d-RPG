@@ -12,7 +12,7 @@ public class CameraController : MonoBehaviour
 
     void SetUpMainCamera()
     {
-        Vector3 position = Player.Position;
+        Vector3 position = PlayerController.playerController.transform.position;
         position.z = transform.position.z;
         if (followPlayer) transform.position = position;
     }
@@ -25,7 +25,7 @@ public class CameraController : MonoBehaviour
     void LateUpdate()
     {
         if (!followPlayer) return;
-        Vector3 delta = ((Vector3)Player.Position - transform.position) / drag;
+        Vector3 delta = ((Vector3)PlayerController.playerController.transform.position - transform.position) / drag;
         delta.z = 0;
         transform.position += Time.timeScale * Time.unscaledDeltaTime * delta;
     }

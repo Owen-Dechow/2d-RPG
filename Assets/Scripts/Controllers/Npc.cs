@@ -1,11 +1,7 @@
-// Ignore Spelling: Npc
-
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEngine.UI.CanvasScaler;
-
 
 public class Npc : MonoBehaviour
 {
@@ -146,7 +142,7 @@ public class Npc : MonoBehaviour
                 }
             case MovementType.FacePlayer:
                 {
-                    Vector3 playerPosition = Player.PlayerController.transform.position;
+                    Vector3 playerPosition = PlayerController.playerController.transform.position;
                     if (Vector3.Distance(playerPosition, transform.position) <= movementRadius)
                     {
                         Vector2 positionDif = playerPosition - transform.position;

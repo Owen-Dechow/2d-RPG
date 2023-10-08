@@ -295,6 +295,7 @@ Transform:
   - {fileID: 7591088857575168634}
   - {fileID: 9187887852910297072}
   - {fileID: 5174225853485602981}
+  - {fileID: 1181453206517232555}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -452,6 +453,37 @@ MonoBehaviour:
   textArea: {fileID: 5274386076459265888, guid: ddf324af1ee15cc4da15036adb156c41, type: 3}
   optionArea: {fileID: 5970641827195594597, guid: 5940cd7e63b53704ab1533c64907c9f2, type: 3}
   loadingScreen: {fileID: 8042831398115974259}
+--- !u!1 &7611269105174037768
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1181453206517232555}
+  m_Layer: 0
+  m_Name: PauseManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1181453206517232555
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7611269105174037768}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6483088251835158205}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8042831398115974259
 GameObject:
   m_ObjectHideFlags: 0

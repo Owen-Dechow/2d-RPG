@@ -239,7 +239,7 @@ public class BattleSystem : MonoBehaviour
         {
             case BattleFinish.PlayerWin:
                 Destroy(enemyGameObject);
-                Player.PlayerController.SetInactive();
+                PlayerController.playerController.SetInactive();
                 yield return GameUI.TypeOut($"{PlayerTitle} won the battle!");
 
                 int exp = enemies.Sum(x => x.data.expAward);
@@ -267,7 +267,7 @@ public class BattleSystem : MonoBehaviour
                 break;
 
             case BattleFinish.Run:
-                Player.SetInactive();
+                PlayerController.playerController.SetInactive();
                 break;
 
             case BattleFinish.None:

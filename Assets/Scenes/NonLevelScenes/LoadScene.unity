@@ -2911,6 +2911,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1716346806}
   m_CullTransparentMesh: 1
+--- !u!1 &1827301826 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7611269105174037768, guid: 235006f858fdc624f9807ee225510d30, type: 3}
+  m_PrefabInstance: {fileID: 6483088252314581714}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1827301828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827301826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9472f949058a6ec46bfff5f7fdb9edfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseState: 0
+  inputEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  movementEvents:
+    m_PersistentCalls:
+      m_Calls: []
+  uiEvents:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1830945829
 GameObject:
   m_ObjectHideFlags: 0
@@ -3487,5 +3514,9 @@ PrefabInstance:
       propertyPath: sprite
       value: 
       objectReference: {fileID: 1230940007, guid: 372f1598b6bed06438d49330a68bd2f9, type: 3}
+    - target: {fileID: 7611269105174037768, guid: 235006f858fdc624f9807ee225510d30, type: 3}
+      propertyPath: m_Name
+      value: Pause
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 235006f858fdc624f9807ee225510d30, type: 3}

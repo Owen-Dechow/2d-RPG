@@ -8,16 +8,11 @@ public class Player : MonoBehaviour
     static Player i;
 
     public static string Name => i.playerBattleUnit.data.title; 
-    public static PlayerController PlayerController => i.playerController;
     public static int Gold { get => i.playerBattleUnit.data.gold; set => i.playerBattleUnit.data.gold = value; }
     public static List<GameItems.Options> Items => i.playerBattleUnit.data.itemOptionsForUnit;
     public static List<GameMagic.Options> Magic => i.playerBattleUnit.data.magicOptionsForUnit;
     public static List<BattleUnit> ComradeBattleUnits => i.comradeBattleUnits;
-    public static Vector2 Position => i.playerController.transform.position;
-    public static bool CanAttack => i.playerController.CanAttack;
-    public static bool Moving => i.playerController.moving;
 
-    PlayerController playerController;
     BattleUnit playerBattleUnit;
     List<BattleUnit> comradeBattleUnits;
 
@@ -63,16 +58,6 @@ public class Player : MonoBehaviour
         return playerBattleUnits.ToArray();
     }
 
-    public static void SetController(PlayerController playerController)
-    {
-        i.playerController = playerController;
-    }
-
-    public static void SetInactive()
-    {
-        i.playerController.SetInactive();
-    }
-
     public static BattleUnit.BattleUnitData GetBattleUnitData() => i.playerBattleUnit.data;
 
     public static void SetBattleUnitData(BattleUnit.BattleUnitData battleUnitData)
@@ -91,14 +76,14 @@ public class Player : MonoBehaviour
             _ => throw new System.NotImplementedException(),
         };
 
-        i.playerController.GetComponent<AnimPlus>().SetDirection(direction);
+        PlayerController.playerController.GetComponent<AnimPlus>().SetDirection(direction);
 
-        i.playerController.transform.position = position;
+        PlayerController.playerController.transform.position = position;
         Vector2 delta = new Vector2(
             Mathf.Cos((int)doorOpening),
             Mathf.Sin((int)doorOpening)
             ) * 0.16f;
-        i.playerController.transform.Translate(delta.x + 0.08f, delta.y, 0);
+        PlayerController.playerController.transform.Translate(delta.x + 0.08f, delta.y, 0);
     }
 
     public static void SetName(string name)
