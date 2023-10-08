@@ -590,8 +590,6 @@ public class BattleSystem : MonoBehaviour
         playerPanel.Bump = false;
     }
 
-
-
     IEnumerator EnemyUnitTurn(BattleUnit unit)
     {
         // Wait for end of frame
@@ -906,11 +904,11 @@ public class BattleSystem : MonoBehaviour
         int moveDir;
         if (Camera.main.WorldToScreenPoint(pointer.transform.position).y - Camera.main.scaledPixelHeight / 2 > 0)
         {
-            moveDir = 1;
+            moveDir = -1;
         }
         else
         {
-            moveDir = -1;
+            moveDir = 1;
         }
 
         pointer.transform.position += .2f * moveDir * Vector3.up;
