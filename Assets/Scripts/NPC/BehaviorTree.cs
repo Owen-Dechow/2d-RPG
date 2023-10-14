@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CreateAssetMenu(menuName = "NPC Action Tree")]
+[CreateAssetMenu(menuName = "Action Tree")]
 public class BehaviorTree : ScriptableObject
 {
     [HideInInspector] public Node rootNode;
@@ -25,18 +25,18 @@ public class BehaviorTree : ScriptableObject
         node.name = type.Name;
         node.guid = GUID.Generate().ToString();
 
-        Undo.RecordObject(this, "NPC Action Tree (Create Node)");
+        Undo.RecordObject(this, "Action Tree (Create Node)");
         nodes.Add(node);
 
         AssetDatabase.AddObjectToAsset(node, this);
-        Undo.RegisterCreatedObjectUndo(node, "NPC Action Tree (Create Node)");
+        Undo.RegisterCreatedObjectUndo(node, "Action Tree (Create Node)");
         AssetDatabase.SaveAssets();
         return node;
     }
 
     public void DeleteNode(Node node)
     {
-        Undo.RecordObject(this, "NPC Action Tree (Create Node)");
+        Undo.RecordObject(this, "Action Tree (Create Node)");
         nodes.Remove(node);
 
         //AssetDatabase.RemoveObjectFromAsset(node);
@@ -49,7 +49,7 @@ public class BehaviorTree : ScriptableObject
         Node_OnInteract root = parent as Node_OnInteract;
         if (root != null)
         {
-            Undo.RecordObject(root, "NPC Action Tree (Create Node)");
+            Undo.RecordObject(root, "Action Tree (Create Node)");
             root.child = child;
             EditorUtility.SetDirty(root);
         }
@@ -57,7 +57,7 @@ public class BehaviorTree : ScriptableObject
         ActionNode action = parent as ActionNode;
         if (action != null)
         {
-            Undo.RecordObject(action, "NPC Action Tree (Create Node)");
+            Undo.RecordObject(action, "Action Tree (Create Node)");
             action.child = child;
             EditorUtility.SetDirty(action);
         }
@@ -65,7 +65,7 @@ public class BehaviorTree : ScriptableObject
         IFNode @if = parent as IFNode;
         if (@if != null)
         {
-            Undo.RecordObject(@if, "NPC Action Tree (Create Node)");
+            Undo.RecordObject(@if, "Action Tree (Create Node)");
             if (trueFalsePort)
             {
                 @if.@if = child;
@@ -84,7 +84,7 @@ public class BehaviorTree : ScriptableObject
         Node_OnInteract root = parent as Node_OnInteract;
         if (root != null)
         {
-            Undo.RecordObject(root, "NPC Action Tree (Remove Node)");
+            Undo.RecordObject(root, "Action Tree (Remove Node)");
             root.child = null;
             EditorUtility.SetDirty(root);
         }
@@ -92,7 +92,7 @@ public class BehaviorTree : ScriptableObject
         ActionNode action = parent as ActionNode;
         if (action != null)
         {
-            Undo.RecordObject(action, "NPC Action Tree (Remove Node)");
+            Undo.RecordObject(action, "Action Tree (Remove Node)");
             action.child = null;
             EditorUtility.SetDirty(action);
         }
@@ -100,7 +100,7 @@ public class BehaviorTree : ScriptableObject
         IFNode @if = parent as IFNode;
         if (@if != null)
         {
-            Undo.RecordObject(@if, "NPC Action Tree (Remove Node)");
+            Undo.RecordObject(@if, "Action Tree (Remove Node)");
             if (trueFalsePort)
             {
                 @if.@if = null;

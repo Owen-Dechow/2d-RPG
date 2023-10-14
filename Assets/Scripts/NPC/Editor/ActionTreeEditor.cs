@@ -5,15 +5,15 @@ using UnityEditor.UIElements;
 using UnityEditor.Callbacks;
 
 
-public class NPCActionTreeEditor : EditorWindow
+public class ActionTreeEditor : EditorWindow
 {
     TreeGraph treeView;
 
-    [MenuItem("Custom/NPC Action Tree Editor")]
+    [MenuItem("Custom/Action Tree Editor")]
     public static void ShowExample()
     {
-        NPCActionTreeEditor wnd = GetWindow<NPCActionTreeEditor>();
-        wnd.titleContent = new GUIContent("NPCActionTreeEditor");
+        ActionTreeEditor wnd = GetWindow<ActionTreeEditor>();
+        wnd.titleContent = new GUIContent("ActionTreeEditor");
         wnd.Show();
     }
 
@@ -36,12 +36,12 @@ public class NPCActionTreeEditor : EditorWindow
         VisualElement root = rootVisualElement;
 
         // Import UXML
-        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Scripts/NPC/Editor/NPCActionTreeEditor.uxml");
+        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Scripts/NPC/Editor/ActionTreeEditor.uxml");
         visualTree.CloneTree(root);
 
         // A stylesheet can be added to a VisualElement.
         // The style will be applied to the VisualElement and all of its children.
-        var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Scripts/NPC/Editor/NPCActionTreeEditor.uss");
+        var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Scripts/NPC/Editor/ActionTreeEditor.uss");
         root.styleSheets.Add(styleSheet);
 
         treeView = root.Q<TreeGraph>();

@@ -67,7 +67,7 @@ public class NodeView : UnityEditor.Experimental.GraphView.Node
     public override void SetPosition(Rect newPos)
     {
         base.SetPosition(newPos);
-        Undo.RecordObject(node, "NPC Action Tree (Set Position)");
+        Undo.RecordObject(node, "Action Tree (Set Position)");
         node.position.x = newPos.xMin;
         node.position.y = newPos.yMin;
         EditorUtility.SetDirty(node);
