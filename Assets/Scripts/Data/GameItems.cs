@@ -22,7 +22,6 @@ public class GameItems
 
     public static DataSet GetDataForOption(string stringOption)
     {
-
         stringOption = stringOption.Replace(' ', '_');
         Options option = (Options)Enum.Parse(typeof(Options), stringOption);
 

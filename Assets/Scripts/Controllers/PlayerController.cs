@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static Door;
 
 public class PlayerController : MonoBehaviour
 {
@@ -40,6 +41,12 @@ public class PlayerController : MonoBehaviour
             transform.position = GameManager.PlayerPlacementSettings.Position;
             animPlus.SetDirection(GameManager.PlayerPlacementSettings.Direction);
         }
+        else if (GameManager.PlayerPlacementSettings.Relocation == PlacementSettings.RelocateType.Door)
+        {
+            MoveToDoor(Door.door.transform.position, door.doorOpening);
+        }
+
+        CameraController.CenterCameraOnPlayer();
     }
 
     void Update()
@@ -90,6 +97,51 @@ public class PlayerController : MonoBehaviour
             if (Time.timeScale > 0)
                 StartCoroutine(MenuController.Menu());
         }
+    }
+
+    void MoveToDoor(Vector3 position, Door.DoorOpenDir doorOpening)
+    {
+        AnimPlus.Direction direction;
+        Vector2 delta;
+
+        switch (doorOpening)
+        {
+            case DoorOpenDir.top:
+                delta = Vector2.up;
+                direction = AnimPlus.Direction.up;
+                break;
+
+            case DoorOpenDir.bottom:
+                delta = Vector2.down;
+                direction = AnimPlus.Direction.down;
+                break;
+
+            case DoorOpenDir.right:
+                delta = Vector2.right;
+                direction = AnimPlus.Direction.right;
+                break;
+
+            case DoorOpenDir.left:
+                delta = Vector2.left;
+                direction = AnimPlus.Direction.left;
+                break;
+            default:
+                throw new Exception("Unknown Direction");
+        }
+
+        GetComponent<AnimPlus>().SetDirection(direction);
+
+        transform.position = position;
+
+        if (Mathf.Abs(delta.x) == 1)
+        {
+            delta *= 0.17f;
+            delta.y += 0.08f;
+        }
+        else
+            delta *= 0.16f;
+
+        transform.Translate(delta.x, delta.y, 0);
     }
 
     public void SetInactive()

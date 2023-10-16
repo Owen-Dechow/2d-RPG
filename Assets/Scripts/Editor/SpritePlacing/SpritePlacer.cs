@@ -45,7 +45,7 @@ public class SpritePlacer : EditorWindow
         {
             CreateDragAndDrop(prefab, placerSettings, "enemies", GameObjectType.Enemy);
         }
-        foreach(GameObject prefab in placerSettings.other)
+        foreach (GameObject prefab in placerSettings.other)
         {
             CreateDragAndDrop(prefab, placerSettings, "other", GameObjectType.Other);
         }
@@ -57,10 +57,10 @@ public class SpritePlacer : EditorWindow
     void CreateDragAndDrop(GameObject prefab, PlacerSettings settings, string container, GameObjectType gameObjectType)
     {
         VisualElement box = new();
-        
+
         Sprite sprite = prefab.GetComponent<SpriteRenderer>().sprite;
 
-        Image image = new() { sprite=sprite };
+        Image image = new() { sprite = sprite };
         image.style.backgroundColor = Color.gray;
         image.style.paddingTop = 2;
         image.style.paddingBottom = 2;
@@ -69,7 +69,7 @@ public class SpritePlacer : EditorWindow
         image.style.height = settings.previewSize.y;
         image.style.width = settings.previewSize.x;
         box.Add(image);
-        
+
         Label label = new() { text = prefab.name };
         label.style.whiteSpace = WhiteSpace.Normal;
         label.style.fontSize = 10;
@@ -98,7 +98,7 @@ public class SpritePlacer : EditorWindow
             DragAndDrop.visualMode = DragAndDropVisualMode.Move;
         });
 
-        
+
         rootVisualElement.Q<VisualElement>(container).Add(box);
     }
 
@@ -119,27 +119,27 @@ public class SpritePlacer : EditorWindow
 
                 GameObject go = Selection.activeGameObject;
 
-                if (m_GameObjectType != GameObjectType.Other)
+                string parentTransformName = m_GameObjectType switch
                 {
-                    string parentTransformName = m_GameObjectType switch
-                    {
-                        GameObjectType.Enemy => placerSettings.enemyTransformName,
-                        GameObjectType.NPC => placerSettings.NPCTransformName,
+                    GameObjectType.Enemy => placerSettings.enemyTransformName,
+                    GameObjectType.NPC => placerSettings.NPCTransformName,
+                    GameObjectType.Other => placerSettings.otherTransformName,
                         _ => throw new System.NotImplementedException()
-                    };
-                    
-                    Transform parentTransform = go.transform.Find("/" + parentTransformName);
-                    if (parentTransform == null) parentTransform = new GameObject(parentTransformName).transform;
-                    go.transform.SetParent(parentTransform.transform);
+                };
 
-                    if (m_GameObjectType == GameObjectType.NPC)
-                    {
-                        go.name = go.name + "(" + go.GetInstanceID() + ")";
-                        BehaviorTree behaviorTree = ScriptableObject.CreateInstance<BehaviorTree>();
-                        AssetDatabase.CreateAsset(behaviorTree, $"Assets/Prefabs/NPCs/Trees/{go.name}.asset");
-                        AssetDatabase.SaveAssets();
-                        go.GetComponent<Npc>().behaviorTree = behaviorTree;
-                    }
+                Transform parentTransform = go.transform.Find("/" + parentTransformName);
+                if (parentTransform == null) parentTransform = new GameObject(parentTransformName).transform;
+                go.transform.SetParent(parentTransform.transform);
+
+
+
+                if (m_GameObjectType == GameObjectType.NPC)
+                {
+                    go.name = go.name + "(" + go.GetInstanceID() + ")";
+                    BehaviorTree behaviorTree = ScriptableObject.CreateInstance<BehaviorTree>();
+                    AssetDatabase.CreateAsset(behaviorTree, $"Assets/Prefabs/NPCs/Trees/{go.name}.asset");
+                    AssetDatabase.SaveAssets();
+                    go.GetComponent<Npc>().behaviorTree = behaviorTree;
                 }
             }
         }

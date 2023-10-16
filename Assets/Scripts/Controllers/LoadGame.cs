@@ -57,7 +57,7 @@ public class LoadGame : MonoBehaviour
             yield return GameUI.ToggleLoadingScreen(true);
 
             gameObject.GetComponent<Canvas>().enabled = false;
-            GameManager.LoadLevel(LevelScene.Level_0, Vector2.zero, AnimPlus.Direction.down);
+            GameManager.LoadLevel(LevelScene.ShipTop, Vector2.zero, AnimPlus.Direction.down);
 
             yield return GameUI.ToggleLoadingScreen(false);
             Player.UpdateToLevel1();
@@ -140,6 +140,7 @@ public class LoadGame : MonoBehaviour
         buttonsContainer.gameObject.SetActive(false);
         IEnumerator startGame()
         {
+            Time.timeScale = 0;
             DontDestroyOnLoad(gameObject);
             yield return GameUI.ToggleLoadingScreen(true);
 
@@ -147,6 +148,7 @@ public class LoadGame : MonoBehaviour
             GameManager.LoadFromSavePoint(key);
 
             yield return GameUI.ToggleLoadingScreen(false);
+            Time.timeScale = 1;
             Destroy(gameObject);
         }
         StartCoroutine(startGame());

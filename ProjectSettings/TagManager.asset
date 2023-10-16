@@ -53,6 +53,9 @@ TagManager:
   - name: Overlay
     uniqueID: 2138135501
     locked: 0
+  - name: Rain
+    uniqueID: 139502613
+    locked: 0
   - name: Battle
     uniqueID: 3270603285
     locked: 0

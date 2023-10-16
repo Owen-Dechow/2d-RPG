@@ -39,7 +39,7 @@ public class SaveDataSerializable
         checkpoints = checkpointsReached.ToArray();
 
         // Save NPCs talked to
-        NPCActionTreeBranchProtectors = GameManager.NPCActionTreeBranchProtectors.ToArray();
+        NPCActionTreeBranchProtectors = GameManager.PostInteractionProtectionIDs.ToArray();
 
         // Save player comrades
         comradeBattleUnitData = Player.ComradeBattleUnits.Select(x => x.data).ToArray();
@@ -49,7 +49,7 @@ public class SaveDataSerializable
     public static void UnpackSaveData(SaveDataSerializable data)
     {
         GameManager.id = data.id;
-        GameManager.NPCActionTreeBranchProtectors = new(data.NPCActionTreeBranchProtectors);
+        GameManager.PostInteractionProtectionIDs = new(data.NPCActionTreeBranchProtectors);
         Player.SetBattleUnitData(data.battleUnitData);
 
         foreach (string checkpoint in data.checkpoints)

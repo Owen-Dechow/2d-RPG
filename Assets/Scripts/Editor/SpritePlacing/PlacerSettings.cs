@@ -11,4 +11,5 @@ public class PlacerSettings : ScriptableObject
     public GameObject[] other;
     public string NPCTransformName;
     public string enemyTransformName;
+    public string otherTransformName;
 }

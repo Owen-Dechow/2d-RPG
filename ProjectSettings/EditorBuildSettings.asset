@@ -14,7 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level_1.unity
     guid: 55f88a7097838fb4d9b8dbeb8bf5f840
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/ShipTop.unity
+    guid: 723cd4551095c4a409ebbb1fad3652d9
+  - enabled: 1
+    path: Assets/Scenes/ShipBottom.unity
+    guid: fb5ce38d22c893c46ac02b4795f1cedb
   m_configObjects: {}

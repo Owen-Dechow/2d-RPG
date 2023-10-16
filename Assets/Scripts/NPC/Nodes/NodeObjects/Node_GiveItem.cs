@@ -6,7 +6,9 @@ public class Node_GiveItem : ActionNode
     [SerializeField] GameItems.Options item;
     protected override IEnumerator Execute()
     {
-        Player.Items.Add(item);
+        if (Player.HasRoomInInventory())
+            Player.AddItemToInventory(item);
+
         yield return null;
     }
 }

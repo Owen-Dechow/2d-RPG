@@ -24,7 +24,6 @@ public class Npc : MonoBehaviour
     [SerializeField] string NPCEnabledCheckpointWindowClose;
 
     private bool inPlayerInteractionZone = false;
-    private bool runningInteraction = false;
     private AnimPlus animPlus;
 
     readonly float movementRadius = 1;
@@ -71,7 +70,6 @@ public class Npc : MonoBehaviour
     void InteractWithPlayer()
     {
         if (MyInput.SelectDown != 1) return;
-        if (runningInteraction) return;
         if (!inPlayerInteractionZone) return;
         if (Time.timeScale == 0) return;
 
@@ -93,7 +91,6 @@ public class Npc : MonoBehaviour
     IEnumerator RunInteraction()
     {
         Time.timeScale = 0;
-        runningInteraction = true;
         yield return new WaitForEndOfFrame();
 
         yield return behaviorTree.Run();
@@ -106,7 +103,6 @@ public class Npc : MonoBehaviour
         }
 
         Time.timeScale = 1;
-        runningInteraction = false;
     }
 
     void MoveNPC()

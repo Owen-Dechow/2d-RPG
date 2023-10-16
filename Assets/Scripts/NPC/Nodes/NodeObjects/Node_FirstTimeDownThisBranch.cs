@@ -7,13 +7,13 @@ public class Node_FirstTimeDownThisBranch : IFNode
 
     protected override bool Evaluate()
     {
-        if (GameManager.NPCActionTreeBranchProtectors.Contains(uniqueId))
+        if (GameManager.PostInteractionProtectionIDs.Contains(uniqueId))
         {
             return false;
         }
         else
         {
-            GameManager.NPCActionTreeBranchProtectors.Add(uniqueId);
+            GameManager.PostInteractionProtectionIDs.Add(uniqueId);
             return true;
         }
     }

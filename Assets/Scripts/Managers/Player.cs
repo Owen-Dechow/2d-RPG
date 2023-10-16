@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
 {
     static Player i;
 
-    public static string Name => i.playerBattleUnit.data.title; 
+    public static string Name => i.playerBattleUnit.data.title;
     public static int Gold { get => i.playerBattleUnit.data.gold; set => i.playerBattleUnit.data.gold = value; }
     public static List<GameItems.Options> Items => i.playerBattleUnit.data.itemOptionsForUnit;
     public static List<GameMagic.Options> Magic => i.playerBattleUnit.data.magicOptionsForUnit;
@@ -65,29 +65,33 @@ public class Player : MonoBehaviour
         i.playerBattleUnit.data = battleUnitData;
     }
 
-    public static void MoveToDoor(Vector3 position, Door.DoorOpenDir doorOpening)
-    {
-        AnimPlus.Direction direction = doorOpening switch
-        {
-            DoorOpenDir.top => AnimPlus.Direction.up,
-            DoorOpenDir.bottom => AnimPlus.Direction.down,
-            DoorOpenDir.left => AnimPlus.Direction.left,
-            DoorOpenDir.right => AnimPlus.Direction.right,
-            _ => throw new System.NotImplementedException(),
-        };
-
-        PlayerController.playerController.GetComponent<AnimPlus>().SetDirection(direction);
-
-        PlayerController.playerController.transform.position = position;
-        Vector2 delta = new Vector2(
-            Mathf.Cos((int)doorOpening),
-            Mathf.Sin((int)doorOpening)
-            ) * 0.16f;
-        PlayerController.playerController.transform.Translate(delta.x + 0.08f, delta.y, 0);
-    }
-
     public static void SetName(string name)
     {
         i.playerBattleUnit.data.title = name;
+    }
+
+    public static bool HasRoomInInventory()
+    {
+        foreach (BattleUnit unit in GetBattleUnits())
+        {
+            if (unit.data.itemOptionsForUnit.Count < BattleUnit.BattleUnitData.MaxItems)
+                return true;
+        }
+
+        return false;
+    }
+
+    public static bool AddItemToInventory(GameItems.Options item)
+    {
+        foreach (BattleUnit unit in GetBattleUnits())
+        {
+            if (unit.data.itemOptionsForUnit.Count < BattleUnit.BattleUnitData.MaxItems)
+            {
+                unit.data.itemOptionsForUnit.Add(item);
+                return true;
+            }
+        }
+
+        return false;
     }
 }

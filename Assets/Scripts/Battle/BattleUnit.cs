@@ -20,6 +20,7 @@ public class BattleUnit : MonoBehaviour
         public int attack;
 
         [Header("Items/Magic")]
+        public static int MaxItems = 30;
         public List<GameMagic.Options> magicOptionsForUnit;
         public List<GameItems.Options> itemOptionsForUnit;
 

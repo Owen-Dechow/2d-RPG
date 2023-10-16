@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameMagic.DataSet[] magicData;
     public static GameMagic.DataSet[] MagicData { get => i.magicData; }
 
-    public static List<int> NPCActionTreeBranchProtectors;
+    public static List<int> PostInteractionProtectionIDs;
 
     public static int id;
 
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     {
         DontDestroyOnLoad(this);
 
-        NPCActionTreeBranchProtectors = new();
+        PostInteractionProtectionIDs = new();
 
         id = SaveSystem.GetNewId();
 
