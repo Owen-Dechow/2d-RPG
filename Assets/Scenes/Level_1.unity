@@ -271,6 +271,18 @@ PrefabInstance:
       propertyPath: NPCEnabledCheckpointWindowClose
       value: old_man_purple_joined
       objectReference: {fileID: 0}
+    - target: {fileID: 5621261868703214587, guid: a4ab5718524268341982353c740ffecf, type: 3}
+      propertyPath: m_Size.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5621261868703214587, guid: a4ab5718524268341982353c740ffecf, type: 3}
+      propertyPath: m_Size.y
+      value: 0.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 5621261868703214587, guid: a4ab5718524268341982353c740ffecf, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5621261868703214589, guid: a4ab5718524268341982353c740ffecf, type: 3}
       propertyPath: m_Name
       value: Old Man Purple(-3798)

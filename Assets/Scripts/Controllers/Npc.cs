@@ -179,6 +179,7 @@ public class Npc : MonoBehaviour
                     rb2d.velocity = moveDelta * moveSpeed;
                     animPlus.SetUseRigidBody(true);
 
+                    rb2d.bodyType = RigidbodyType2D.Dynamic;
                     rb2d.constraints = RigidbodyConstraints2D.FreezePositionY;
                     break;
                 }
@@ -199,7 +200,8 @@ public class Npc : MonoBehaviour
                     rb2d.velocity = moveDelta * moveSpeed;
                     animPlus.SetUseRigidBody(true);
 
-                    rb2d.constraints = RigidbodyConstraints2D.FreezePositionX;
+                    rb2d.bodyType = RigidbodyType2D.Dynamic;
+                    rb2d.constraints = RigidbodyConstraints2D.None;
                     break;
                 }
             case MovementType.XAndY:
@@ -236,16 +238,29 @@ public class Npc : MonoBehaviour
                         dirChangeTime = 0;
                     }
 
-                    rb2d.constraints = RigidbodyConstraints2D.None;
+                    rb2d.bodyType = RigidbodyType2D.Dynamic;
+                    rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
                     rb2d.velocity = moveDelta.normalized * moveSpeed;
                     break;
                 }
         }
+
+        rb2d.freezeRotation = true;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        moveDelta *= -1;
+        print(moveDelta);
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(origin, movementRadius);
+
+        if (Application.isPlaying)
+            Gizmos.DrawWireSphere(origin, movementRadius);
+        else
+            Gizmos.DrawWireSphere(transform.position, movementRadius);
     }
 }
