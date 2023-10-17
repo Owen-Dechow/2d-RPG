@@ -11,14 +11,13 @@ public class Door : MonoBehaviour
         right = -90,
     }
 
-    [SerializeField] LevelScene toLevel;
-
+    public LevelScene toLevel;
     public DoorOpenDir doorOpening;
 
     [SerializeField] string doorTag;
     [SerializeField] string connectedDoor;
 
-    [SerializeField] string disallowEnterText;
+    public string disallowEnterText;
 
     [HideInInspector] public static Door door;
 
@@ -48,6 +47,7 @@ public class Door : MonoBehaviour
         if (!collision.collider.CompareTag("Player")) return;
 
         string text = GameManager.GetCleanedText(disallowEnterText);
+
         if (text.Length > 0)
         {
             StartCoroutine(CantEnter(text));
