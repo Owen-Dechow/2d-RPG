@@ -75,7 +75,9 @@ public class Player : MonoBehaviour
         foreach (BattleUnit unit in GetBattleUnits())
         {
             if (unit.data.itemOptionsForUnit.Count < BattleUnit.BattleUnitData.MaxItems)
+            {
                 return true;
+            }
         }
 
         return false;

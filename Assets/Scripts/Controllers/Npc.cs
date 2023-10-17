@@ -251,7 +251,6 @@ public class Npc : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         moveDelta *= -1;
-        print(moveDelta);
     }
 
     private void OnDrawGizmos()

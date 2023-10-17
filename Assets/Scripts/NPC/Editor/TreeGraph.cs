@@ -40,7 +40,8 @@ public class TreeGraph : GraphView
                 typeof(Node_CheckpointFulfilled),
                 typeof(Node_HasItem),
                 typeof(Node_PickRandom),
-                typeof(Node_FirstTimeDownThisBranch)
+                typeof(Node_FirstTimeDownThisBranch),
+                typeof(Node_HasRoomInInventory),
             },
 
             // Console
