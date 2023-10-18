@@ -5,14 +5,20 @@ using UnityEngine;
 public class CheckpointSystem : MonoBehaviour
 {
     static CheckpointSystem i;
-    public static Checkpoint[] Checkpoints => i.checkpoint_flags;
-    [SerializeField] Checkpoint[] checkpoint_flags;
+    public static Checkpoint[] checkpoints;
+    public Checkpoint[] checkpointFlags;
 
     [System.Serializable]
     public class Checkpoint
     {
         public string checkpoint;
         public bool isReached = false;
+    }
+
+    [System.Serializable]
+    public class CheckpointFlag
+    {
+        public string name;
     }
 
     private void Start()
@@ -23,7 +29,7 @@ public class CheckpointSystem : MonoBehaviour
     public static bool GetCheckpoint(string checkpointName)
     {
         checkpointName = checkpointName.ToLower().Replace(' ', '_');
-        foreach (Checkpoint checkpoint in i.checkpoint_flags)
+        foreach (Checkpoint checkpoint in i.checkpointFlags)
         {
             if (checkpoint.checkpoint == checkpointName) return checkpoint.isReached;
         }
@@ -35,7 +41,7 @@ public class CheckpointSystem : MonoBehaviour
     public static void SetCheckpoint(string checkpointName, bool setTo = true)
     {
         checkpointName = checkpointName.ToLower().Replace(' ', '_');
-        foreach (Checkpoint checkpoint in i.checkpoint_flags)
+        foreach (Checkpoint checkpoint in i.checkpointFlags)
         {
             if (checkpoint.checkpoint == checkpointName)
             {

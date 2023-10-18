@@ -20,6 +20,15 @@ public class InspectorView : VisualElement
         Add(container);
     }
 
+    public void UpdateSelection(UnityEngine.Object obj)
+    {
+        Clear();
+        UnityEngine.Object.DestroyImmediate(editor);
+        editor = Editor.CreateEditor(obj);
+        IMGUIContainer container = new(() => { editor.OnInspectorGUI(); });
+        Add(container);
+    }
+
     [CustomEditor(typeof(Node), editorForChildClasses:true)]
     public class NodeViewInspector : Editor
     {

@@ -32,7 +32,7 @@ public class SaveDataSerializable
 
         // Save checkpoints
         List<string> checkpointsReached = new();
-        foreach (CheckpointSystem.Checkpoint checkpoint in CheckpointSystem.Checkpoints)
+        foreach (CheckpointSystem.Checkpoint checkpoint in CheckpointSystem.checkpoints)
         {
             if (checkpoint.isReached) checkpointsReached.Add(checkpoint.checkpoint);
         }

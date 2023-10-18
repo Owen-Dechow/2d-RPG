@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager i;
 
+    [SerializeField] CheckpointSystem.CheckpointFlag checkpoint;
+
     [SerializeField] GameObject battleSystemPrefab;
 
     [SerializeField] GameItems.DataSet[] itemData;
@@ -103,7 +105,7 @@ public class GameManager : MonoBehaviour
         yield return GameUI.ToggleLoadingScreen(false);
         Time.timeScale = 1;
     }
-    
+
     public static int GetRandomIntId()
     {
         return Random.Range(int.MinValue, int.MaxValue);

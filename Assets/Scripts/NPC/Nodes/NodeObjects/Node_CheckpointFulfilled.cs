@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Node_CheckpointFulfilled : IFNode
 {
-    [SerializeField] string checkpointName;
+    [SerializeField] CheckpointSystem.CheckpointFlag checkpoint;
     protected override bool Evaluate()
     {
-        return CheckpointSystem.GetCheckpoint(checkpointName);
+        return CheckpointSystem.GetCheckpoint(checkpoint.name);
     }
 }

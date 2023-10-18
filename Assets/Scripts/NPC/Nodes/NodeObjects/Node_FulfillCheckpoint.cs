@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class Node_FulfillCheckpoint : ActionNode
 {
-    [SerializeField] string checkpoint;
+    [SerializeField] CheckpointSystem.CheckpointFlag checkpoint;
     protected override IEnumerator Execute()
     {
         yield return new WaitForEndOfFrame();
-        CheckpointSystem.SetCheckpoint(checkpoint);
+        CheckpointSystem.SetCheckpoint(checkpoint.name);
     }
 }
