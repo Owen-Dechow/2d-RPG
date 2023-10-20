@@ -17,6 +17,7 @@ MonoBehaviour:
   NPCs:
   - {fileID: 866745542581061411, guid: 47b748f49bf48ea44946767709eb36c8, type: 3}
   - {fileID: 5621261868703214589, guid: a4ab5718524268341982353c740ffecf, type: 3}
+  - {fileID: 4942272866258244949, guid: b23b38f31070fb64c984fb3fc30a09f0, type: 3}
   enemies:
   - {fileID: 4326385105789543782, guid: 6a2287e54c2a4b4498197bd184196ae7, type: 3}
   other:

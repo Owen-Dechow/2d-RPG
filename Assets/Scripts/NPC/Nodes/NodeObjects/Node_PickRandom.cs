@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Node_PickRandom : IFNode
 {
-    protected override bool Evaluate()
+    protected override bool Evaluate(Npc npc)
     {
         return Random.Range(0, 2) == 1;
     }

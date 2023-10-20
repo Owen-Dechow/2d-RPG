@@ -29,7 +29,6 @@ public class SpritePlacer : EditorWindow
         // Each editor window contains a root VisualElement object
         VisualElement root = rootVisualElement;
 
-
         // Import UXML
         var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Scripts/Editor/SpritePlacing/SpritePlacer.uxml");
         VisualElement uxml = visualTree.Instantiate();
@@ -110,38 +109,41 @@ public class SpritePlacer : EditorWindow
             m_IsDragPerformed = true;
         }
 
-        if (Event.current.type == EventType.DragExited)
+        if (Event.current.type != EventType.DragExited)
+            return;
+
+        if (!m_IsDragging && !m_IsDragPerformed)
+            return;
+
+        m_IsDragging = false;
+        m_IsDragPerformed = false;
+
+        GameObject go = Selection.activeGameObject;
+
+        string parentTransformName = m_GameObjectType switch
         {
-            if (m_IsDragging && m_IsDragPerformed)
-            {
-                m_IsDragging = false;
-                m_IsDragPerformed = false;
+            GameObjectType.Enemy => placerSettings.enemyTransformName,
+            GameObjectType.NPC => placerSettings.NPCTransformName,
+            GameObjectType.Other => placerSettings.otherTransformName,
+            _ => throw new System.NotImplementedException()
+        };
 
-                GameObject go = Selection.activeGameObject;
+        Transform parentTransform = go.transform.Find("/" + parentTransformName);
+        if (parentTransform == null) parentTransform = new GameObject(parentTransformName).transform;
+        go.transform.SetParent(parentTransform.transform);
 
-                string parentTransformName = m_GameObjectType switch
-                {
-                    GameObjectType.Enemy => placerSettings.enemyTransformName,
-                    GameObjectType.NPC => placerSettings.NPCTransformName,
-                    GameObjectType.Other => placerSettings.otherTransformName,
-                        _ => throw new System.NotImplementedException()
-                };
+        if (m_GameObjectType == GameObjectType.NPC)
+        {
+            go.name = go.name + "(" + go.GetInstanceID() + ")";
+            BehaviorTree behaviorTree = ScriptableObject.CreateInstance<BehaviorTree>();
+            AssetDatabase.CreateAsset(behaviorTree, $"Assets/Prefabs/NPCs/Trees/{go.name}.asset");
+            AssetDatabase.SaveAssets();
+            Npc npc = go.GetComponent<Npc>();
+            npc.behaviorTree = behaviorTree;
 
-                Transform parentTransform = go.transform.Find("/" + parentTransformName);
-                if (parentTransform == null) parentTransform = new GameObject(parentTransformName).transform;
-                go.transform.SetParent(parentTransform.transform);
-
-
-
-                if (m_GameObjectType == GameObjectType.NPC)
-                {
-                    go.name = go.name + "(" + go.GetInstanceID() + ")";
-                    BehaviorTree behaviorTree = ScriptableObject.CreateInstance<BehaviorTree>();
-                    AssetDatabase.CreateAsset(behaviorTree, $"Assets/Prefabs/NPCs/Trees/{go.name}.asset");
-                    AssetDatabase.SaveAssets();
-                    go.GetComponent<Npc>().behaviorTree = behaviorTree;
-                }
-            }
+            EditorUtility.SetDirty(npc);
         }
     }
+
+
 }

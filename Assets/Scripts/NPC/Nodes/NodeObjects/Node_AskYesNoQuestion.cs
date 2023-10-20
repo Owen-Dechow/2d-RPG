@@ -7,7 +7,7 @@ public class Node_AskYesNoQuestion : ActionNode
     [SerializeField] string thirdOption;
     [SerializeField] bool allowNoAnswer = false;
 
-    protected override IEnumerator Execute()
+    protected override IEnumerator Execute(Npc npc)
     {
         if (thirdOption != null)
         {

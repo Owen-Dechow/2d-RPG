@@ -18,7 +18,7 @@ public class CheckpointEditor : PropertyDrawer
         textPos.height = EditorGUIUtility.singleLineHeight;
         textPos.min = position.min;
         SerializedProperty textProperty = property.FindPropertyRelative("checkpoint");
-        textProperty.stringValue = EditorGUI.TextField(textPos, textProperty.stringValue).ToLower().Replace(' ', '_');
+        EditorGUI.PropertyField(textPos, textProperty, GUIContent.none);
 
         Rect boolPos = position;
         boolPos.height = EditorGUIUtility.singleLineHeight;
@@ -42,22 +42,24 @@ public class CheckpointFlagEditor : PropertyDrawer
     {
         EditorGUI.BeginProperty(position, label, property);
         SerializedProperty name = property.FindPropertyRelative("name");
+        
         try
         {
-            string[] checkpoints = CheckpointSystem.checkpoints.Select(x => x.checkpoint).ToArray();
-            int selected = Array.IndexOf(checkpoints, name.stringValue);
-            selected = EditorGUI.Popup(position, label.text, selected, checkpoints);
+            List<string> checkpoints = CheckpointSystem.checkpoints.Select(x => x.checkpoint).ToList();
+            checkpoints.Insert(0, "_");
+
+            int selected = Array.IndexOf(checkpoints.ToArray(), name.stringValue);
+            
+            if (selected == -1)
+                selected = 0;
+
+            selected = EditorGUI.Popup(position, label.text, selected, checkpoints.ToArray());
             name.stringValue = checkpoints[selected];
 
         }
         catch (ArgumentNullException)
         {
-            EditorGUI.LabelField(position, label.text, $"Reconnect Checkpoint [{name.stringValue}]", EditorStyles.boldLabel);
-            InspectorView inspectorView = new();
-            GameObject gameManager = Resources.Load<GameObject>("GameManager");
-            Transform checkpoints = gameManager.transform.Find("Checkpoints");
-            CheckpointSystem checkpointSystem = checkpoints.GetComponent<CheckpointSystem>();
-            inspectorView.UpdateSelection(checkpointSystem);
+            CheckpointSystemEditor.Reconnect();
         }
 
         EditorGUI.EndProperty();
@@ -70,6 +72,12 @@ public class CheckpointSystemEditor : Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        CheckpointSystem.checkpoints = (target as CheckpointSystem).checkpointFlags;
+        Reconnect();
+    }
+
+    public static void Reconnect()
+    {
+        ReconnectCheckpoints reconnectCheckpoints = AssetDatabase.LoadAssetAtPath<ReconnectCheckpoints>("Assets/Scripts/Editor/Reconnect Checkpoints.asset");
+        reconnectCheckpoints.Reconnect();
     }
 }

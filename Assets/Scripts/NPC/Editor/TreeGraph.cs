@@ -30,6 +30,9 @@ public class TreeGraph : GraphView
                 typeof(Node_FulfillCheckpoint),
                 typeof(Node_TeachPower),
                 typeof(Node_JoinPlayer),
+                typeof(Node_ShakeCamera),
+                typeof(Node_ChangeScene),
+                typeof(Node_ToggleOverlay),
             },
 
             // Conditionals
@@ -216,8 +219,6 @@ public class TreeGraph : GraphView
         NodeView nodeView = new(node);
         AddElement(nodeView);
     }
-
-
 
     void CreateNode(System.Type type, Vector2 mousePosition)
     {

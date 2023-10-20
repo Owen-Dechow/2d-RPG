@@ -18,7 +18,13 @@ public class CheckpointSystem : MonoBehaviour
     [System.Serializable]
     public class CheckpointFlag
     {
-        public string name;
+        public bool None => name == "_";
+        public string name = "_";
+
+        public bool GetStatus()
+        {
+            return GetCheckpoint(name);
+        }
     }
 
     private void Start()
@@ -26,21 +32,18 @@ public class CheckpointSystem : MonoBehaviour
         i = this;
     }
 
-    public static bool GetCheckpoint(string checkpointName)
+    static bool GetCheckpoint(string checkpointName)
     {
-        checkpointName = checkpointName.ToLower().Replace(' ', '_');
         foreach (Checkpoint checkpoint in i.checkpointFlags)
         {
             if (checkpoint.checkpoint == checkpointName) return checkpoint.isReached;
         }
 
-        Debug.Log($"Unknown Checkpoint: {checkpointName}");
         return false;
     }
 
     public static void SetCheckpoint(string checkpointName, bool setTo = true)
     {
-        checkpointName = checkpointName.ToLower().Replace(' ', '_');
         foreach (Checkpoint checkpoint in i.checkpointFlags)
         {
             if (checkpoint.checkpoint == checkpointName)
@@ -49,17 +52,13 @@ public class CheckpointSystem : MonoBehaviour
                 return;
             }
         }
-
-        Debug.Log($"Unknown Checkpoint: {checkpointName}");
     }
 
-    public static bool GetWindow(string open, string close)
+    public static bool GetWindow(CheckpointFlag open, CheckpointFlag close)
     {
-        open = open.ToLower().Replace(' ', '_');
-        close = close.ToLower().Replace(' ', '_');
+        bool winOpen = open.None || open.GetStatus();
 
-        bool winOpen = open == "" || GetCheckpoint(open);
-        if (close != "" && GetCheckpoint(close))
+        if (!close.None && close.GetStatus())
         {
             winOpen = false;
         }

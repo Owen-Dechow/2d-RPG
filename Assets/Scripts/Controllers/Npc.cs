@@ -20,8 +20,8 @@ public class Npc : MonoBehaviour
     [SerializeField] MovementType movementType;
     public BehaviorTree behaviorTree;
 
-    [SerializeField] string NPCEnabledCheckpointWindowOpen;
-    [SerializeField] string NPCEnabledCheckpointWindowClose;
+    [SerializeField] CheckpointSystem.CheckpointFlag NPCEnabledCheckpointWindowOpen;
+    [SerializeField] CheckpointSystem.CheckpointFlag NPCEnabledCheckpointWindowClose;
 
     private bool inPlayerInteractionZone = false;
     private AnimPlus animPlus;
@@ -93,7 +93,7 @@ public class Npc : MonoBehaviour
         Time.timeScale = 0;
         yield return new WaitForEndOfFrame();
 
-        yield return behaviorTree.Run();
+        yield return behaviorTree.Run(this);
 
         yield return new WaitWhile(() => MyInput.Select == 1);
 

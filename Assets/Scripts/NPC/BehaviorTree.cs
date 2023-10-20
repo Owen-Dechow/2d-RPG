@@ -9,10 +9,10 @@ public class BehaviorTree : ScriptableObject
     [HideInInspector] public Node rootNode;
     [HideInInspector] public List<Node> nodes = new();
 
-    public IEnumerator Run()
+    public IEnumerator Run(Npc npc)
     {
         if (rootNode == null) throw new System.NotImplementedException("No behavior implemented for tree.");
-        yield return rootNode.Run();
+        yield return rootNode.Run(npc);
     }
 
     #region Editor

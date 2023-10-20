@@ -8,6 +8,6 @@ public abstract class Node : ScriptableObject
     [HideInInspector] public Vector2 position;
     [HideInInspector] public abstract string ClassName { get; }
 
-    public abstract IEnumerator Run();
-    protected abstract IEnumerator Execute();
+    public abstract IEnumerator Run(Npc npc);
+    protected abstract IEnumerator Execute(Npc npc);
 }

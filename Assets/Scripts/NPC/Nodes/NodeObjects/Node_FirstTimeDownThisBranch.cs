@@ -5,7 +5,7 @@ public class Node_FirstTimeDownThisBranch : IFNode
 {
     public int uniqueId;
 
-    protected override bool Evaluate()
+    protected override bool Evaluate(Npc npc)
     {
         if (GameManager.PostInteractionProtectionIDs.Contains(uniqueId))
         {

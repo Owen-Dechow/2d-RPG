@@ -7,7 +7,7 @@ public class Node_AnimateObject : ActionNode
     [SerializeField] GameObject _gameObject;
     [SerializeField] AnimationClip animationClip;
 
-    protected override IEnumerator Execute()
+    protected override IEnumerator Execute(Npc npc)
     {
         Animator animator = _gameObject.GetComponent<Animator>();
         animator.Play(animationClip.name);
