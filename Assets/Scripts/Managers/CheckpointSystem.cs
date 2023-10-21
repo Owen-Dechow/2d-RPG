@@ -30,6 +30,7 @@ public class CheckpointSystem : MonoBehaviour
     private void Start()
     {
         i = this;
+        checkpoints = checkpointFlags;
     }
 
     static bool GetCheckpoint(string checkpointName)

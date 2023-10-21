@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AnimPlus : MonoBehaviour
@@ -94,6 +95,25 @@ public class AnimPlus : MonoBehaviour
 
         anim.Play(animation.name);
         currentState = animation;
+    }
+
+    public static Direction RandomDirection(bool includeX = true, bool includeY = true)
+    {
+        List<Direction> directions = new();
+        
+        if (includeX)
+        {
+            directions.Add(Direction.left);
+            directions.Add(Direction.right);
+        }
+
+        if (includeY)
+        {
+            directions.Add(Direction.up);
+            directions.Add(Direction.down);
+        }
+
+        return directions[Random.Range(0, directions.Count)];
     }
 
     public void SetDelta(Vector2 delta)

@@ -33,6 +33,7 @@ public class Npc : MonoBehaviour
     Rigidbody2D rb2d;
     float changeDirInterval = 3;
     float dirChangeTime = 0;
+    float collisionStaySeconds;
 
     private SpriteRenderer spriteRenderer;
 
@@ -45,6 +46,8 @@ public class Npc : MonoBehaviour
         animPlus = GetComponent<AnimPlus>();
         origin = transform.position;
         rb2d = GetComponent<Rigidbody2D>();
+
+        SetStartDirection();
     }
 
     void Update()
@@ -103,6 +106,37 @@ public class Npc : MonoBehaviour
         }
 
         Time.timeScale = 1;
+    }
+
+    void SetStartDirection()
+    {
+        switch (movementType)
+        {
+            case MovementType.FaceDown:
+                animPlus.SetDirection(AnimPlus.Direction.down);
+                break;
+            case MovementType.FaceUp:
+                animPlus.SetDirection(AnimPlus.Direction.up);
+                break;
+            case MovementType.FaceLeft:
+                animPlus.SetDirection(AnimPlus.Direction.left);
+                break;
+            case MovementType.FaceRight:
+                animPlus.SetDirection(AnimPlus.Direction.right);
+                break;
+            case MovementType.FacePlayer:
+                animPlus.SetDirection(AnimPlus.RandomDirection());
+                break;
+            case MovementType.XOnly:
+                animPlus.SetDirection(AnimPlus.RandomDirection(includeY: false));
+                break;
+            case MovementType.YOnly:
+                animPlus.SetDirection(AnimPlus.RandomDirection(includeX: false));
+                break;
+            case MovementType.XAndY:
+                animPlus.SetDirection(AnimPlus.RandomDirection());
+                break;
+        }
     }
 
     void MoveNPC()
@@ -206,12 +240,12 @@ public class Npc : MonoBehaviour
                 }
             case MovementType.XAndY:
                 {
-                    if (moveDelta == null)
+                    if (moveDelta == null || moveDelta == Vector2.zero)
                         moveDelta = new Vector2(
                             Random.Range(-1, 2),
                             Random.Range(-1, 2));
 
-                    if (Vector2.Distance(origin, transform.position) >  movementRadius)
+                    if (Vector2.Distance(origin, transform.position) > movementRadius)
                     {
                         if (transform.position.y > origin.y)
                             moveDelta.y = -1;
@@ -250,10 +284,41 @@ public class Npc : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        collisionStaySeconds = 0;
         moveDelta *= -1;
     }
 
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        collisionStaySeconds = 0;
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        collisionStaySeconds += Time.deltaTime;
+        if (collisionStaySeconds >= 0.1f)
+        {
+            moveDelta *= -1;
+            collisionStaySeconds = 0;
+        }
+    }
+
     private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+
+        if (!NPCEnabledCheckpointWindowOpen.None)
+        {
+            Gizmos.DrawLine(transform.position + Vector3.left * 0.08f + Vector3.up * 0.08f, transform.position + Vector3.left * 0.08f + Vector3.down * 0.16f);
+        }
+
+        if (!NPCEnabledCheckpointWindowClose.None)
+        {
+            Gizmos.DrawLine(transform.position + Vector3.right * 0.08f + Vector3.up * 0.08f, transform.position + Vector3.right * 0.08f + Vector3.down * 0.16f);
+        }
+    }
+
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
 

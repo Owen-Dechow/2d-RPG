@@ -89,7 +89,7 @@ public class GameUI : MonoBehaviour
         yield return ChoiceMenu(prompt, options, 1, allowCancel);
     }
 
-    public static IEnumerator ToggleLoadingScreen(bool onOff, bool instant = false)
+    public static IEnumerator ToggleLoadingScreen(bool onOff, bool controlVol = true, bool instant = false)
     {
         i.gameObject.SetActive(true);
         Image loadingScreenImage = i.loadingScreen.GetComponent<Image>();
@@ -97,6 +97,11 @@ public class GameUI : MonoBehaviour
         if (instant)
         {
             loadingScreenImage.color = new Color(0, 0, 0, onOff ? 1 : 0);
+
+            if (controlVol)
+                AudioListener.volume = onOff ? 0 : 1;
+
+            yield break;
         }
 
         if (onOff)
@@ -104,6 +109,10 @@ public class GameUI : MonoBehaviour
             while (loadingScreenImage.color.a < 1)
             {
                 loadingScreenImage.color = new Color(0, 0, 0, Mathf.Clamp(loadingScreenImage.color.a + Time.unscaledDeltaTime, 0, 1));
+
+                if (controlVol)
+                    AudioListener.volume = 1 - loadingScreenImage.color.a;
+
                 yield return new WaitForEndOfFrame();
             }
         }
@@ -112,6 +121,10 @@ public class GameUI : MonoBehaviour
             while (loadingScreenImage.color.a > 0)
             {
                 loadingScreenImage.color = new Color(0, 0, 0, Mathf.Clamp(loadingScreenImage.color.a - Time.unscaledDeltaTime, 0, 1));
+
+                if (controlVol)
+                    AudioListener.volume = Mathf.Abs(loadingScreenImage.color.a - 1);
+
                 yield return new WaitForEndOfFrame();
             }
         }

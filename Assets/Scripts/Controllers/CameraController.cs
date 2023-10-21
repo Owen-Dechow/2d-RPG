@@ -5,8 +5,6 @@ public class CameraController : MonoBehaviour
 {
     readonly float drag = 0.5f;
 
-    [SerializeField] float shakeTime = 1.0f;
-    [SerializeField] float shakePower = 1.0f;
     [SerializeField] bool followPlayer;
     private Vector3 shake;
 
@@ -29,7 +27,7 @@ public class CameraController : MonoBehaviour
     {
         if (followPlayer)
         {
-            Vector3 delta = ((Vector3)PlayerController.playerController.transform.position - transform.position) / drag;
+            Vector3 delta = (PlayerController.playerController.transform.position - transform.position) / drag;
             delta.z = 0;
             transform.position += Time.timeScale * Time.unscaledDeltaTime * delta;
         }
@@ -41,7 +39,7 @@ public class CameraController : MonoBehaviour
         transform.position += shake;
     }
 
-    public static IEnumerator ShakeCamera(float time, float intensity)
+    public static IEnumerator ShakeCamera(float time, float intensity, bool decay)
     {
         CameraController cam = Camera.main.GetComponent<CameraController>();
         float startTime = Time.unscaledTime;
@@ -50,8 +48,14 @@ public class CameraController : MonoBehaviour
         {
             yield return new WaitForSecondsRealtime(0.01f);
 
+            float intensityFactor;
+            if (decay)
+                intensityFactor = 1 - (Time.unscaledTime - startTime) / time;
+            else
+                intensityFactor = 1;
+
             cam.shake = Vector3.zero;
-            Vector3 delta = intensity * new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0);
+            Vector3 delta = intensityFactor * intensity * new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0);
             cam.shake += delta;
         }
         cam.shake = Vector3.zero;

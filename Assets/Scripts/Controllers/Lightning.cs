@@ -6,9 +6,10 @@ public class Lightning : MonoBehaviour
 {
     [SerializeField] AudioClip[] audioClips;
     [SerializeField] float interval;
+    [SerializeField] float shakeIntensity;
     AudioSource thunder;
     ParticleSystem lightning;
-    
+
     public bool SoundOnly { get; set; }
 
     // Start is called before the first frame update
@@ -27,6 +28,9 @@ public class Lightning : MonoBehaviour
 
             thunder.clip = audioClips[Random.Range(0, audioClips.Length)];
             thunder.Play();
+
+            StartCoroutine(CameraController.ShakeCamera(thunder.clip.length, shakeIntensity, true));
+            
             if (!SoundOnly)
                 lightning.Emit(Random.Range(2, 6));
 
