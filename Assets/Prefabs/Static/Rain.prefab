@@ -149,6 +149,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 845c7afe5ad61c942908803f74938e73, type: 3}
   - {fileID: 8300000, guid: 27dd2cd8ab33b1b41bec4f7119ec4543, type: 3}
   interval: 7
+  shakeIntensity: 0.025
 --- !u!199 &8911354018105755453
 ParticleSystemRenderer:
   serializedVersion: 6

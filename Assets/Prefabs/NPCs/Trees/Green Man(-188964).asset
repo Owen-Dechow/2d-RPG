@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6003904768569562963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6eaa618f23ed4478cdf2a70b45d04b, type: 3}
+  m_Name: Node_Say
+  m_EditorClassIdentifier: 
+  guid: 17916557216fcb642b1a2c3453e9a7df
+  position: {x: 791, y: -125}
+  child: {fileID: 0}
+  text: I FOUND DEREK
+--- !u!114 &-4771939170823904537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8d33cd71e339d4ca9d3c57f27c1790, type: 3}
+  m_Name: Node_CheckpointFulfilled
+  m_EditorClassIdentifier: 
+  guid: e815a57745df25f4f96ae7f3074e6e0f
+  position: {x: 398, y: -66.55998}
+  if: {fileID: -6003904768569562963}
+  else: {fileID: 54824439286521581}
+  checkpoint:
+    name: Told man where Eric is
+--- !u!114 &-2488966388337333875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f827acdc3bc342d40869a8399b90304f, type: 3}
+  m_Name: Node_OnInteract
+  m_EditorClassIdentifier: 
+  guid: 7e196de10d1091449a08e36fa717be9a
+  position: {x: 0, y: 0}
+  child: {fileID: -4771939170823904537}
+--- !u!114 &-756037382600550909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6eaa618f23ed4478cdf2a70b45d04b, type: 3}
+  m_Name: Node_Say
+  m_EditorClassIdentifier: 
+  guid: 615368f015f1c1444a9985cdc84d16d6
+  position: {x: 1194, y: 42}
+  child: {fileID: 0}
+  text: I'm not sure we can take much more.
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c42512dadd5be304e808057306f73b0a, type: 3}
+  m_Name: Green Man(-188964)
+  m_EditorClassIdentifier: 
+  rootNode: {fileID: -2488966388337333875}
+  nodes:
+  - {fileID: -2488966388337333875}
+  - {fileID: 54824439286521581}
+  - {fileID: -756037382600550909}
+  - {fileID: -4771939170823904537}
+  - {fileID: -6003904768569562963}
+--- !u!114 &54824439286521581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6eaa618f23ed4478cdf2a70b45d04b, type: 3}
+  m_Name: Node_Say
+  m_EditorClassIdentifier: 
+  guid: 32b4dc9974ad7c446b77c6d99db7fd2c
+  position: {x: 791, y: 42}
+  child: {fileID: -756037382600550909}
+  text: The boat is taking on water.

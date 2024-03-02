@@ -159,11 +159,11 @@ public class PlayerController : MonoBehaviour
         }
 
         public RelocateType Relocation { get; private set; }
-        public string DoorTag { get; private set; }
+        public Door.DoorTag DoorTag { get; private set; }
         public AnimPlus.Direction Direction { get; private set; }
         public Vector2 Position { get; private set; }
 
-        public PlacementSettings(string doorTag)
+        public PlacementSettings(Door.DoorTag doorTag)
         {
             Relocation = RelocateType.Door;
             DoorTag = doorTag;

@@ -141,13 +141,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Untitled_0
+      name: YoungBoyRed_0
       rect:
         serializedVersion: 2
-        x: 7
-        y: 472
-        width: 16
-        height: 26
+        x: 0
+        y: 0
+        width: 20
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -155,20 +155,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 145608356ed2124409655a5b310320d2
-      internalID: 164429216
+      spriteID: a93d8ad5620a11a4ab9270c6a18aedf8
+      internalID: -115578276
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Untitled_1
+      name: YoungBoyRed_1
       rect:
         serializedVersion: 2
-        x: 41
-        y: 472
-        width: 16
-        height: 26
+        x: 20
+        y: 0
+        width: 20
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -176,20 +176,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d1a97930f042448438c40be3550c6e4b
-      internalID: 1675439884
+      spriteID: af2172e610d2e96478f1c0e6e9fb7cae
+      internalID: -991992498
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Untitled_2
+      name: YoungBoyRed_2
       rect:
         serializedVersion: 2
-        x: 72
-        y: 472
-        width: 16
-        height: 26
+        x: 40
+        y: 0
+        width: 20
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -197,20 +197,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3a73c4b841e25a54fb4403bf14264f2f
-      internalID: 1510484137
+      spriteID: 4d156a06b3dff3847af0d70bbeba4d63
+      internalID: 403246895
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Untitled_3
+      name: YoungBoyRed_3
       rect:
         serializedVersion: 2
-        x: 105
-        y: 472
-        width: 16
-        height: 26
+        x: 60
+        y: 0
+        width: 20
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -218,8 +218,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e704f2e12ba1a2c4d865743ee1f2ce51
-      internalID: -613957845
+      spriteID: a6bf912c39637f74ca0ab92f20e3ba2c
+      internalID: 532313695
       vertices: []
       indices: 
       edges: []
@@ -235,10 +235,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Untitled_0: 164429216
-      Untitled_1: 1675439884
-      Untitled_2: 1510484137
-      Untitled_3: -613957845
+      YoungBoyRed_0: -115578276
+      YoungBoyRed_1: -991992498
+      YoungBoyRed_2: 403246895
+      YoungBoyRed_3: 532313695
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -2,5 +2,6 @@ public enum LevelScene
 {
     ShipTop,
     ShipBottom,
-    Beach
+    Beach,
+    BeachDungeon
 }

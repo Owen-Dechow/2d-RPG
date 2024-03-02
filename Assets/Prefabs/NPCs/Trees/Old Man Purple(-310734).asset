@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8168370154890330289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6eaa618f23ed4478cdf2a70b45d04b, type: 3}
+  m_Name: Node_Say
+  m_EditorClassIdentifier: 
+  guid: 92c5e230eff40864eb329786465a39c8
+  position: {x: 467.8125, y: -20.000061}
+  child: {fileID: -2425113003899473848}
+  text: Captin! The ship is lost there's nothing we can do!
+--- !u!114 &-2425113003899473848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5df793855cbdee34baccd8fdae043593, type: 3}
+  m_Name: Node_FulfillCheckpoint
+  m_EditorClassIdentifier: 
+  guid: ffba4f5be39c88a41963d3c2003822dc
+  position: {x: 836, y: -20}
+  child: {fileID: 0}
+  checkpoint:
+    name: Talked to man at bottom of boat
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c42512dadd5be304e808057306f73b0a, type: 3}
+  m_Name: Old Man Purple(-310734)
+  m_EditorClassIdentifier: 
+  rootNode: {fileID: 8741276377176619875}
+  nodes:
+  - {fileID: 8741276377176619875}
+  - {fileID: -8168370154890330289}
+  - {fileID: -2425113003899473848}
+--- !u!114 &8741276377176619875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f827acdc3bc342d40869a8399b90304f, type: 3}
+  m_Name: Node_OnInteract
+  m_EditorClassIdentifier: 
+  guid: 7bd00d8607284f448b526ff856556e78
+  position: {x: 0, y: 0}
+  child: {fileID: -8168370154890330289}

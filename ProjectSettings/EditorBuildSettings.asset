@@ -9,15 +9,15 @@ EditorBuildSettings:
     path: Assets/Scenes/NonLevelScenes/LoadScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/Level_0.unity
-    guid: bca1abe03e0b2c547a5c6bc15dcb4bb3
-  - enabled: 1
-    path: Assets/Scenes/Level_1.unity
-    guid: 55f88a7097838fb4d9b8dbeb8bf5f840
-  - enabled: 1
     path: Assets/Scenes/ShipTop.unity
     guid: 723cd4551095c4a409ebbb1fad3652d9
   - enabled: 1
     path: Assets/Scenes/ShipBottom.unity
     guid: fb5ce38d22c893c46ac02b4795f1cedb
+  - enabled: 1
+    path: Assets/Scenes/Beach.unity
+    guid: 7d5be4c18b8e1b84daa2975516a52ac1
+  - enabled: 1
+    path: Assets/Scenes/BeachDungeon.unity
+    guid: bce314b28b672d546a8538fcdb2bd530
   m_configObjects: {}

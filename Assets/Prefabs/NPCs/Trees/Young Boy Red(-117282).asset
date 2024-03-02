@@ -1,0 +1,212 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8670404821207228311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6eaa618f23ed4478cdf2a70b45d04b, type: 3}
+  m_Name: Node_Say
+  m_EditorClassIdentifier: 
+  guid: 5b5957ec7f78e5f4f84fc88e8fd25a0f
+  position: {x: 775.9897, y: 115.50008}
+  child: {fileID: 0}
+  text: Captin! We arn't going to make it what should we do!?!
+--- !u!114 &-5265064516238218374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06791b329e7107b4a83724a824ecf273, type: 3}
+  m_Name: Node_ChangeScene
+  m_EditorClassIdentifier: 
+  guid: ccb5986246f61fd4e81c32759f07d36d
+  position: {x: 1662, y: 279.00003}
+  child: {fileID: 0}
+  scene: 2
+  playerSpanPoint: {x: 0, y: 0}
+--- !u!114 &-4931406266885817873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c8d33cd71e339d4ca9d3c57f27c1790, type: 3}
+  m_Name: Node_CheckpointFulfilled
+  m_EditorClassIdentifier: 
+  guid: 8b586ffe7d40ed540b60f476caa10b49
+  position: {x: 361.98975, y: -10.499966}
+  if: {fileID: 2928723702696883861}
+  else: {fileID: -8670404821207228311}
+  checkpoint:
+    name: Talked to man at bottom of boat
+--- !u!114 &-1593130056837709515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27a982c8fe34f5647b765c8b4c035670, type: 3}
+  m_Name: Node_ShakeCamera
+  m_EditorClassIdentifier: 
+  guid: 49c1afbb707a3a54dba2ccf4ccd26d79
+  position: {x: 1233.4741, y: -77.99999}
+  child: {fileID: 4400459561324642863}
+  time: 0.5
+  intensity: 0.025
+--- !u!114 &-919286092935181695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f827acdc3bc342d40869a8399b90304f, type: 3}
+  m_Name: Node_OnInteract
+  m_EditorClassIdentifier: 
+  guid: ae0b2ea4be7b7674fa721e45688ac0ad
+  position: {x: 0, y: 0}
+  child: {fileID: -4931406266885817873}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c42512dadd5be304e808057306f73b0a, type: 3}
+  m_Name: Young Boy Red(-117282)
+  m_EditorClassIdentifier: 
+  rootNode: {fileID: -919286092935181695}
+  nodes:
+  - {fileID: -919286092935181695}
+  - {fileID: -4931406266885817873}
+  - {fileID: 2928723702696883861}
+  - {fileID: -8670404821207228311}
+  - {fileID: -5265064516238218374}
+  - {fileID: 3162668526329573721}
+  - {fileID: -1593130056837709515}
+  - {fileID: 2693363736176721571}
+  - {fileID: 4400459561324642863}
+  - {fileID: 35318910000537387}
+  - {fileID: 1783104779320337925}
+--- !u!114 &35318910000537387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27a982c8fe34f5647b765c8b4c035670, type: 3}
+  m_Name: Node_ShakeCamera
+  m_EditorClassIdentifier: 
+  guid: 4d512b6209d389b4fa889e1444e18fd7
+  position: {x: 1233, y: 263.9999}
+  child: {fileID: 1783104779320337925}
+  time: 0.5
+  intensity: 0.075
+--- !u!114 &1783104779320337925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27a982c8fe34f5647b765c8b4c035670, type: 3}
+  m_Name: Node_ShakeCamera
+  m_EditorClassIdentifier: 
+  guid: 1ab8f957a34be564183a0627275da37c
+  position: {x: 1233, y: 442.33896}
+  child: {fileID: 3162668526329573721}
+  time: 0.5
+  intensity: 0.1
+--- !u!114 &2693363736176721571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 510a78b3084c63f4eada401541cf9d36, type: 3}
+  m_Name: Node_WaitForSeconds
+  m_EditorClassIdentifier: 
+  guid: 5c2e0a92debef2143827746d14ac71df
+  position: {x: 1662, y: 116.00002}
+  child: {fileID: -5265064516238218374}
+  seconds: 2
+--- !u!114 &2928723702696883861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6eaa618f23ed4478cdf2a70b45d04b, type: 3}
+  m_Name: Node_Say
+  m_EditorClassIdentifier: 
+  guid: 33207fd75c46d4544b95755136e5d212
+  position: {x: 776, y: -78.000046}
+  child: {fileID: -1593130056837709515}
+  text: WE'RE GOING DOWN! WE'RE GOING DOWN!
+--- !u!114 &3162668526329573721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a96270f4c28f8244a73a82e75216cc6, type: 3}
+  m_Name: Node_ToggleOverlay
+  m_EditorClassIdentifier: 
+  guid: 7ce59179889e11c41a15df80cde60e94
+  position: {x: 1661.9403, y: -98.00003}
+  child: {fileID: 2693363736176721571}
+  on: 1
+  shakePower: 0.1
+  controlVol: 1
+  instant: 0
+--- !u!114 &4400459561324642863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27a982c8fe34f5647b765c8b4c035670, type: 3}
+  m_Name: Node_ShakeCamera
+  m_EditorClassIdentifier: 
+  guid: c3ccb63146810f14bab76246d09a1b27
+  position: {x: 1233, y: 95.99998}
+  child: {fileID: 35318910000537387}
+  time: 0.5
+  intensity: 0.05

@@ -11,11 +11,35 @@ public class Door : MonoBehaviour
         right = -90,
     }
 
+    public enum LoadType
+    {
+        DoorToDoor,
+        DoorToSpanPoint,
+        NoEnter,
+    }
+
+    public enum DoorTag
+    {
+        UnSetDoor,
+        MainDoor,
+        MainEntrance,
+        MainExit,
+        D1,
+        D2,
+        D3,
+        D4,
+        D5,
+        D6,
+    }
+
     public LevelScene toLevel;
     public DoorOpenDir doorOpening;
 
-    [SerializeField] string doorTag;
-    [SerializeField] string connectedDoor;
+    [SerializeField] DoorTag doorTag;
+
+    [SerializeField] LoadType loadType;
+    [SerializeField] DoorTag connectedDoor;
+    [SerializeField] Vector2 spanPosition;
 
     public string disallowEnterText;
 
@@ -48,7 +72,7 @@ public class Door : MonoBehaviour
 
         string text = GameManager.GetCleanedText(disallowEnterText);
 
-        if (text.Length > 0)
+        if (loadType == LoadType.NoEnter)
         {
             StartCoroutine(CantEnter(text));
             return;

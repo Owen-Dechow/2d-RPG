@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
         PlayerPlacementSettings = new(playerSpanPoint, playerSpanDirection);
         SceneManager.LoadScene(scene.ToString());
     }
-    public static void LoadLevel(LevelScene scene, string playerSpanDoor)
+    public static void LoadLevel(LevelScene scene, Door.DoorTag playerSpanDoor)
     {
         PlayerPlacementSettings = new(playerSpanDoor);
         SceneManager.LoadScene(scene.ToString());
@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
         yield return GameUI.ToggleLoadingScreen(false);
         Time.timeScale = 1;
     }
-    public static IEnumerator LoadLevelAnimated(LevelScene scene, string playerSpanDoor)
+    public static IEnumerator LoadLevelAnimated(LevelScene scene, Door.DoorTag playerSpanDoor)
     {
         Time.timeScale = 0;
         yield return GameUI.ToggleLoadingScreen(true);

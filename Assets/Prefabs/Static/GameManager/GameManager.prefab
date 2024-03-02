@@ -173,7 +173,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7591088857575168634}
-  - component: {fileID: 7877573734994959270}
+  - component: {fileID: 7517265974911824592}
   m_Layer: 0
   m_Name: Checkpoints
   m_TagString: Untagged
@@ -196,7 +196,7 @@ Transform:
   m_Father: {fileID: 6483088251835158205}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7877573734994959270
+--- !u!114 &7517265974911824592
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -208,12 +208,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f15a341daa8e8d43a96bc8e41501a24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkpoint_flags:
-  - checkpoint: old_man_purple_joined
+  checkpointFlags:
+  - checkpoint: Talked to man at bottom of boat
     isReached: 0
-  - checkpoint: passed_number_guessing_game
-    isReached: 0
-  - checkpoint: number_guessing_game_removed
+  - checkpoint: Told man where Eric is
     isReached: 0
 --- !u!1 &5821619504131920281
 GameObject:
@@ -310,6 +308,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be08f41484d2d5c4fa16cf886ec2aa58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  checkpoint:
+    name: _
   battleSystemPrefab: {fileID: 3272117986164641667, guid: 5fd7af94004125744b97b20aeca8d890, type: 3}
   itemData:
   - identity: 0
