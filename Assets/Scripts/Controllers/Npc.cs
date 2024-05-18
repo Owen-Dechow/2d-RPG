@@ -96,7 +96,7 @@ public class Npc : MonoBehaviour
         Time.timeScale = 0;
         yield return new WaitForEndOfFrame();
 
-        yield return behaviorTree.Run(this);
+        yield return behaviorTree.Run(this, new BehaviorTree.TreeData());
 
         yield return new WaitWhile(() => MyInput.Select == 1);
 

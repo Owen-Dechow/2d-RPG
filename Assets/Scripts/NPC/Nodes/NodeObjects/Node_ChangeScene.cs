@@ -6,9 +6,10 @@ public class Node_ChangeScene : ActionNode
     [SerializeField] LevelScene scene;
     [SerializeField] Vector2 playerSpanPoint;
     [SerializeField] bool saveAfterChange = true;
-    
 
-    protected override IEnumerator Execute(Npc npc)
+    public override string MenuLocation => "Animation/Change Scene";
+
+    protected override IEnumerator Execute(Npc npc, BehaviorTree.TreeData treeData)
     {        
         npc.transform.parent = null;
         npc.GetComponent<Renderer>().enabled = false;

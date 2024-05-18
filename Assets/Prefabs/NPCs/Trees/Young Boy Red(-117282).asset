@@ -33,6 +33,7 @@ MonoBehaviour:
   child: {fileID: 0}
   scene: 2
   playerSpanPoint: {x: 0, y: 0}
+  saveAfterChange: 1
 --- !u!114 &-4931406266885817873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,6 +69,7 @@ MonoBehaviour:
   child: {fileID: 4400459561324642863}
   time: 0.5
   intensity: 0.025
+  decay: 0
 --- !u!114 &-919286092935181695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,10 +123,11 @@ MonoBehaviour:
   m_Name: Node_ShakeCamera
   m_EditorClassIdentifier: 
   guid: 4d512b6209d389b4fa889e1444e18fd7
-  position: {x: 1233, y: 263.9999}
+  position: {x: 1232.9999, y: 273.00006}
   child: {fileID: 1783104779320337925}
   time: 0.5
   intensity: 0.075
+  decay: 0
 --- !u!114 &1783104779320337925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,10 +141,11 @@ MonoBehaviour:
   m_Name: Node_ShakeCamera
   m_EditorClassIdentifier: 
   guid: 1ab8f957a34be564183a0627275da37c
-  position: {x: 1233, y: 442.33896}
+  position: {x: 1233, y: 442}
   child: {fileID: 3162668526329573721}
   time: 0.5
   intensity: 0.1
+  decay: 0
 --- !u!114 &2693363736176721571
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,7 +210,8 @@ MonoBehaviour:
   m_Name: Node_ShakeCamera
   m_EditorClassIdentifier: 
   guid: c3ccb63146810f14bab76246d09a1b27
-  position: {x: 1233, y: 95.99998}
+  position: {x: 1233, y: 95}
   child: {fileID: 35318910000537387}
   time: 0.5
   intensity: 0.05
+  decay: 0

@@ -25,6 +25,7 @@ MonoBehaviour:
   - {fileID: 8153163655817150943, guid: cb11dd5ab8fafe342942d757761623a4, type: 3}
   - {fileID: 5486956140826741577, guid: c4d90170bc0c6fd4b9a49845bb874837, type: 3}
   - {fileID: 8632300332749545451, guid: a7aca914d40a70140bd015e762594f21, type: 3}
+  - {fileID: 6805543712653076287, guid: 06982477da56e2646ba892991556dd12, type: 3}
   NPCTransformName: NPCs
   enemyTransformName: Enemies
   otherTransformName: Objects

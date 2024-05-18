@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   guid: 17916557216fcb642b1a2c3453e9a7df
   position: {x: 791, y: -125}
-  child: {fileID: 0}
+  child: {fileID: 5415777039906643867}
   text: I FOUND DEREK
 --- !u!114 &-4771939170823904537
 MonoBehaviour:
@@ -84,6 +84,8 @@ MonoBehaviour:
   - {fileID: -756037382600550909}
   - {fileID: -4771939170823904537}
   - {fileID: -6003904768569562963}
+  - {fileID: 5415777039906643867}
+  - {fileID: 2162090553250864511}
 --- !u!114 &54824439286521581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,3 +102,37 @@ MonoBehaviour:
   position: {x: 791, y: 42}
   child: {fileID: -756037382600550909}
   text: The boat is taking on water.
+--- !u!114 &2162090553250864511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e6ac17cbdb747b4ab296d21de6f6f4f, type: 3}
+  m_Name: Node_AnimateObject
+  m_EditorClassIdentifier: 
+  guid: c5f9926cec5dce54cb644df844377236
+  position: {x: 1604, y: -125}
+  child: {fileID: 0}
+  referenceKey: eric
+  animationClip: {fileID: 7400000, guid: 73172171e1c9fef40be91f8373b96ac2, type: 2}
+--- !u!114 &5415777039906643867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7af36fdcfc2011d45a8990eed4889745, type: 3}
+  m_Name: Node_GetObject
+  m_EditorClassIdentifier: 
+  guid: ed11f2a54bd7bf8499783bba49e9c6bc
+  position: {x: 1194, y: -125}
+  child: {fileID: 2162090553250864511}
+  objectName: Eric
+  referenceKey: eric

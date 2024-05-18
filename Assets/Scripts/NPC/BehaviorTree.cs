@@ -9,10 +9,20 @@ public class BehaviorTree : ScriptableObject
     [HideInInspector] public Node rootNode;
     [HideInInspector] public List<Node> nodes = new();
 
-    public IEnumerator Run(Npc npc)
+    public IEnumerator Run(Npc npc, BehaviorTree.TreeData treeData)
     {
         if (rootNode == null) throw new System.NotImplementedException("No behavior implemented for tree.");
-        yield return rootNode.Run(npc);
+        yield return rootNode.Run(npc, treeData);
+    }
+
+    public class TreeData
+    {
+        public Dictionary<string, GameObject> gameObjects;
+
+        public TreeData()
+        {
+            gameObjects = new Dictionary<string, GameObject>();
+        }
     }
 
     #region Editor

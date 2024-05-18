@@ -5,7 +5,10 @@ using UnityEngine;
 public class Node_CheckpointFulfilled : IFNode
 {
     [SerializeField] CheckpointSystem.CheckpointFlag checkpoint;
-    protected override bool Evaluate(Npc npc)
+
+    public override string MenuLocation => "Control/Checkpoint Passed";
+
+    protected override bool Evaluate(Npc npc, BehaviorTree.TreeData treeData)
     {
         return checkpoint.GetStatus();
     }

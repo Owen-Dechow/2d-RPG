@@ -41,7 +41,7 @@ public class NodeView : UnityEditor.Experimental.GraphView.Node
         InspectorView inspectorView = new();
         inspectorView.UpdateSelection(this);
         inspectorView.AddToClassList("inspector-view");
-        contentContainer.Q("inspector").Add(inspectorView);
+        contentContainer.Q("inspector-foldout").Add(inspectorView);
     }
 
     private void CreateOutputPorts()

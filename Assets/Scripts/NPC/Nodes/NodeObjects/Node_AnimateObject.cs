@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class Node_AnimateObject : ActionNode
 {
-    [SerializeField] GameObject _gameObject;
+    [SerializeField] string referenceKey;
     [SerializeField] AnimationClip animationClip;
 
-    protected override IEnumerator Execute(Npc npc)
-    {
-        Animator animator = _gameObject.GetComponent<Animator>();
-        animator.Play(animationClip.name);
-        while (animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == animator.name) {
+    public override string MenuLocation => "Animation/Animate Object";
 
-            yield return new WaitForEndOfFrame();
-        }
+    protected override IEnumerator Execute(Npc npc, BehaviorTree.TreeData treeData)
+    {
+        Animator animator = treeData.gameObjects[referenceKey].GetComponent<Animator>();
+        animator.Play(animationClip.name);
+        yield return new WaitWhile(() => animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == animator.name);
     }
 }

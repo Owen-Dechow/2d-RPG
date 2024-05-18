@@ -5,7 +5,10 @@ using UnityEngine;
 public class Node_AnswerIs : IFNode
 {
     [SerializeField] string[] answers;
-    protected override bool Evaluate(Npc npc)
+
+    public override string MenuLocation => "Control/Answer Is";
+
+    protected override bool Evaluate(Npc npc, BehaviorTree.TreeData treeData)
     {
         foreach (string answer in answers)
         {

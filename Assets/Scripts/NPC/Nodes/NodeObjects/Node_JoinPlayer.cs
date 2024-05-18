@@ -7,7 +7,9 @@ public class Node_JoinPlayer : ActionNode
     [SerializeField] BattleUnit.BattleUnitData battleUnit;
     [SerializeField] string joinedPlayerCheckpoint;
 
-    protected override IEnumerator Execute(Npc npc)
+    public override string MenuLocation => "Actions/NPC Join";
+
+    protected override IEnumerator Execute(Npc npc, BehaviorTree.TreeData treeData)
     {
         yield return GameUI.TypeOut($"{battleUnit.title} joined {Player.Name}");
         Player.AddBattleUnit(battleUnit, sprite);

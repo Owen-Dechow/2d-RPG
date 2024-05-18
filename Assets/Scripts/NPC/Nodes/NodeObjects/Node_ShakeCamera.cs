@@ -7,7 +7,9 @@ public class Node_ShakeCamera : ActionNode
     [SerializeField] float intensity;
     [SerializeField] bool decay;
 
-    protected override IEnumerator Execute(Npc npc)
+    public override string MenuLocation => "Animation/Shake Camera";
+
+    protected override IEnumerator Execute(Npc npc, BehaviorTree.TreeData treeData)
     {
         yield return CameraController.ShakeCamera(time, intensity, decay);
     }

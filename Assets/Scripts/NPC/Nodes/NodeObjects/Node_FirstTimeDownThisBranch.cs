@@ -5,7 +5,9 @@ public class Node_FirstTimeDownThisBranch : IFNode
 {
     public int uniqueId;
 
-    protected override bool Evaluate(Npc npc)
+    public override string MenuLocation => "Control/First Time At This Node";
+
+    protected override bool Evaluate(Npc npc, BehaviorTree.TreeData treeData)
     {
         if (GameManager.PostInteractionProtectionIDs.Contains(uniqueId))
         {

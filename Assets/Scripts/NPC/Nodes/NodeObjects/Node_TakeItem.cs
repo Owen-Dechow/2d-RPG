@@ -4,7 +4,10 @@ using UnityEngine;
 public class Node_TakeItem : ActionNode
 {
     [SerializeField] GameItems.Options item;
-    protected override IEnumerator Execute(Npc npc)
+
+    public override string MenuLocation => "Actions/Take Player Item";
+
+    protected override IEnumerator Execute(Npc npc, BehaviorTree.TreeData treeData)
     {
         if (Player.Items.Contains(item))
         {

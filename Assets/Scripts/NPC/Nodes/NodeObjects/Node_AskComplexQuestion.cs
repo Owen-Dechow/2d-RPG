@@ -7,7 +7,9 @@ public class Node_AskComplexQuestion : ActionNode
     [SerializeField] string[] choices;
     [SerializeField] bool allowNoAnswer = false;
 
-    protected override IEnumerator Execute(Npc npc)
+    public override string MenuLocation => "Menus/Complex Question";
+
+    protected override IEnumerator Execute(Npc npc, BehaviorTree.TreeData treeData)
     {
         int cols;
         {

@@ -16,7 +16,7 @@
                 <ui:VisualElement name="divider" class="vertical" />
                 <ui:VisualElement name="output" />
             </ui:VisualElement>
-            <ui:VisualElement name="inspector" />
+            <ui:Foldout text="Inspector" name="inspector-foldout" value="false" style="background-color: rgb(56, 56, 56);" />
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement name="selection-border" picking-mode="Ignore" />

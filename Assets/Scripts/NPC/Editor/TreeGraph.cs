@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -17,66 +18,28 @@ public class TreeGraph : GraphView
             return;
         }
 
-        Type[][] nodesInMenu = new Type[][]
+        List<Type> nodesInMenu = TypeCache.GetTypesDerivedFrom<ActionNode>().ToList();
+        nodesInMenu.AddRange(TypeCache.GetTypesDerivedFrom<IFNode>().ToList());
+
+        foreach (Type node in nodesInMenu)
         {
-            // Actions
-            new Type[] {
-                typeof(Node_Say),
-                typeof(Node_AskYesNoQuestion),
-                typeof(Node_AskComplexQuestion),
-                typeof(Node_ComplexMenu),
-                typeof(Node_GiveItem),
-                typeof(Node_TakeItem),
-                typeof(Node_FulfillCheckpoint),
-                typeof(Node_TeachPower),
-                typeof(Node_JoinPlayer),
-                typeof(Node_ShakeCamera),
-                typeof(Node_ChangeScene),
-                typeof(Node_ToggleOverlay),
-            },
 
-            // Conditionals
-            new Type[]
-            {
-                typeof(Node_AnswerIs),
-                typeof(Node_AnswerIndexIs),
-                typeof(Node_CheckpointFulfilled),
-                typeof(Node_HasItem),
-                typeof(Node_PickRandom),
-                typeof(Node_FirstTimeDownThisBranch),
-                typeof(Node_HasRoomInInventory),
-            },
+            VisualElement contentViewContainer = ElementAt(1);
+            Vector3 screenMousePosition = evt.localMousePosition;
+            Vector2 worldMousePosition = screenMousePosition - contentViewContainer.transform.position;
+            worldMousePosition *= 1 / contentViewContainer.transform.scale.x;
 
-            // Console
-            new Type[]
-            {
-                typeof(Node_DebugLog),
-                typeof(Node_DebugWarning),
-                typeof(Node_DebugError),
-            },
+            PropertyInfo menuLocationProperty = node.GetProperty("MenuLocation");
+            ScriptableObject scriptableObject = ScriptableObject.CreateInstance(node);
 
-            // Other
-            new Type[]
-            {
-                typeof(Node_DoNothing),
-                typeof(Node_WaitForSeconds)
-            }
-        };
+            var val = menuLocationProperty.GetValue(scriptableObject);
 
-        foreach (Type[] nodeList in nodesInMenu)
-        {
-            foreach (Type node in nodeList)
-            {
+            UnityEngine.Object.DestroyImmediate(scriptableObject);
 
-                VisualElement contentViewContainer = ElementAt(1);
-                Vector3 screenMousePosition = evt.localMousePosition;
-                Vector2 worldMousePosition = screenMousePosition - contentViewContainer.transform.position;
-                worldMousePosition *= 1 / contentViewContainer.transform.scale.x;
-
-                evt.menu.AppendAction(node.Name.Replace("Node_", ""), a => CreateNode(node, worldMousePosition));
-            }
-            evt.menu.AppendSeparator();
+            evt.menu.AppendAction(val as string, a => CreateNode(node, worldMousePosition));
         }
+        evt.menu.AppendSeparator();
+
     }
 
     public new class UxmlFactory : UxmlFactory<TreeGraph, GraphView.UxmlTraits> { }
