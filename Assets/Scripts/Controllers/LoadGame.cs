@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Controllers;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -57,7 +58,7 @@ public class LoadGame : MonoBehaviour
             yield return GameUI.ToggleLoadingScreen(true);
 
             gameObject.GetComponent<Canvas>().enabled = false;
-            GameManager.LoadLevel(LevelScene.ShipTop, Vector2.zero, AnimPlus.Direction.down);
+            GameManager.LoadLevel(LevelScene.ShipTop, Vector2.zero, AnimPlus.Direction.Down);
 
             yield return GameUI.ToggleLoadingScreen(false);
             Player.UpdateToLevel1();

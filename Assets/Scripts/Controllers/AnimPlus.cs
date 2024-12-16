@@ -1,131 +1,134 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimPlus : MonoBehaviour
+namespace Controllers
 {
-    public enum Direction
+    public class AnimPlus : MonoBehaviour
     {
-        up,
-        down,
-        left,
-        right
-    }
-
-    private Animator anim;
-    private SpriteRenderer spr;
-    private AnimationClip currentState;
-    private Rigidbody2D rb;
-
-    private Direction currentDirection = Direction.down;
-    private Vector2 movementDelta;
-
-    public AnimationClip moveUp;
-    public AnimationClip moveDown;
-    public AnimationClip moveHorizontal;
-
-    public AnimationClip idleUp;
-    public AnimationClip idleDown;
-    public AnimationClip idleHorizontal;
-
-    public bool speedAdded = false;
-    public bool useRigidBody = true;
-
-    private void Start()
-    {
-        anim = GetComponent<Animator>();
-        spr = GetComponent<SpriteRenderer>();
-
-        try { rb = GetComponent<Rigidbody2D>(); }
-        catch { rb = null; }
-    }
-
-    private void LateUpdate()
-    {
-        spr.flipX = currentDirection == Direction.left;
-        anim.speed = speedAdded ? 1.75f : 1;
-        if (useRigidBody)
+        public enum Direction
         {
-            if (rb == null)
+            Up,
+            Down,
+            Left,
+            Right
+        }
+
+        private Animator anim;
+        private SpriteRenderer spr;
+        private AnimationClip currentState;
+        private Rigidbody2D rb;
+
+        private Direction currentDirection = Direction.Down;
+        private Vector2 movementDelta;
+
+        public AnimationClip moveUp;
+        public AnimationClip moveDown;
+        public AnimationClip moveHorizontal;
+
+        public AnimationClip idleUp;
+        public AnimationClip idleDown;
+        public AnimationClip idleHorizontal;
+
+        public bool speedAdded = false;
+        public bool useRigidBody = true;
+
+        private void Start()
+        {
+            anim = GetComponent<Animator>();
+            spr = GetComponent<SpriteRenderer>();
+
+            try { rb = GetComponent<Rigidbody2D>(); }
+            catch { rb = null; }
+        }
+
+        private void LateUpdate()
+        {
+            spr.flipX = currentDirection == Direction.Left;
+            anim.speed = speedAdded ? 1.75f : 1;
+            if (useRigidBody)
             {
-                Debug.LogError("There is no rigid body on this sprite");
+                if (rb == null)
+                {
+                    Debug.LogError("There is no rigid body on this sprite");
+                }
+                else
+                {
+                    movementDelta = rb.velocity;
+                }
+            }
+
+            bool idle = movementDelta.magnitude == 0;
+            if (!idle) SetDirection();
+
+            if (idle)
+            {
+                switch (currentDirection)
+                {
+                    case Direction.Up: SetAnimationTo(idleUp); break;
+                    case Direction.Down: SetAnimationTo(idleDown); break;
+                    case Direction.Left: SetAnimationTo(idleHorizontal); break;
+                    case Direction.Right: SetAnimationTo(idleHorizontal); break;
+                }
             }
             else
             {
-                movementDelta = rb.velocity;
+                switch (currentDirection)
+                {
+                    case Direction.Up: SetAnimationTo(moveUp); break;
+                    case Direction.Down: SetAnimationTo(moveDown); break;
+                    case Direction.Left: SetAnimationTo(moveHorizontal); break;
+                    case Direction.Right: SetAnimationTo(moveHorizontal); break;
+                }
             }
         }
 
-        bool idle = movementDelta.magnitude == 0;
-        if (!idle) SetDirection();
-
-        if (idle)
+        private void SetDirection()
         {
-            switch (currentDirection)
-            {
-                case Direction.up: SetAnimationTo(idleUp); break;
-                case Direction.down: SetAnimationTo(idleDown); break;
-                case Direction.left: SetAnimationTo(idleHorizontal); break;
-                case Direction.right: SetAnimationTo(idleHorizontal); break;
-            }
+            if (Time.timeScale == 0) return;
+            if (movementDelta.x > 0) currentDirection = Direction.Right;
+            else if (movementDelta.x < 0) currentDirection = Direction.Left;
+            else if (movementDelta.y > 0) currentDirection = Direction.Up;
+            else if (movementDelta.y < 0) currentDirection = Direction.Down;
         }
-        else
+
+        private void SetAnimationTo(AnimationClip animationClip)
         {
-            switch (currentDirection)
-            {
-                case Direction.up: SetAnimationTo(moveUp); break;
-                case Direction.down: SetAnimationTo(moveDown); break;
-                case Direction.left: SetAnimationTo(moveHorizontal); break;
-                case Direction.right: SetAnimationTo(moveHorizontal); break;
-            }
+            if (currentState == animationClip) return;
+
+            anim.Play(animationClip.name);
+            currentState = animationClip;
         }
-    }
 
-    private void SetDirection()
-    {
-        if (Time.timeScale == 0) return;
-        if (movementDelta.x > 0) currentDirection = Direction.right;
-        else if (movementDelta.x < 0) currentDirection = Direction.left;
-        else if (movementDelta.y > 0) currentDirection = Direction.up;
-        else if (movementDelta.y < 0) currentDirection = Direction.down;
-    }
-
-    private void SetAnimationTo(AnimationClip animation)
-    {
-        if (currentState == animation) return;
-
-        anim.Play(animation.name);
-        currentState = animation;
-    }
-
-    public static Direction RandomDirection(bool includeX = true, bool includeY = true)
-    {
-        List<Direction> directions = new();
+        public static Direction RandomDirection(bool includeX = true, bool includeY = true)
+        {
+            List<Direction> directions = new();
         
-        if (includeX)
-        {
-            directions.Add(Direction.left);
-            directions.Add(Direction.right);
+            if (includeX)
+            {
+                directions.Add(Direction.Left);
+                directions.Add(Direction.Right);
+            }
+
+            if (includeY)
+            {
+                directions.Add(Direction.Up);
+                directions.Add(Direction.Down);
+            }
+
+            return directions[Random.Range(0, directions.Count)];
         }
 
-        if (includeY)
+        public void SetDelta(Vector2 delta)
         {
-            directions.Add(Direction.up);
-            directions.Add(Direction.down);
+            movementDelta = delta;
         }
-
-        return directions[Random.Range(0, directions.Count)];
-    }
-
-    public void SetDelta(Vector2 delta)
-    {
-        movementDelta = delta;
-    }
-    public void SetDirection(Direction direction)
-    {
-        currentDirection = direction;
-    }
-    public void SetUseRigidBody(bool value)
-    {
-        useRigidBody = value;
+        public void SetDirection(Direction direction)
+        {
+            currentDirection = direction;
+        }
+        public void SetUseRigidBody(bool value)
+        {
+            useRigidBody = value;
+        }
     }
 }

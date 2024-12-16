@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Controllers;
 using UnityEngine;
 
 
@@ -597,6 +598,8 @@ public class BattleSystem : MonoBehaviour
 
         // Indicate which player is going
         PositionPointer(unit);
+        
+        yield return new WaitForSecondsRealtime(.5f);
 
         // Get possible actions
         string[] possibleActions = GetPossibleActions(unit);

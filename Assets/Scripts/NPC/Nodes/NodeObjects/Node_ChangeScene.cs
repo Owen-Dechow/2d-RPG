@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Controllers;
 using UnityEngine;
 
 public class Node_ChangeScene : ActionNode
@@ -15,7 +16,7 @@ public class Node_ChangeScene : ActionNode
         npc.GetComponent<Renderer>().enabled = false;
         DontDestroyOnLoad(npc);
         
-        yield return GameManager.LoadLevelAnimated(scene, playerSpanPoint, AnimPlus.Direction.down);
+        yield return GameManager.LoadLevelAnimated(scene, playerSpanPoint, AnimPlus.Direction.Down);
         
         if (saveAfterChange)
             SaveSystem.SaveGame();

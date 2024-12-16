@@ -1,8 +1,9 @@
-﻿using UnityEditor;
+﻿using Controllers;
+using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-[CustomEditor(typeof(Door))]
+[CustomEditor(typeof(DoorController))]
 public class DoorEditor : Editor
 {
     SerializedProperty toLevel;
@@ -35,26 +36,26 @@ public class DoorEditor : Editor
 
         EditorGUILayout.PropertyField(loadType);
 
-        Door.LoadType doorLoadType = (Door.LoadType)loadType.intValue;
+        DoorController.LoadType doorLoadType = (DoorController.LoadType)loadType.intValue;
 
-        if (doorLoadType == Door.LoadType.NoEnter)
+        if (doorLoadType == DoorController.LoadType.NoEnter)
             EditorGUILayout.PropertyField(disallowEnterText, new GUILayoutOption[0]);
         else
             EditorGUILayout.PropertyField(toLevel);
 
-        if (doorLoadType == Door.LoadType.DoorToDoor)
+        if (doorLoadType == DoorController.LoadType.DoorToDoor)
             EditorGUILayout.PropertyField(connectedDoor);
 
-        if (doorLoadType == Door.LoadType.DoorToSpanPoint)
+        if (doorLoadType == DoorController.LoadType.DoorToSpawnPoint)
             EditorGUILayout.PropertyField(spanPosition);
 
-        if (doorLoadType != Door.LoadType.NoEnter)
+        if (doorLoadType != DoorController.LoadType.NoEnter)
         {
             EditorGUILayout.Space();
             if (GUILayout.Button("Follow Door To Scene"))
             {
                 EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
-                string path = $"Assets\\Scenes\\{(target as Door).toLevel}.unity";
+                string path = $"Assets\\Scenes\\{(target as DoorController).toLevel}.unity";
                 EditorSceneManager.OpenScene(path);
             }
         }

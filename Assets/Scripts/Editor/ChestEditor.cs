@@ -1,7 +1,8 @@
-﻿using UnityEditor;
+﻿using Controllers;
+using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(Chest))]
+[CustomEditor(typeof(ChestController))]
 public class ChestEditor : Editor
 {
     SerializedProperty openSprite;
@@ -31,12 +32,12 @@ public class ChestEditor : Editor
         EditorGUILayout.PropertyField(closedSprite);
         EditorGUILayout.PropertyField(contentType);
 
-        switch ((target as Chest).contentType)
+        switch ((target as ChestController).contentType)
         {
-            case Chest.ContentType.Item:
+            case ChestController.ContentType.Item:
                 EditorGUILayout.PropertyField(itemOption);
                 break;
-            case Chest.ContentType.Gold:
+            case ChestController.ContentType.Gold:
                 EditorGUILayout.PropertyField(goldOption);
                 break;
         }
@@ -45,7 +46,7 @@ public class ChestEditor : Editor
         GUILayout.Label("IMPORTENT: Do not forget this step!");
         if (GUILayout.Button("Generate Id"))
         {
-            (target as Chest).uniqueId = GameManager.GetRandomIntId();
+            (target as ChestController).uniqueId = GameManager.GetRandomIntId();
         }
         EditorGUILayout.PropertyField(uniqueId);
 

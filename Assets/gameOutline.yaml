@@ -19,7 +19,7 @@ STORY PATH:
     Saved by strange hammer wielding people
     follow them to village
     meets with elder
-    teaches player fighing controls
+    teaches player fighting controls
     meets first enemy in a clearing
     breaks axe on way to beach
     gets to beach
@@ -62,7 +62,7 @@ STORY PATH:
     castles puzzles are on off switch puzzles 
     boss is a dragon stockpiling gold
     attacks you with fire breath, and flybys
-    dragon is in Chinese wormlike style
+    dragon is in Chinese worm-like style
     after you defeat the dragon, leads you to another room
     book is in room, have to hit the on off switch to get it
     room leads back to first room
@@ -85,7 +85,7 @@ STORY PATH:
     
 SYSTEMS:
     Environment: Tiled
-    Partical: Unity
+    Particle: Unity
     Combat: Turn Based (Finial Fantasy)
 
 IMPORTANT FEATURES:
@@ -98,11 +98,11 @@ IMPORTANT FEATURES:
 
     Flight:
         Allows player to fly over walls.
-        If player lands out of bounds he respans on take off point.
+        If player lands out of bounds he respawns on take off point.
 
     Lots of loot:
         Pack game with collectables and treasure.
 
     Badge system:
         Badges are equipable collectables that can change various things.
-        They are separated into threegroups (Attack, Defense, Special).
+        They are separated into three groups (Attack, Defense, Special).

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Controllers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -62,7 +63,7 @@ public class GameManager : MonoBehaviour
     {
         SaveDataSerializable data = SaveSystem.LoadData(id);
         SaveDataSerializable.UnpackSaveData(data);
-        LoadLevel(data.levelScene, new Vector2(data.position[0], data.position[1]), AnimPlus.Direction.down);
+        LoadLevel(data.levelScene, new Vector2(data.position[0], data.position[1]), AnimPlus.Direction.Down);
     }
     public static void LostBattle()
     {
@@ -84,7 +85,7 @@ public class GameManager : MonoBehaviour
         PlayerPlacementSettings = new(playerSpanPoint, playerSpanDirection);
         SceneManager.LoadScene(scene.ToString());
     }
-    public static void LoadLevel(LevelScene scene, Door.DoorTag playerSpanDoor)
+    public static void LoadLevel(LevelScene scene, DoorController.DoorTag playerSpanDoor)
     {
         PlayerPlacementSettings = new(playerSpanDoor);
         SceneManager.LoadScene(scene.ToString());
@@ -97,7 +98,7 @@ public class GameManager : MonoBehaviour
         yield return GameUI.ToggleLoadingScreen(false);
         Time.timeScale = 1;
     }
-    public static IEnumerator LoadLevelAnimated(LevelScene scene, Door.DoorTag playerSpanDoor)
+    public static IEnumerator LoadLevelAnimated(LevelScene scene, DoorController.DoorTag playerSpanDoor)
     {
         Time.timeScale = 0;
         yield return GameUI.ToggleLoadingScreen(true);
