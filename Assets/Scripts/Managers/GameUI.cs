@@ -111,7 +111,7 @@ namespace Managers
             {
                 while (loadingScreenImage.color.a < 1)
                 {
-                    loadingScreenImage.color = new Color(0, 0, 0, Mathf.Clamp(loadingScreenImage.color.a + Time.unscaledDeltaTime, 0, 1));
+                    loadingScreenImage.color = new Color(0, 0, 0, Mathf.Clamp(loadingScreenImage.color.a + Time.deltaTime, 0, 1));
 
                     if (controlVol)
                         AudioListener.volume = 1 - loadingScreenImage.color.a;
@@ -123,7 +123,7 @@ namespace Managers
             {
                 while (loadingScreenImage.color.a > 0)
                 {
-                    loadingScreenImage.color = new Color(0, 0, 0, Mathf.Clamp(loadingScreenImage.color.a - Time.unscaledDeltaTime, 0, 1));
+                    loadingScreenImage.color = new Color(0, 0, 0, Mathf.Clamp(loadingScreenImage.color.a - Time.deltaTime, 0, 1));
 
                     if (controlVol)
                         AudioListener.volume = Mathf.Abs(loadingScreenImage.color.a - 1);

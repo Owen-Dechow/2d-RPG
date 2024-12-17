@@ -41,7 +41,7 @@ namespace Controllers
             {
                 Vector3 delta = (PlayerController.playerController.transform.position - transform.position) / Drag;
                 delta.z = 0;
-                transform.position += Time.timeScale * Time.unscaledDeltaTime * delta;
+                transform.position += Time.deltaTime * delta;
             }
             else
             {
@@ -54,15 +54,15 @@ namespace Controllers
         public static IEnumerator ShakeCamera(float time, float intensity, bool decay)
         {
             CameraController cam = Camera.main!.GetComponent<CameraController>();
-            float startTime = Time.unscaledTime;
+            float startTime = Time.time;
 
-            while (Time.unscaledTime - startTime <= time)
+            while (Time.time - startTime <= time)
             {
                 yield return new WaitForSecondsRealtime(0.01f);
 
                 float intensityFactor;
                 if (decay)
-                    intensityFactor = 1 - (Time.unscaledTime - startTime) / time;
+                    intensityFactor = 1 - (Time.time - startTime) / time;
                 else
                     intensityFactor = 1;
 

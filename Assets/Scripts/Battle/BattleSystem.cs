@@ -126,14 +126,14 @@ namespace Battle
         {
             foreach (Panel panel in playerPanels)
             {
-                panel.DisplayUnitGradual(Time.unscaledDeltaTime * 4);
+                panel.DisplayUnitGradual(Time.deltaTime * 4);
             }
 
             if (blinkUnit)
             {
                 if (selectedUnit != null)
                 {
-                    selectedUnit.spriteRenderer.color = Mathf.Floor(Time.unscaledTime * 10) % 2 == 0
+                    selectedUnit.spriteRenderer.color = Mathf.Floor(Time.time * 10) % 2 == 0
                         ? Color.white
                         : new Color(0.3f, 0.3f, 0.3f, 0.3f);
                 }
