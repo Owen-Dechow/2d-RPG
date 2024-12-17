@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Controllers;
+using NPC;
 using UnityEngine;
 
 public class Node_AnimateObject : ActionNode
@@ -12,7 +13,7 @@ public class Node_AnimateObject : ActionNode
 
     protected override IEnumerator Execute(Npc npc, BehaviorTree.TreeData treeData)
     {
-        Animator animator = treeData.gameObjects[referenceKey].GetComponent<Animator>();
+        Animator animator = treeData.GameObjects[referenceKey].GetComponent<Animator>();
         animator.Play(animationClip.name);
         yield return new WaitWhile(() => animator.GetCurrentAnimatorClipInfo(0)[0].clip.name == animator.name);
     }

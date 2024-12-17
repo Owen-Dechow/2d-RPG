@@ -1,41 +1,42 @@
 using System.Collections;
-using System.Collections.Generic;
-using Controllers;
 using UnityEngine;
 
-public class Lightning : MonoBehaviour
+namespace Controllers
 {
-    [SerializeField] AudioClip[] audioClips;
-    [SerializeField] float interval;
-    [SerializeField] float shakeIntensity;
-    AudioSource thunder;
-    ParticleSystem lightning;
-
-    public bool SoundOnly { get; set; }
-
-    // Start is called before the first frame update
-    void Start()
+    public class Lightning : MonoBehaviour
     {
-        thunder = GetComponent<AudioSource>();
-        lightning = GetComponent<ParticleSystem>();
-        StartCoroutine(Interval());
-    }
+        [SerializeField] AudioClip[] audioClips;
+        [SerializeField] float interval;
+        [SerializeField] float shakeIntensity;
+        AudioSource thunder;
+        ParticleSystem lightning;
 
-    IEnumerator Interval()
-    {
-        while (true)
+        public bool SoundOnly { get; set; }
+
+        // Start is called before the first frame update
+        void Start()
         {
-            yield return new WaitForSecondsRealtime(Random.value * interval);
+            thunder = GetComponent<AudioSource>();
+            lightning = GetComponent<ParticleSystem>();
+            StartCoroutine(Interval());
+        }
 
-            thunder.clip = audioClips[Random.Range(0, audioClips.Length)];
-            thunder.Play();
+        IEnumerator Interval()
+        {
+            while (true)
+            {
+                yield return new WaitForSecondsRealtime(Random.value * interval);
 
-            StartCoroutine(CameraController.ShakeCamera(thunder.clip.length, shakeIntensity, true));
+                thunder.clip = audioClips[Random.Range(0, audioClips.Length)];
+                thunder.Play();
+
+                StartCoroutine(CameraController.ShakeCamera(thunder.clip.length, shakeIntensity, true));
             
-            if (!SoundOnly)
-                lightning.Emit(Random.Range(2, 6));
+                if (!SoundOnly)
+                    lightning.Emit(Random.Range(2, 6));
 
-            yield return new WaitWhile(() => thunder.isPlaying);
+                yield return new WaitWhile(() => thunder.isPlaying);
+            }
         }
     }
 }

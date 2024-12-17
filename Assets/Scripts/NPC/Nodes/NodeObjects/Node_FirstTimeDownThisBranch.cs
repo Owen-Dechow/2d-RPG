@@ -1,4 +1,6 @@
 ﻿using Controllers;
+using Managers;
+using NPC;
 using UnityEngine;
 using UnityEditor;
 
@@ -10,13 +12,13 @@ public class Node_FirstTimeDownThisBranch : IFNode
 
     protected override bool Evaluate(Npc npc, BehaviorTree.TreeData treeData)
     {
-        if (GameManager.PostInteractionProtectionIDs.Contains(uniqueId))
+        if (GameManager.postInteractionProtectionIDs.Contains(uniqueId))
         {
             return false;
         }
         else
         {
-            GameManager.PostInteractionProtectionIDs.Add(uniqueId);
+            GameManager.postInteractionProtectionIDs.Add(uniqueId);
             return true;
         }
     }

@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using Controllers;
+using Managers;
+using NPC;
 using UnityEngine;
 
 public class Node_AskYesNoQuestion : ActionNode

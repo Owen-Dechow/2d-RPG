@@ -1,3 +1,5 @@
+using Battle;
+using Managers;
 using UnityEngine;
 
 namespace Controllers
@@ -75,11 +77,25 @@ namespace Controllers
             battleUnit = GetComponent<BattleUnit>();
 
             turnPositive = Random.Range(0, 2) == 0;
+            
+            CutScene.OnEnable += OnCutScene;
+        }
+
+        private void OnDestroy()
+        {
+            CutScene.OnEnable -= OnCutScene;
+        }
+
+        private void OnCutScene()
+        {
+            rb.velocity = Vector2.zero;
         }
 
         void Update()
         {
             if (!PlayerController.playerController.CanAttack) return;
+            if (CutScene.Enabled) return;
+
             Vector2 delta = GetDelta(transform.position, PlayerController.playerController.transform.position);
             delta = delta.normalized;
             rb.velocity = movementOptions.speed * (Vector3)delta;
@@ -100,7 +116,7 @@ namespace Controllers
         {
             if (!PlayerController.playerController.CanAttack) return;
             if (!collider2d.CompareTag("Player")) return;
-            if (Time.timeScale < 0.1) return;
+            if (CutScene.Enabled) return;
 
             StartBattle();
         }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Controllers;
+using NPC;
 using UnityEngine;
 
 public class Node_DebugError : ActionNode

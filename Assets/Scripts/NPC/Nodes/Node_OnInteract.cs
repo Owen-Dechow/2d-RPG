@@ -1,5 +1,6 @@
 using System.Collections;
 using Controllers;
+using NPC;
 using UnityEngine;
 
 public class Node_OnInteract : Node

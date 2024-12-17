@@ -1,6 +1,7 @@
 // Ignore Spelling: Scriptable
 
 using System;
+using Managers;
 using UnityEngine;
 
 public class GameMagic : MonoBehaviour

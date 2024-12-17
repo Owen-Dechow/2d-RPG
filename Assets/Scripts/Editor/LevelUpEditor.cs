@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using Managers;
+using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(LevelUp))]

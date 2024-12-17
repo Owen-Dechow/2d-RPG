@@ -1,114 +1,126 @@
 using System.Collections;
 using System.Collections.Generic;
+using Battle;
 using Controllers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour
+namespace Managers
 {
-    private static GameManager i;
-
-    [SerializeField] CheckpointSystem.CheckpointFlag checkpoint;
-
-    [SerializeField] GameObject battleSystemPrefab;
-
-    [SerializeField] GameItems.DataSet[] itemData;
-    public static GameItems.DataSet[] ItemData { get => i.itemData; }
-
-    [SerializeField] GameMagic.DataSet[] magicData;
-    public static GameMagic.DataSet[] MagicData { get => i.magicData; }
-
-    public static List<int> PostInteractionProtectionIDs;
-
-    public static int id;
-
-    public static string Answer { get; set; }
-    public static int AnswerIndex { get; set; }
-
-    public static PlayerController.PlacementSettings PlayerPlacementSettings { get; set; }
-
-    void Start()
+    public class GameManager : MonoBehaviour
     {
-        DontDestroyOnLoad(this);
+        private static GameManager _i;
 
-        PostInteractionProtectionIDs = new();
+        [SerializeField] private CheckpointSystem.CheckpointFlag checkpoint;
 
-        id = SaveSystem.GetNewId();
+        [SerializeField] private GameObject battleSystemPrefab;
 
-        i = this;
-    }
+        [SerializeField] private GameItems.DataSet[] itemData;
+        public static GameItems.DataSet[] ItemData => _i.itemData;
 
-    public static void StartBattle(BattleUnit[] enemyUnits, GameObject enemyGameObject)
-    {
-        Time.timeScale = 0;
-        BattleSystem battleSystem = i.battleSystemPrefab.GetComponent<BattleSystem>();
-        battleSystem.enemies = enemyUnits;
-        battleSystem.players = Player.GetBattleUnits();
-        battleSystem.enemyGameObject = enemyGameObject;
-        Instantiate(i.battleSystemPrefab);
-    }
-    public static string GetCleanedText(string text)
-    {
-        string cleanedText = text.Trim();
-        cleanedText = cleanedText.Replace("{{NAME}}", Player.Name);
-        cleanedText = cleanedText.Replace("{{ANSWER}}", Answer);
-        cleanedText = cleanedText.Replace('_', ' ');
-        cleanedText = cleanedText.Replace("{{ANSWER_IDX}}", AnswerIndex.ToString());
+        [SerializeField] private GameMagic.DataSet[] magicData;
+        public static GameMagic.DataSet[] MagicData => _i.magicData;
 
-        return cleanedText;
-    }
+        public static List<int> postInteractionProtectionIDs;
 
-    public static void LoadFromSavePoint(int id)
-    {
-        SaveDataSerializable data = SaveSystem.LoadData(id);
-        SaveDataSerializable.UnpackSaveData(data);
-        LoadLevel(data.levelScene, new Vector2(data.position[0], data.position[1]), AnimPlus.Direction.Down);
-    }
-    public static void LostBattle()
-    {
-        static IEnumerator lostBattle()
+        public static int id;
+
+        public static string Answer { get; set; }
+        public static int AnswerIndex { get; set; }
+
+        public static PlayerController.PlacementSettings PlayerPlacementSettings { get; private set; }
+
+        void Start()
         {
-            Time.timeScale = 0;
-            yield return GameUI.ToggleLoadingScreen(true, instant: true);
+            DontDestroyOnLoad(this);
 
-            LoadFromSavePoint(id);
+            postInteractionProtectionIDs = new();
 
-            yield return GameUI.ToggleLoadingScreen(false);
-            Time.timeScale = 1;
+            id = SaveSystem.GetNewId();
+
+            _i = this;
         }
-        i.StartCoroutine(lostBattle());
-    }
 
-    public static void LoadLevel(LevelScene scene, Vector2 playerSpanPoint, AnimPlus.Direction playerSpanDirection)
-    {
-        PlayerPlacementSettings = new(playerSpanPoint, playerSpanDirection);
-        SceneManager.LoadScene(scene.ToString());
-    }
-    public static void LoadLevel(LevelScene scene, DoorController.DoorTag playerSpanDoor)
-    {
-        PlayerPlacementSettings = new(playerSpanDoor);
-        SceneManager.LoadScene(scene.ToString());
-    }
-    public static IEnumerator LoadLevelAnimated(LevelScene scene, Vector2 playerSpanPoint, AnimPlus.Direction playerSpanDirection)
-    {
-        Time.timeScale = 0;
-        yield return GameUI.ToggleLoadingScreen(true);
-        LoadLevel(scene, playerSpanPoint, playerSpanDirection);
-        yield return GameUI.ToggleLoadingScreen(false);
-        Time.timeScale = 1;
-    }
-    public static IEnumerator LoadLevelAnimated(LevelScene scene, DoorController.DoorTag playerSpanDoor)
-    {
-        Time.timeScale = 0;
-        yield return GameUI.ToggleLoadingScreen(true);
-        LoadLevel(scene, playerSpanDoor);
-        yield return GameUI.ToggleLoadingScreen(false);
-        Time.timeScale = 1;
-    }
+        public static void StartBattle(BattleUnit[] enemyUnits, GameObject enemyGameObject)
+        {
+            BattleSystem battleSystem = _i.battleSystemPrefab.GetComponent<BattleSystem>();
+            battleSystem.enemies = enemyUnits;
+            battleSystem.players = Player.GetBattleUnits();
+            battleSystem.enemyGameObject = enemyGameObject;
+            Instantiate(_i.battleSystemPrefab);
+        }
 
-    public static int GetRandomIntId()
-    {
-        return Random.Range(int.MinValue, int.MaxValue);
+        public static string GetCleanedText(string text)
+        {
+            string cleanedText = text.Trim();
+            cleanedText = cleanedText.Replace("{{NAME}}", Player.Name);
+            cleanedText = cleanedText.Replace("{{ANSWER}}", Answer);
+            cleanedText = cleanedText.Replace('_', ' ');
+            cleanedText = cleanedText.Replace("{{ANSWER_IDX}}", AnswerIndex.ToString());
+
+            return cleanedText;
+        }
+
+        public static void LoadFromSavePoint(int savePointId)
+        {
+            SaveDataSerializable data = SaveSystem.LoadData(savePointId);
+            SaveDataSerializable.UnpackSaveData(data);
+            LoadLevel(data.levelScene, new Vector2(data.position[0], data.position[1]), AnimPlus.Direction.Down);
+        }
+
+        public static void LostBattle()
+        {
+            static IEnumerator lostBattle()
+            {
+                using (new CutScene.Window())
+                {
+                    yield return GameUI.ToggleLoadingScreen(true, instant: true);
+
+                    LoadFromSavePoint(id);
+
+                    yield return GameUI.ToggleLoadingScreen(false);
+                }
+            }
+
+            _i.StartCoroutine(lostBattle());
+        }
+
+        public static void LoadLevel(LevelScene scene, Vector2 playerSpanPoint, AnimPlus.Direction playerSpanDirection)
+        {
+            PlayerPlacementSettings = new(playerSpanPoint, playerSpanDirection);
+            SceneManager.LoadScene(scene.ToString());
+        }
+
+        public static void LoadLevel(LevelScene scene, DoorController.DoorTag playerSpanDoor)
+        {
+            PlayerPlacementSettings = new(playerSpanDoor);
+            SceneManager.LoadScene(scene.ToString());
+        }
+
+        public static IEnumerator LoadLevelAnimated(LevelScene scene, Vector2 playerSpanPoint,
+            AnimPlus.Direction playerSpanDirection)
+        {
+            using (new CutScene.Window())
+            {
+                yield return GameUI.ToggleLoadingScreen(true);
+                LoadLevel(scene, playerSpanPoint, playerSpanDirection);
+                yield return GameUI.ToggleLoadingScreen(false);
+            }
+        }
+
+        public static IEnumerator LoadLevelAnimated(LevelScene scene, DoorController.DoorTag playerSpanDoor)
+        {
+            using (new CutScene.Window())
+            {
+                yield return GameUI.ToggleLoadingScreen(true);
+                LoadLevel(scene, playerSpanDoor);
+                yield return GameUI.ToggleLoadingScreen(false);
+            }
+        }
+
+        public static int GetRandomIntId()
+        {
+            return Random.Range(int.MinValue, int.MaxValue);
+        }
     }
 }

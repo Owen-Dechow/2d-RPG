@@ -1,143 +1,148 @@
 using System.Collections;
 using System.Collections.Generic;
+using Managers;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class BattleUnit : MonoBehaviour
+namespace Battle
 {
-    [System.Serializable]
-    public struct BattleUnitData
+    public class BattleUnit : MonoBehaviour
     {
-        [Header("Appearance Options")]
-        public string title;
-        public UnitSex sex;
+        [System.Serializable]
+        public struct BattleUnitData
+        {
+            [Header("Appearance Options")]
+            public string title;
+            public UnitSex sex;
 
-        [Header("Stat Options")]
-        public int life;
-        public int maxLife;
-        public int magic;
-        public int maxMagic;
-        public int defense;
-        public int attack;
+            [Header("Stat Options")]
+            public int life;
+            public int maxLife;
+            public int magic;
+            public int maxMagic;
+            public int defense;
+            public int attack;
 
-        [Header("Items/Magic")]
-        public static int MaxItems = 30;
-        public List<GameMagic.Options> magicOptionsForUnit;
-        public List<GameItems.Options> itemOptionsForUnit;
+            [Header("Items/Magic")] public const int MaxItems = 30;
 
-        [Header("Player Only")]
-        public int exp;
-        public int level;
-        public int gold;
+            public List<GameMagic.Options> magicOptionsForUnit;
+            public List<GameItems.Options> itemOptionsForUnit;
 
-        [Header("Enemy Only")]
-        public int expAward;
-        public int goldAward;
-        public EnemyAI enemyAI;
+            [Header("Player Only")]
+            public int exp;
+            public int level;
+            public int gold;
 
-        [Header("Static")]
-        public byte escapePercentageAllowed;
+            [Header("Enemy Only")]
+            public int expAward;
+            public int goldAward;
+            public EnemyAI enemyAI;
 
-        public readonly bool Alive { get => life > 0; }
-    }
+            [Header("Static")]
+            public byte escapePercentageAllowed;
 
-    public enum TurnOptions
-    {
-        Attack,
-        Defend,
-        Item,
-        Magic,
-        Run
-    }
+            public readonly bool Alive => life > 0;
+        }
 
-    public Sprite sprite;
-    public BattleUnitData data;
-    [HideInInspector] public bool onDefense;
-    [HideInInspector] public GameObject stationGO;
-    [HideInInspector] public SpriteRenderer spriteRenderer;
+        public enum TurnOptions
+        {
+            Attack,
+            Defend,
+            Item,
+            Magic,
+            Run
+        }
 
-    public enum UnitSex
-    {
-        Male,
-        Female,
-    }
+        public Sprite sprite;
+        public BattleUnitData data;
+        [HideInInspector] public bool onDefense;
+        [FormerlySerializedAs("stationGO")] [HideInInspector] public GameObject stationGo;
+        [HideInInspector] public SpriteRenderer spriteRenderer;
 
-    #region AI_VALIDATOR
+        public enum UnitSex
+        {
+            Male,
+            Female,
+        }
+
+        #region AI_VALIDATOR
 #if UNITY_EDITOR
-    private void OnValidate()
-    {
-        data.escapePercentageAllowed = (byte)Mathf.Clamp(data.escapePercentageAllowed, 0, 100);
-        if (data.enemyAI != null)
+        private void OnValidate()
         {
-            data.enemyAI.ClampData();
-            if (data.enemyAI.GetTotal() == 100) data.enemyAI.dataStatus = EnemyAI.DataStatus.Valid;
-            else
+            data.escapePercentageAllowed = (byte)Mathf.Clamp(data.escapePercentageAllowed, 0, 100);
+            if (data.enemyAI != null)
             {
-                if (data.enemyAI.dataStatus == EnemyAI.DataStatus.Valid && data.enemyAI.lastCheck == EnemyAI.DataStatus.Invalid)
+                data.enemyAI.ClampData();
+                if (data.enemyAI.GetTotal() == 100) data.enemyAI.dataStatus = EnemyAI.DataStatus.Valid;
+                else
                 {
-                    data.enemyAI.CorrectData();
+                    if (data.enemyAI.dataStatus == EnemyAI.DataStatus.Valid && data.enemyAI.lastCheck == EnemyAI.DataStatus.Invalid)
+                    {
+                        data.enemyAI.CorrectData();
+                    }
+                    else data.enemyAI.dataStatus = EnemyAI.DataStatus.Invalid;
                 }
-                else data.enemyAI.dataStatus = EnemyAI.DataStatus.Invalid;
+                data.enemyAI.lastCheck = data.enemyAI.dataStatus;
             }
-            data.enemyAI.lastCheck = data.enemyAI.dataStatus;
         }
-    }
 #endif
-    #endregion
+        #endregion
 
-    public BattleUnit CopyAtStationGO()
-    {
-        BattleUnit newBattleUnit = stationGO.AddComponent<BattleUnit>();
-        newBattleUnit.data = data;
-        newBattleUnit.stationGO = stationGO;
-        newBattleUnit.spriteRenderer = spriteRenderer;
-        newBattleUnit.onDefense = onDefense;
-        newBattleUnit.sprite = sprite;
-
-        return newBattleUnit;
-    }
-
-    public int GetAttack()
-    {
-        int maxAttack = data.attack;
-        int minAttack = Mathf.CeilToInt(maxAttack * 0.75f);
-        int attack = Random.Range(minAttack, maxAttack + 1);
-        return Mathf.Max(attack, 1);
-    }
-
-    public int GetDefenseChange(int power)
-    {
-        int maxTake = Mathf.CeilToInt(data.defense * 1);
-        int minTake = Mathf.FloorToInt(maxTake * 0.5f);
-        int newAttack = power - Random.Range(minTake, maxTake + 1);
-
-        if (onDefense)
+        public BattleUnit CopyAtStationGo()
         {
-            newAttack = Mathf.CeilToInt(newAttack * 0.75f);
+            BattleUnit newBattleUnit = stationGo.AddComponent<BattleUnit>();
+            newBattleUnit.data = data;
+            newBattleUnit.stationGo = stationGo;
+            newBattleUnit.spriteRenderer = spriteRenderer;
+            newBattleUnit.onDefense = onDefense;
+            newBattleUnit.sprite = sprite;
+
+            return newBattleUnit;
         }
 
-        return Mathf.Max(newAttack, 1);
-    }
-
-    public IEnumerator LevelUpUnit()
-    {
-        LevelUp.LevelData levelData = LevelUp.GetDataForLevelStatic(data.level + 1);
-        if (data.exp >= levelData.expNeeded)
+        public int GetAttack()
         {
-            data.exp -= levelData.expNeeded;
+            int maxAttack = data.attack;
+            int minAttack = Mathf.CeilToInt(maxAttack * 0.75f);
+            int attack = Random.Range(minAttack, maxAttack + 1);
+            return Mathf.Max(attack, 1);
+        }
 
-            yield return GameUI.TypeOut($"{data.title} reached level {levelData.level}!");
-            yield return GameUI.TypeOut($"Max life is now {levelData.life}! ({levelData.life - data.maxLife:+#;-#;+0})");
-            yield return GameUI.TypeOut($"Max magic is now {levelData.magic}! ({levelData.magic - data.maxMagic:+#;-#;+0})");
-            yield return GameUI.TypeOut($"Attack is now {levelData.attack}! ({levelData.attack - data.attack:+#;-#;+0})");
-            yield return GameUI.TypeOut($"Defense is now {levelData.defense}! ({levelData.defense - data.defense:+#;-#;+0})");
+        public int GetDefenseChange(int power)
+        {
+            int maxTake = Mathf.CeilToInt(data.defense * 1);
+            int minTake = Mathf.FloorToInt(maxTake * 0.5f);
+            int newAttack = power - Random.Range(minTake, maxTake + 1);
 
-            data.level = levelData.level;
-            data.maxLife = levelData.life;
-            data.maxMagic = levelData.magic;
-            data.attack = levelData.attack;
-            data.defense = levelData.defense;
+            if (onDefense)
+            {
+                newAttack = Mathf.CeilToInt(newAttack * 0.75f);
+            }
 
-            yield return LevelUpUnit();
+            return Mathf.Max(newAttack, 1);
+        }
+
+        public IEnumerator LevelUpUnit()
+        {
+            LevelUp.LevelData levelData = LevelUp.GetDataForLevelStatic(data.level + 1);
+            if (data.exp >= levelData.expNeeded)
+            {
+                data.exp -= levelData.expNeeded;
+
+                yield return GameUI.TypeOut($"{data.title} reached level {levelData.level}!");
+                yield return GameUI.TypeOut($"Max life is now {levelData.life}! ({levelData.life - data.maxLife:+#;-#;+0})");
+                yield return GameUI.TypeOut($"Max magic is now {levelData.magic}! ({levelData.magic - data.maxMagic:+#;-#;+0})");
+                yield return GameUI.TypeOut($"Attack is now {levelData.attack}! ({levelData.attack - data.attack:+#;-#;+0})");
+                yield return GameUI.TypeOut($"Defense is now {levelData.defense}! ({levelData.defense - data.defense:+#;-#;+0})");
+
+                data.level = levelData.level;
+                data.maxLife = levelData.life;
+                data.maxMagic = levelData.magic;
+                data.attack = levelData.attack;
+                data.defense = levelData.defense;
+
+                yield return LevelUpUnit();
+            }
         }
     }
 }

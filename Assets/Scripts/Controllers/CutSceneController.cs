@@ -1,11 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CutSceneController : MonoBehaviour
+namespace Controllers
 {
-    void Start()
+    public class CutSceneController : MonoBehaviour
     {
-        Destroy(GetComponent<SpriteRenderer>());
+        void Start()
+        {
+            Destroy(GetComponent<SpriteRenderer>());
+        }
     }
 }

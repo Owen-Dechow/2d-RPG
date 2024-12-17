@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Managers;
+using UnityEditor.UI;
 using UnityEngine;
 
 namespace Controllers
@@ -84,7 +86,7 @@ namespace Controllers
 
         private void SetDirection()
         {
-            if (Time.timeScale == 0) return;
+            if (CutScene.Enabled) return;
             if (movementDelta.x > 0) currentDirection = Direction.Right;
             else if (movementDelta.x < 0) currentDirection = Direction.Left;
             else if (movementDelta.y > 0) currentDirection = Direction.Up;

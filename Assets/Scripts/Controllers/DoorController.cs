@@ -1,4 +1,5 @@
 using System.Collections;
+using Managers;
 using UnityEngine;
 
 namespace Controllers
@@ -94,9 +95,10 @@ namespace Controllers
 
         IEnumerator CantEnter(string text)
         {
-            Time.timeScale = 0;
-            yield return GameUI.TypeOut(text);
-            Time.timeScale = 1;
+            using (new CutScene.Window())
+            {
+                yield return GameUI.TypeOut(text);
+            }
         }
     }
 }

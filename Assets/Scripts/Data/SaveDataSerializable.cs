@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using Battle;
 using Controllers;
+using Managers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -40,17 +42,17 @@ public class SaveDataSerializable
         checkpoints = checkpointsReached.ToArray();
 
         // Save NPCs talked to
-        NPCActionTreeBranchProtectors = GameManager.PostInteractionProtectionIDs.ToArray();
+        NPCActionTreeBranchProtectors = GameManager.postInteractionProtectionIDs.ToArray();
 
         // Save player comrades
         comradeBattleUnitData = Player.ComradeBattleUnits.Select(x => x.data).ToArray();
-        comradeBattleUnitSpriteIDX = Player.ComradeBattleUnits.Select(x => NPCSpriteIDMap.GetID(x.sprite)).ToArray();
+        comradeBattleUnitSpriteIDX = Player.ComradeBattleUnits.Select(x => NpcSpriteIDMap.GetID(x.sprite)).ToArray();
     }
 
     public static void UnpackSaveData(SaveDataSerializable data)
     {
         GameManager.id = data.id;
-        GameManager.PostInteractionProtectionIDs = new(data.NPCActionTreeBranchProtectors);
+        GameManager.postInteractionProtectionIDs = new(data.NPCActionTreeBranchProtectors);
         Player.SetBattleUnitData(data.battleUnitData);
 
         foreach (string checkpoint in data.checkpoints)
@@ -62,7 +64,7 @@ public class SaveDataSerializable
         {
             byte spriteID = data.comradeBattleUnitSpriteIDX[i];
             BattleUnit.BattleUnitData battleUnitData = data.comradeBattleUnitData[i];
-            Player.AddBattleUnit(battleUnitData, NPCSpriteIDMap.GetSprite(spriteID));
+            Player.AddBattleUnit(battleUnitData, NpcSpriteIDMap.GetSprite(spriteID));
         }
     }
 

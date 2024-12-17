@@ -1,158 +1,156 @@
 using System.Collections;
 using System.Collections.Generic;
 using Controllers;
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
-[CreateAssetMenu(menuName = "Action Tree")]
-public class BehaviorTree : ScriptableObject
+namespace NPC
 {
-    [HideInInspector] public Node rootNode;
-    [HideInInspector] public List<Node> nodes = new();
-
-    public IEnumerator Run(Npc npc, BehaviorTree.TreeData treeData)
+    [CreateAssetMenu(menuName = "Action Tree")]
+    public class BehaviorTree : ScriptableObject
     {
-        if (rootNode == null) throw new System.NotImplementedException("No behavior implemented for tree.");
-        yield return rootNode.Run(npc, treeData);
-    }
+        [HideInInspector] public Node rootNode;
+        [HideInInspector] public List<Node> nodes = new();
 
-    public class TreeData
-    {
-        public Dictionary<string, GameObject> gameObjects;
-
-        public TreeData()
+        public IEnumerator Run(Npc npc, BehaviorTree.TreeData treeData)
         {
-            gameObjects = new Dictionary<string, GameObject>();
+            if (rootNode == null) throw new System.NotImplementedException("No behavior implemented for tree.");
+            yield return rootNode.Run(npc, treeData);
         }
-    }
 
-    #region Editor
+        public class TreeData
+        {
+            public readonly Dictionary<string, GameObject> GameObjects = new();
+        }
+
+        #region Editor
 #if UNITY_EDITOR
 
-    public Node CreateNode(System.Type type, Vector2 position)
-    {
-        Node node = CreateInstance(type) as Node;
-        node.position = position;
-        node.name = type.Name;
-        node.guid = GUID.Generate().ToString();
-
-        Undo.RecordObject(this, "Action Tree (Create Node)");
-        nodes.Add(node);
-
-        AssetDatabase.AddObjectToAsset(node, this);
-        Undo.RegisterCreatedObjectUndo(node, "Action Tree (Create Node)");
-        AssetDatabase.SaveAssets();
-        return node;
-    }
-
-    public void DeleteNode(Node node)
-    {
-        Undo.RecordObject(this, "Action Tree (Create Node)");
-        nodes.Remove(node);
-
-        //AssetDatabase.RemoveObjectFromAsset(node);
-        Undo.DestroyObjectImmediate(node);
-        AssetDatabase.SaveAssets();
-    }
-
-    public void AddChild(Node parent, Node child, bool trueFalsePort)
-    {
-        Node_OnInteract root = parent as Node_OnInteract;
-        if (root != null)
+        public Node CreateNode(System.Type type, Vector2 position)
         {
-            Undo.RecordObject(root, "Action Tree (Create Node)");
-            root.child = child;
-            EditorUtility.SetDirty(root);
+            Node node = (Node)CreateInstance(type);
+            node.position = position;
+            node.name = type.Name;
+            node.guid = GUID.Generate().ToString();
+
+            Undo.RecordObject(this, "Action Tree (Create Node)");
+            nodes.Add(node);
+
+            AssetDatabase.AddObjectToAsset(node, this);
+            Undo.RegisterCreatedObjectUndo(node, "Action Tree (Create Node)");
+            AssetDatabase.SaveAssets();
+            return node;
         }
 
-        ActionNode action = parent as ActionNode;
-        if (action != null)
+        public void DeleteNode(Node node)
         {
-            Undo.RecordObject(action, "Action Tree (Create Node)");
-            action.child = child;
-            EditorUtility.SetDirty(action);
+            Undo.RecordObject(this, "Action Tree (Create Node)");
+            nodes.Remove(node);
+
+            //AssetDatabase.RemoveObjectFromAsset(node);
+            Undo.DestroyObjectImmediate(node);
+            AssetDatabase.SaveAssets();
         }
 
-        IFNode @if = parent as IFNode;
-        if (@if != null)
+        public void AddChild(Node parent, Node child, bool trueFalsePort)
         {
-            Undo.RecordObject(@if, "Action Tree (Create Node)");
-            if (trueFalsePort)
+            Node_OnInteract root = parent as Node_OnInteract;
+            if (root != null)
             {
-                @if.@if = child;
+                Undo.RecordObject(root, "Action Tree (Create Node)");
+                root.child = child;
+                EditorUtility.SetDirty(root);
             }
-            else
+
+            ActionNode action = parent as ActionNode;
+            if (action != null)
             {
-                @if.@else = child;
+                Undo.RecordObject(action, "Action Tree (Create Node)");
+                action.child = child;
+                EditorUtility.SetDirty(action);
             }
-            EditorUtility.SetDirty(@if);
-        }
-    }
 
-    public void RemoveChild(Node parent, bool trueFalsePort)
-    {
-
-        Node_OnInteract root = parent as Node_OnInteract;
-        if (root != null)
-        {
-            Undo.RecordObject(root, "Action Tree (Remove Node)");
-            root.child = null;
-            EditorUtility.SetDirty(root);
-        }
-
-        ActionNode action = parent as ActionNode;
-        if (action != null)
-        {
-            Undo.RecordObject(action, "Action Tree (Remove Node)");
-            action.child = null;
-            EditorUtility.SetDirty(action);
-        }
-
-        IFNode @if = parent as IFNode;
-        if (@if != null)
-        {
-            Undo.RecordObject(@if, "Action Tree (Remove Node)");
-            if (trueFalsePort)
+            IFNode @if = parent as IFNode;
+            if (@if != null)
             {
-                @if.@if = null;
-            }
-            else
-            {
-                @if.@else = null;
-            }
-            EditorUtility.SetDirty(@if);
-        }
-    }
-
-    public Node GetChild(Node parent, bool trueFalsePort)
-    {
-        Node_OnInteract root = parent as Node_OnInteract;
-        if (root != null)
-        {
-            return root.child;
-        }
-
-        ActionNode action = parent as ActionNode;
-        if (action != null)
-        {
-            return action.child;
-        }
-
-        IFNode @if = parent as IFNode;
-        if (@if != null)
-        {
-            if (trueFalsePort)
-            {
-                return @if.@if;
-            }
-            else
-            {
-                return @if.@else;
+                Undo.RecordObject(@if, "Action Tree (Create Node)");
+                if (trueFalsePort)
+                {
+                    @if.@if = child;
+                }
+                else
+                {
+                    @if.@else = child;
+                }
+                EditorUtility.SetDirty(@if);
             }
         }
 
-        throw new System.Exception("Proper node kind not found");
-    }
+        public void RemoveChild(Node parent, bool trueFalsePort)
+        {
+
+            Node_OnInteract root = parent as Node_OnInteract;
+            if (root != null)
+            {
+                Undo.RecordObject(root, "Action Tree (Remove Node)");
+                root.child = null;
+                EditorUtility.SetDirty(root);
+            }
+
+            ActionNode action = parent as ActionNode;
+            if (action != null)
+            {
+                Undo.RecordObject(action, "Action Tree (Remove Node)");
+                action.child = null;
+                EditorUtility.SetDirty(action);
+            }
+
+            IFNode @if = parent as IFNode;
+            if (@if != null)
+            {
+                Undo.RecordObject(@if, "Action Tree (Remove Node)");
+                if (trueFalsePort)
+                {
+                    @if.@if = null;
+                }
+                else
+                {
+                    @if.@else = null;
+                }
+                EditorUtility.SetDirty(@if);
+            }
+        }
+
+        public Node GetChild(Node parent, bool trueFalsePort)
+        {
+            Node_OnInteract root = parent as Node_OnInteract;
+            if (root != null)
+            {
+                return root.child;
+            }
+
+            ActionNode action = parent as ActionNode;
+            if (action != null)
+            {
+                return action.child;
+            }
+
+            IFNode @if = parent as IFNode;
+            if (@if != null)
+            {
+                if (trueFalsePort)
+                {
+                    return @if.@if;
+                }
+                else
+                {
+                    return @if.@else;
+                }
+            }
+
+            throw new System.Exception("Proper node kind not found");
+        }
 #endif
-    #endregion
+        #endregion
+    }
 }

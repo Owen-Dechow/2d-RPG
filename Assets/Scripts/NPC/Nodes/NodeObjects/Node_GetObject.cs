@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Controllers;
+using NPC;
 using UnityEngine;
 
 public class Node_GetObject : ActionNode
@@ -19,7 +20,7 @@ public class Node_GetObject : ActionNode
         }
         else
         {
-            treeData.gameObjects[referenceKey] = gameObject;
+            treeData.GameObjects[referenceKey] = gameObject;
         }
 
         yield return new WaitForEndOfFrame();

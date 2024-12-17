@@ -1,59 +1,56 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Battle;
+using Managers;
 using UnityEngine;
-using static UnityEditor.Progress;
 
-public class MenuController : MonoBehaviour
+namespace Controllers
 {
-    public static MenuController i;
-    private void Start()
+    public class MenuController : MonoBehaviour
     {
-        i = this;
-    }
-
-    public static IEnumerator Menu()
-    {
-        Time.timeScale = 0;
+        public static IEnumerator Menu()
         {
-            yield return new WaitUntil(() => MyInput.Select == 0);
-
-            List<string> options = new();
-
-            foreach (BattleUnit unit in Player.GetBattleUnits())
+            using (new CutScene.Window())
             {
-                string tag;
+                yield return new WaitUntil(() => MyInput.Select == 0);
 
-                if (unit.data.itemOptionsForUnit.Count > 0)
+                List<string> options = new();
+
+                foreach (BattleUnit unit in Player.GetBattleUnits())
                 {
-                    tag = $"{unit.data.title}\\Items\\";
-                    foreach (GameItems.Options item in unit.data.itemOptionsForUnit)
+                    string tag;
+
+                    if (unit.data.itemOptionsForUnit.Count > 0)
                     {
-                        options.Add(tag + GameManager.GetCleanedText(item.ToString()));
+                        tag = $"{unit.data.title}\\Items\\";
+                        foreach (GameItems.Options item in unit.data.itemOptionsForUnit)
+                        {
+                            options.Add(tag + GameManager.GetCleanedText(item.ToString()));
+                        }
+                    }
+                    else
+                    {
+                        options.Add($"{unit.data.title}\\Items [empty]");
+                    }
+
+                    if (unit.data.magicOptionsForUnit.Count > 0)
+                    {
+                        tag = $"{unit.data.title}\\Magic\\";
+                        foreach (GameMagic.Options magic in unit.data.magicOptionsForUnit)
+                        {
+                            options.Add(tag + GameManager.GetCleanedText(magic.ToString()));
+                        }
+                    }
+                    else
+                    {
+                        options.Add($"{unit.data.title}\\Magic [unavailable]");
                     }
                 }
-                else
-                {
-                    options.Add($"{unit.data.title}\\Items [empty]");
-                }
 
-                if (unit.data.magicOptionsForUnit.Count > 0)
-                {
-                    tag = $"{unit.data.title}\\Magic\\";
-                    foreach (GameMagic.Options magic in unit.data.magicOptionsForUnit)
-                    {
-                        options.Add(tag + GameManager.GetCleanedText(magic.ToString()));
-                    }
-                }
-                else
-                {
-                    options.Add($"{unit.data.title}\\Magic [unavailable]");
-                }
+                yield return GameUI.FullMenu(options.ToArray(), true);
+
+                yield return new WaitUntil(() => MyInput.Select == 0);
             }
-
-            yield return GameUI.FullMenu(options.ToArray(), true);
-
-            yield return new WaitUntil(() => MyInput.Select == 0);
         }
-        Time.timeScale = 1;
     }
 }

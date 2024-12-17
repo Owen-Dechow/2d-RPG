@@ -1,4 +1,5 @@
 using System.Collections;
+using Managers;
 using UnityEngine;
 
 namespace Controllers
@@ -29,7 +30,7 @@ namespace Controllers
             spriteRenderer = GetComponent<SpriteRenderer>();
 
             inPlayerInteractionZone = false;
-            open = GameManager.PostInteractionProtectionIDs.Contains(uniqueId);
+            open = GameManager.postInteractionProtectionIDs.Contains(uniqueId);
             if (open)
                 spriteRenderer.sprite = openSprite;
             else
@@ -46,7 +47,7 @@ namespace Controllers
         {
             if (MyInput.SelectDown != 1) return;
             if (!inPlayerInteractionZone) return;
-            if (Time.timeScale == 0) return;
+            if (CutScene.Enabled) return;
             if (open) return;
 
             StartCoroutine(RunInteraction());
@@ -54,49 +55,50 @@ namespace Controllers
 
         IEnumerator RunInteraction()
         {
-            Time.timeScale = 0;
-            yield return new WaitForEndOfFrame();
-            spriteRenderer.sprite = openSprite;
+            using (new CutScene.Window())
+            {
+                yield return new WaitForEndOfFrame();
+                spriteRenderer.sprite = openSprite;
 
-            if (contentType == ContentType.Gold)
-            {
-                Player.Gold += goldOption;
-                yield return GameUI.TypeOut($"{Player.Name} found {goldOption} gold.");
-                SetOpen();
-            }
-            else if (contentType == ContentType.Item)
-            {
-                if (Player.HasRoomInInventory())
+                if (contentType == ContentType.Gold)
                 {
-                    Player.AddItemToInventory(itemOption);
-                    yield return GameUI.TypeOut($"{Player.Name} found {itemOption}.");
+                    Player.Gold += goldOption;
+                    yield return GameUI.TypeOut($"{Player.Name} found {goldOption} gold.");
                     SetOpen();
                 }
-                else
+                else if (contentType == ContentType.Item)
                 {
-                    yield return GameUI.TypeOut($"{Player.Name} found {itemOption}, but didn't have space in inventory.");
-                    spriteRenderer.sprite = closedSprite;
+                    if (Player.HasRoomInInventory())
+                    {
+                        Player.AddItemToInventory(itemOption);
+                        yield return GameUI.TypeOut($"{Player.Name} found {itemOption}.");
+                        SetOpen();
+                    }
+                    else
+                    {
+                        yield return GameUI.TypeOut(
+                            $"{Player.Name} found {itemOption}, but didn't have space in inventory.");
+                        spriteRenderer.sprite = closedSprite;
+                    }
                 }
             }
-
-            Time.timeScale = 1;
         }
 
         void SetOpen()
         {
-            GameManager.PostInteractionProtectionIDs.Add(uniqueId);
+            GameManager.postInteractionProtectionIDs.Add(uniqueId);
             open = true;
         }
 
-        void OnTriggerEnter2D(Collider2D collider)
+        void OnTriggerEnter2D(Collider2D collider2d)
         {
-            if (!collider.CompareTag("Player")) return;
+            if (!collider2d.CompareTag("Player")) return;
             inPlayerInteractionZone = true;
         }
 
-        void OnTriggerExit2D(Collider2D collider)
+        void OnTriggerExit2D(Collider2D collider2d)
         {
-            if (!collider.CompareTag("Player")) return;
+            if (!collider2d.CompareTag("Player")) return;
             inPlayerInteractionZone = false;
         }
     }

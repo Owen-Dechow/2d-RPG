@@ -1,12 +1,11 @@
 using System;
+using Managers;
 using UnityEngine;
-using static Controllers.DoorController;
 
 namespace Controllers
 {
     public class PlayerController : MonoBehaviour
     {
-
         [HideInInspector] public bool moving;
         public bool CanAttack => inactiveSeconds >= 2;
 
@@ -42,59 +41,69 @@ namespace Controllers
             }
             else if (GameManager.PlayerPlacementSettings.Relocation == PlacementSettings.RelocateType.Door)
             {
-                MoveToDoor(DoorController.doorController.transform.position, doorController.doorOpening);
+                MoveToDoor(DoorController.doorController.transform.position, DoorController.doorController.doorOpening);
             }
 
             CameraController.CenterCameraOnPlayer();
+            CutScene.OnEnable += OnCutScene;
+        }
+
+        private void OnDestroy()
+        {
+            CutScene.OnEnable -= OnCutScene;
+        }
+
+        private void OnCutScene()
+        {
+            rb2D.velocity = Vector2.zero;
         }
 
         void Update()
         {
-            // Input
-            running = MyInput.Select == 1;
-            delta = new()
+            if (!CutScene.Enabled)
             {
-                x = MyInput.MoveHorizontal,
-                y = MyInput.MoveVertical
-            };
-            openMenu = MyInput.OpenMenu;
+                // Input
+                running = MyInput.Select == 1;
+                delta = new()
+                {
+                    x = MyInput.MoveHorizontal,
+                    y = MyInput.MoveVertical
+                };
+                openMenu = MyInput.OpenMenu;
 
 
-            animPlus.speedAdded = running;
+                animPlus.speedAdded = running;
 
-            // inactive
-            if (!CanAttack)
-            {
-                inactiveSeconds += Time.deltaTime;
-                if (CanAttack) spr.color = Color.white;
-                else spr.color = Mathf.Floor(Time.time * 10) % 2 == 0 ? Color.white : new Color(0.3f, 0.3f, 0.3f, 0.3f);
-            }
+                // inactive
+                if (!CanAttack)
+                {
+                    inactiveSeconds += Time.deltaTime;
+                    if (CanAttack) spr.color = Color.white;
+                    else
+                        spr.color = Mathf.Floor(Time.time * 10) % 2 == 0
+                            ? Color.white
+                            : new Color(0.3f, 0.3f, 0.3f, 0.3f);
+                }
 
-            // sprite renderer
-            if (Time.timeScale > 0)
-            {
-                if (delta.x > .5) spr.flipX = false;
-                else if (delta.x < -.5) spr.flipX = true;
-            }
 
-            // rigid body
-            delta = delta.normalized;
+                // rigid body
+                delta = delta.normalized;
 
-            if
-                (running) delta *= dashSpeed;
-            else
-                delta *= normalSpeed;
+                if
+                    (running) delta *= dashSpeed;
+                else
+                    delta *= normalSpeed;
 
-            rb2D.velocity = normalSpeed * delta;
+                rb2D.velocity = normalSpeed * delta;
 
-            // Moving
-            moving = delta.magnitude > 0;
+                // Moving
+                moving = delta.magnitude > 0;
 
-            // Handel Menu
-            if (openMenu)
-            {
-                if (Time.timeScale > 0)
+                // Handel Menu
+                if (openMenu)
+                {
                     StartCoroutine(MenuController.Menu());
+                }
             }
         }
 
@@ -105,22 +114,22 @@ namespace Controllers
 
             switch (doorOpening)
             {
-                case DoorOpenDir.Top:
+                case DoorController.DoorOpenDir.Top:
                     delta = Vector2.up;
                     direction = AnimPlus.Direction.Up;
                     break;
 
-                case DoorOpenDir.Bottom:
+                case DoorController.DoorOpenDir.Bottom:
                     delta = Vector2.down;
                     direction = AnimPlus.Direction.Down;
                     break;
 
-                case DoorOpenDir.Right:
+                case DoorController.DoorOpenDir.Right:
                     delta = Vector2.right;
                     direction = AnimPlus.Direction.Right;
                     break;
 
-                case DoorOpenDir.Left:
+                case DoorController.DoorOpenDir.Left:
                     delta = Vector2.left;
                     direction = AnimPlus.Direction.Left;
                     break;

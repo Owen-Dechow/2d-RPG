@@ -1,28 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCSpriteIDMap : MonoBehaviour
+namespace Managers
 {
-    public static NPCSpriteIDMap i;
-    [SerializeField] List<Sprite> sprites;
-
-    public static Sprite GetSprite(byte id)
+    public class NpcSpriteIDMap : MonoBehaviour
     {
-        return i.sprites[id];
-    }
+        private static NpcSpriteIDMap _i;
+        [SerializeField] private List<Sprite> sprites;
 
-    public static byte GetID(Sprite sprite)
-    {
-        byte id = (byte)i.sprites.IndexOf(sprite);
-        if (id >= 0)
-            return id;
+        public static Sprite GetSprite(byte id)
+        {
+            return _i.sprites[id];
+        }
 
-        throw new System.Exception("Sprite was not found!");
-    }
+        public static byte GetID(Sprite sprite)
+        {
+            byte id = (byte)_i.sprites.IndexOf(sprite);
+            if (id >= 0)
+                return id;
 
-    private void Start()
-    {
-        i = this;
+            throw new System.Exception("Sprite was not found!");
+        }
+
+        private void Start()
+        {
+            _i = this;
+        }
     }
 }

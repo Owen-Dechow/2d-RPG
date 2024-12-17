@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rain : MonoBehaviour
+namespace Controllers
 {
-    [SerializeField] bool soundOnly;
-    
-    void Start()
+    public class Rain : MonoBehaviour
     {
-        if (soundOnly)
+        [SerializeField] bool soundOnly;
+
+        void Start()
         {
-            Destroy(GetComponent<ParticleSystem>());
-            transform.Find("Lightning").GetComponent<Lightning>().SoundOnly = true;
+            if (soundOnly)
+            {
+                Destroy(GetComponent<ParticleSystem>());
+                transform.Find("Lightning").GetComponent<Lightning>().SoundOnly = true;
+            }
         }
     }
 }

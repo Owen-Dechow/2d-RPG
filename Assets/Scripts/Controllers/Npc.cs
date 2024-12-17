@@ -1,6 +1,10 @@
+using System;
 using System.Collections;
+using Managers;
+using NPC;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace Controllers
 {
@@ -21,8 +25,11 @@ namespace Controllers
         [SerializeField] private MovementType movementType;
         public BehaviorTree behaviorTree;
 
-        [FormerlySerializedAs("NPCEnabledCheckpointWindowOpen")] [SerializeField] private CheckpointSystem.CheckpointFlag npcEnabledCheckpointWindowOpen;
-        [FormerlySerializedAs("NPCEnabledCheckpointWindowClose")] [SerializeField] private CheckpointSystem.CheckpointFlag npcEnabledCheckpointWindowClose;
+        [FormerlySerializedAs("NPCEnabledCheckpointWindowOpen")] [SerializeField]
+        private CheckpointSystem.CheckpointFlag npcEnabledCheckpointWindowOpen;
+
+        [FormerlySerializedAs("NPCEnabledCheckpointWindowClose")] [SerializeField]
+        private CheckpointSystem.CheckpointFlag npcEnabledCheckpointWindowClose;
 
         private bool inPlayerInteractionZone;
         private AnimPlus animPlus;
@@ -49,6 +56,18 @@ namespace Controllers
             rb2d = GetComponent<Rigidbody2D>();
 
             SetStartDirection();
+
+            CutScene.OnEnable += OnCutScene;
+        }
+
+        private void OnDestroy()
+        {
+           CutScene.OnEnable -= OnCutScene;
+        }
+
+        private void OnCutScene()
+        {
+            rb2d.velocity = Vector2.zero;
         }
 
         private void Update()
@@ -75,7 +94,7 @@ namespace Controllers
         {
             if (MyInput.SelectDown != 1) return;
             if (!inPlayerInteractionZone) return;
-            if (Time.timeScale == 0) return;
+            if (CutScene.Enabled) return;
 
             StartCoroutine(RunInteraction());
         }
@@ -94,19 +113,19 @@ namespace Controllers
 
         IEnumerator RunInteraction()
         {
-            Time.timeScale = 0;
-            yield return new WaitForEndOfFrame();
-
-            yield return behaviorTree.Run(this, new BehaviorTree.TreeData());
-
-            yield return new WaitWhile(() => MyInput.Select == 1);
-
-            if (!CheckpointSystem.GetWindow(npcEnabledCheckpointWindowOpen, npcEnabledCheckpointWindowClose))
+            using (new CutScene.Window())
             {
-                yield return DestroySlow();
-            }
+                yield return new WaitForEndOfFrame();
 
-            Time.timeScale = 1;
+                yield return behaviorTree.Run(this, new BehaviorTree.TreeData());
+
+                yield return new WaitWhile(() => MyInput.Select == 1);
+
+                if (!CheckpointSystem.GetWindow(npcEnabledCheckpointWindowOpen, npcEnabledCheckpointWindowClose))
+                {
+                    yield return DestroySlow();
+                }
+            }
         }
 
         private void SetStartDirection()
@@ -142,7 +161,7 @@ namespace Controllers
 
         private void MoveNpc()
         {
-            if (Time.timeScale == 0)
+            if (CutScene.Enabled)
                 return;
 
             switch (movementType)

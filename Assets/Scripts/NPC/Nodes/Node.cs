@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Controllers;
+using NPC;
 using UnityEngine;
 
 public abstract class Node : ScriptableObject

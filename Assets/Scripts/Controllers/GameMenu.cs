@@ -1,22 +1,23 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class GameMenu : MonoBehaviour
+namespace Controllers
 {
-    static GameMenu i;
-
-    void Start()
+    public class GameMenu : MonoBehaviour
     {
-        i = this;
-    }
+        private static GameMenu _i;
 
-    public static IEnumerator OpenMenuStatic() => i.OpenMenu();
+        void Start()
+        {
+            _i = this;
+        }
 
-    IEnumerator OpenMenu()
-    {
-        yield return null;
-        //print(GameManager.i);
+        public static IEnumerator OpenMenuStatic() => _i.OpenMenu();
+
+        IEnumerator OpenMenu()
+        {
+            yield return null;
+            //print(GameManager.i);
+        }
     }
 }
