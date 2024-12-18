@@ -77,7 +77,7 @@ namespace Controllers
             battleUnit = GetComponent<BattleUnit>();
 
             turnPositive = Random.Range(0, 2) == 0;
-            
+
             CutScene.OnEnable += OnCutScene;
         }
 
@@ -112,16 +112,16 @@ namespace Controllers
             }
         }
 
-        void OnTriggerStay2D(Collider2D collider2d)
+        private void OnCollisionEnter2D(Collision2D collision)
         {
+            turn = true;
+
             if (!PlayerController.playerController.CanAttack) return;
-            if (!collider2d.CompareTag("Player")) return;
+            if (!collision.collider.CompareTag("Player")) return;
             if (CutScene.Enabled) return;
 
             StartBattle();
         }
-
-        private void OnCollisionEnter2D(Collision2D collision) => turn = true;
 
         private void StartBattle()
         {

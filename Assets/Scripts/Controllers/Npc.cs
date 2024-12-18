@@ -62,7 +62,7 @@ namespace Controllers
 
         private void OnDestroy()
         {
-           CutScene.OnEnable -= OnCutScene;
+            CutScene.OnEnable -= OnCutScene;
         }
 
         private void OnCutScene()
@@ -116,6 +116,7 @@ namespace Controllers
             using (new CutScene.Window())
             {
                 yield return new WaitForEndOfFrame();
+                FacePlayer();
 
                 yield return behaviorTree.Run(this, new BehaviorTree.TreeData());
 
@@ -125,6 +126,21 @@ namespace Controllers
                 {
                     yield return DestroySlow();
                 }
+            }
+        }
+
+        private void FacePlayer()
+        {
+            Vector2 positionDif = PlayerController.playerController.transform.position - transform.position;
+
+            if (Mathf.Abs(positionDif.x) > Mathf.Abs(positionDif.y))
+            {
+                animPlus.SetDirection(
+                    positionDif.x < 0 ? AnimPlus.Direction.Left : AnimPlus.Direction.Right);
+            }
+            else
+            {
+                animPlus.SetDirection(positionDif.y < 0 ? AnimPlus.Direction.Down : AnimPlus.Direction.Up);
             }
         }
 
@@ -195,17 +211,7 @@ namespace Controllers
                     Vector3 playerPosition = PlayerController.playerController.transform.position;
                     if (Vector3.Distance(playerPosition, transform.position) <= MovementRadius)
                     {
-                        Vector2 positionDif = playerPosition - transform.position;
-
-                        if (Mathf.Abs(positionDif.x) > Mathf.Abs(positionDif.y))
-                        {
-                            animPlus.SetDirection(
-                                positionDif.x < 0 ? AnimPlus.Direction.Left : AnimPlus.Direction.Right);
-                        }
-                        else
-                        {
-                            animPlus.SetDirection(positionDif.y < 0 ? AnimPlus.Direction.Down : AnimPlus.Direction.Up);
-                        }
+                        FacePlayer();
                     }
 
                     rb2d.constraints = RigidbodyConstraints2D.FreezePosition;
