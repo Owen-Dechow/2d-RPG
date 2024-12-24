@@ -18,10 +18,10 @@ namespace Controllers
             GameObject model = Instantiate(gameObject);
             model.GetComponent<TextBox>().textMeshObject.text = text;
             yield return new WaitForEndOfFrame();
-            Vector2 size = (model.transform as RectTransform).sizeDelta;
+            Vector2 size = ((RectTransform)model.transform).sizeDelta;
             Destroy(model);
             GetComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.Unconstrained;
-            (transform as RectTransform).sizeDelta = size;
+            ((RectTransform)transform).sizeDelta = size;
 
 
             if (instant)

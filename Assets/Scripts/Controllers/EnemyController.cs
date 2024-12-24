@@ -59,7 +59,7 @@ namespace Controllers
 
             public void SetNumberOfTurnPoints(int newNumberOfTurnPoints)
             {
-                numberOfTurnPoints = Mathf.Clamp(newNumberOfTurnPoints, 2, 10);
+                // numberOfTurnPoints = Mathf.Clamp(newNumberOfTurnPoints, 2, 10);
             }
         }
 
@@ -112,7 +112,7 @@ namespace Controllers
             }
         }
 
-        private void OnCollisionEnter2D(Collision2D collision)
+        private void OnCollisionStay2D(Collision2D collision)
         {
             turn = true;
 
@@ -201,7 +201,7 @@ namespace Controllers
             return vector;
         }
 
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, movementOptions.chaseRadius);

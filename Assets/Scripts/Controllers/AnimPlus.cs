@@ -68,8 +68,9 @@ namespace Controllers
                 {
                     case Direction.Up: SetAnimationTo(idleUp); break;
                     case Direction.Down: SetAnimationTo(idleDown); break;
-                    case Direction.Left: SetAnimationTo(idleHorizontal); break;
-                    case Direction.Right: SetAnimationTo(idleHorizontal); break;
+                    case Direction.Left:
+                    case Direction.Right:
+                        SetAnimationTo(idleHorizontal); break;
                 }
             }
             else
@@ -78,8 +79,9 @@ namespace Controllers
                 {
                     case Direction.Up: SetAnimationTo(moveUp); break;
                     case Direction.Down: SetAnimationTo(moveDown); break;
-                    case Direction.Left: SetAnimationTo(moveHorizontal); break;
-                    case Direction.Right: SetAnimationTo(moveHorizontal); break;
+                    case Direction.Left:
+                    case Direction.Right:
+                        SetAnimationTo(moveHorizontal); break;
                 }
             }
         }

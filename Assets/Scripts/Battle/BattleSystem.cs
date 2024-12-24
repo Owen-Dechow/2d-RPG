@@ -18,6 +18,7 @@ namespace Battle
         [SerializeField] private GameObject panelPrefab;
         [SerializeField] private Canvas canvas;
         [SerializeField] private GameObject pointer;
+        [SerializeField] private GameObject background;
 
         [Header("Action Messages")] [SerializeField]
         private string[] attackText;
@@ -115,7 +116,7 @@ namespace Battle
             }
 
             // Set Battle Position
-            GameObject camera = GameObject.Find("Main Camera");
+            GameObject camera = Camera.main!.gameObject;
             transform.position = new Vector3(camera.transform.position.x, camera.transform.position.y, 0);
 
             DisplayUnitsOnPanel();
@@ -140,33 +141,59 @@ namespace Battle
             }
         }
 
+        IEnumerator EnterBattleAnimation()
+        {
+            SpriteRenderer spriteRenderer = background.GetComponent<SpriteRenderer>();
+            spriteRenderer.color = Color.clear;
+
+            while (spriteRenderer.color.a < 0.9f)
+            {
+                spriteRenderer.color = Color.Lerp(spriteRenderer.color, Color.black, Time.deltaTime);
+                yield return new WaitForEndOfFrame();
+            }
+
+            spriteRenderer.color = Color.black;
+
+            ShowObjects();
+        }
+
+        private void ShowObjects()
+        {
+            playerBattleStation.gameObject.SetActive(true);
+            enemyBattleStation.gameObject.SetActive(true);
+
+            foreach (Panel p in playerPanels)
+            {
+                p.gameObject.SetActive(true);
+            }
+        }
+
         IEnumerator Battle()
         {
             using (new CutScene.Window())
             {
                 yield return new WaitForEndOfFrame();
 
-                // Battle enter message
-                {
-                    // Set enemy group name
-                    string enemyGroupName;
-                    if (enemies.Length == 1) enemyGroupName = enemies[0].data.title;
-                    else if (enemies.Length == 2) enemyGroupName = $"{enemies[0].data.title} and his brother";
+                yield return EnterBattleAnimation();
 
-                    // Select a or an
-                    else enemyGroupName = $"{enemies[0].data.title} and his cohorts";
-                    if ("aeiouAEIOU".Contains(enemyGroupName[0])) enemyGroupName = "an " + enemyGroupName;
-                    else enemyGroupName = "a " + enemyGroupName;
+                // Set enemy group name
+                string enemyGroupName;
+                if (enemies.Length == 1) enemyGroupName = enemies[0].data.title;
+                else if (enemies.Length == 2) enemyGroupName = $"{enemies[0].data.title} and his brother";
 
-                    // Display Message
-                    yield return GameUI.TypeOut($"{Player.Name} engages {enemyGroupName}.");
-                }
+                // Select a or an
+                else enemyGroupName = $"{enemies[0].data.title} and his cohorts";
+                if ("aeiouAEIOU".Contains(enemyGroupName[0])) enemyGroupName = "an " + enemyGroupName;
+                else enemyGroupName = "a " + enemyGroupName;
+
+                // Display Message
+                yield return GameUI.TypeOut($"{Player.Name} engages {enemyGroupName}.");
 
                 // Pick randomly who goes first
                 if (Random.Range(0, 1) == 0) battleState = BattleState.PlayerTurn;
                 else battleState = BattleState.EnemyTurn;
 
-                // Clear extra data extra data
+                // Clear extra data
                 foreach (BattleUnit unit in players)
                 {
                     unit.onDefense = false;
@@ -628,12 +655,7 @@ namespace Battle
 
             yield return new WaitForSecondsRealtime(.5f);
 
-            // Get possible actions
-            string[] possibleActions = GetPossibleActions(unit);
-
-            // Get desired action
-            System.Enum.TryParse(possibleActions[Random.Range(0, possibleActions.Length)],
-                out BattleUnit.TurnOptions choice);
+            BattleUnit.TurnOptions choice = GetEnemyTurnChoice(unit);
 
             // Run choice
             switch (choice)
@@ -737,7 +759,6 @@ namespace Battle
             EnemyAI ai = enemy.data.enemyAI;
             ai.CorrectData();
             int choiceInt = Random.Range(1, 101);
-
             int bar = ai.attack;
             if (choiceInt <= bar) return BattleUnit.TurnOptions.Attack;
 

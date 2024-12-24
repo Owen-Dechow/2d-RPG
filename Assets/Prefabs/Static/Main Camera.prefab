@@ -110,6 +110,11 @@ MonoBehaviour:
   sceneIndependentSpriteMaterial: {fileID: 2100000, guid: 240cdc42a19cf56328d18dfb53e653d9, type: 2}
   multiplier: {r: 1, g: 1, b: 1, a: 1}
   followPlayer: 0
+  cameraBounds:
+    maxX: 3
+    maxY: 3
+    minX: -3
+    minY: -3
 --- !u!114 &5022400720994143734
 MonoBehaviour:
   m_ObjectHideFlags: 0

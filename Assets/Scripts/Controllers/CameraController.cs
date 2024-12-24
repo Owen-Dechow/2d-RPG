@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -14,6 +15,7 @@ namespace Controllers
         [SerializeField] public Color multiplier;
 
         [SerializeField] private bool followPlayer;
+        [SerializeField] private CameraBounds cameraBounds;
         private Vector3 shake;
 
         public static void CenterCameraOnPlayer()
@@ -41,7 +43,10 @@ namespace Controllers
             {
                 Vector3 delta = (PlayerController.playerController.transform.position - transform.position) / Drag;
                 delta.z = 0;
-                transform.position += Time.deltaTime * delta;
+                Vector3 newPos = transform.position + Time.deltaTime * delta;
+                newPos.x = Mathf.Clamp(newPos.x, cameraBounds.minX, cameraBounds.maxX);
+                newPos.y = Mathf.Clamp(newPos.y, cameraBounds.minY, cameraBounds.maxY);
+                transform.position = newPos;
             }
             else
             {
@@ -78,6 +83,15 @@ namespace Controllers
         private void OnDrawGizmos()
         {
             sceneIndependentSpriteMaterial.SetColor(materialColorField, multiplier);
+        }
+
+        [Serializable]
+        class CameraBounds
+        {
+            public float maxX;
+            public float maxY;
+            public float minX;
+            public float minY;
         }
     }
 }
