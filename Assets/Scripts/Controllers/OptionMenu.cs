@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Managers;
+using Managers.CutScene;
 using UnityEngine;
 
 namespace Controllers
@@ -45,69 +46,73 @@ namespace Controllers
                 int boxNumber = i % cols;
                 textboxes[boxNumber].text += options[i] + "\n";
             }
-
         }
 
         public IEnumerator Options(string[] options, Vector2 position, int cols, bool allowCancel)
         {
-            SetUp(options, position, cols);
-            yield return new WaitForEndOfFrame();
-            PositionPointer(0, cols);
-
-            int selected = 0;
-            while (true)
+            using (new CutScene.Window())
             {
-                yield return MyInput.WaitForMenuNavigation();
+                SetUp(options, position, cols);
+                yield return new WaitForEndOfFrame();
 
-                MyInput.Action action = MyInput.MenuNavigation;
-                if (action == MyInput.Action.Up)
+                PositionPointer(0, cols);
+                pointer.SetActive(true);
+                
+                int selected = 0;
+                while (true)
                 {
-                    selected -= cols;
-                    if (selected < 0)
-                    {
-                        selected += cols;
-                        if (selected == 0) selected = options.Length - 1;
-                        else selected = 0;
-                    }
-                }
-                else if (action == MyInput.Action.Down)
-                {
-                    selected += cols;
-                    if (selected >= options.Length)
+                    yield return MyInput.WaitForMenuNavigation();
+
+                    MyInput.Action action = MyInput.MenuNavigation;
+                    if (action == MyInput.Action.Up)
                     {
                         selected -= cols;
-                        if (selected == options.Length - 1) selected = 0;
-                        else selected = options.Length - 1;
+                        if (selected < 0)
+                        {
+                            selected += cols;
+                            if (selected == 0) selected = options.Length - 1;
+                            else selected = 0;
+                        }
                     }
-                }
-                else if (action == MyInput.Action.Left)
-                {
-                    selected -= 1;
-                    if (selected < 0) selected = options.Length - 1;
-                }
-                else if (action == MyInput.Action.Right)
-                {
-                    selected += 1;
-                    if (selected >= options.Length) selected = 0;
-                }
-                else if (action == MyInput.Action.Select)
-                {
-                    GameManager.Answer = options[selected];
-                    GameManager.AnswerIndex = selected;
-                    break;
-                }
-                else if (action == MyInput.Action.Cancel)
-                {
-                    if (allowCancel)
+                    else if (action == MyInput.Action.Down)
                     {
-                        GameManager.Answer = "{{CANCEL}}";
-                        GameManager.AnswerIndex = -1;
+                        selected += cols;
+                        if (selected >= options.Length)
+                        {
+                            selected -= cols;
+                            if (selected == options.Length - 1) selected = 0;
+                            else selected = options.Length - 1;
+                        }
+                    }
+                    else if (action == MyInput.Action.Left)
+                    {
+                        selected -= 1;
+                        if (selected < 0) selected = options.Length - 1;
+                    }
+                    else if (action == MyInput.Action.Right)
+                    {
+                        selected += 1;
+                        if (selected >= options.Length) selected = 0;
+                    }
+                    else if (action == MyInput.Action.Select)
+                    {
+                        GameManager.Answer = options[selected];
+                        GameManager.AnswerIndex = selected;
                         break;
                     }
-                }
+                    else if (action == MyInput.Action.Cancel)
+                    {
+                        if (allowCancel)
+                        {
+                            GameManager.Answer = "{{CANCEL}}";
+                            GameManager.AnswerIndex = -1;
+                            break;
+                        }
+                    }
 
-                PositionPointer(selected, cols);
-                yield return new WaitForEndOfFrame();
+                    PositionPointer(selected, cols);
+                    yield return new WaitForEndOfFrame();
+                }
             }
         }
 
@@ -118,8 +123,7 @@ namespace Controllers
 
             float x = textboxes[col].gameObject.transform.localPosition.x + pointerSpaceX;
             float y = row * pointerSpaceY + pointerOriginY;
-
-            (pointer.transform as RectTransform).anchoredPosition = new Vector2(x, y);
+            ((RectTransform)pointer.transform).anchoredPosition = new Vector2(x, y);
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using Managers;
+using Managers.CutScene;
 using UnityEngine;
 
 namespace Controllers

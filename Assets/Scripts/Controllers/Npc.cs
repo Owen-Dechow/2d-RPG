@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Managers;
+using Managers.CutScene;
 using NPC;
 using UnityEngine;
 using UnityEngine.Serialization;

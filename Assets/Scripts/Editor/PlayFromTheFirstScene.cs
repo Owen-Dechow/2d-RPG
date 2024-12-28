@@ -7,30 +7,30 @@ public static class PlayFromTheFirstScene
 
     // https://github.com/AiFuYou/UnityDemo/blob/master/Assets/Plugins/Editor/PlayFromTheFirstScene.cs
 
-    const string playFromFirstMenuStr = "Custom/Always Start From LoadScene &p";
+    const string PlayFromFirstMenuStr = "Custom/Always Start From LoadScene &p";
 
     public static int currentScene;
 
     static bool PlayFromFirstScene
     {
-        get { return EditorPrefs.HasKey(playFromFirstMenuStr) && EditorPrefs.GetBool(playFromFirstMenuStr); }
-        set { EditorPrefs.SetBool(playFromFirstMenuStr, value); }
+        get => EditorPrefs.HasKey(PlayFromFirstMenuStr) && EditorPrefs.GetBool(PlayFromFirstMenuStr);
+        set => EditorPrefs.SetBool(PlayFromFirstMenuStr, value);
     }
 
-    [MenuItem(playFromFirstMenuStr, false, 150)]
+    [MenuItem(PlayFromFirstMenuStr, false, 150)]
     static void PlayFromFirstSceneCheckMenu()
     {
         PlayFromFirstScene = !PlayFromFirstScene;
-        Menu.SetChecked(playFromFirstMenuStr, PlayFromFirstScene);
+        Menu.SetChecked(PlayFromFirstMenuStr, PlayFromFirstScene);
 
         ShowNotifyOrLog(PlayFromFirstScene ? "Play from LoadScene" : "Play from current scene");
     }
 
     // The menu won't be gray out, we use this validate method for update check state
-    [MenuItem(playFromFirstMenuStr, true)]
+    [MenuItem(PlayFromFirstMenuStr, true)]
     static bool PlayFromFirstSceneCheckMenuValidate()
     {
-        Menu.SetChecked(playFromFirstMenuStr, PlayFromFirstScene);
+        Menu.SetChecked(PlayFromFirstMenuStr, PlayFromFirstScene);
         return true;
     }
 

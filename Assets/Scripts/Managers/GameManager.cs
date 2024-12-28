@@ -72,7 +72,7 @@ namespace Managers
         {
             static IEnumerator lostBattle()
             {
-                using (new CutScene.Window())
+                using (new CutScene.CutScene.Window(true))
                 {
                     yield return GameUI.ToggleLoadingScreen(true, instant: true);
 
@@ -89,6 +89,7 @@ namespace Managers
         {
             PlayerPlacementSettings = new(playerSpanPoint, playerSpanDirection);
             SceneManager.LoadScene(scene.ToString());
+            CutScene.CutScene.DisableAllSoftCutscenes();
         }
 
         public static void LoadLevel(LevelScene scene, DoorController.DoorTag playerSpanDoor)
@@ -100,7 +101,7 @@ namespace Managers
         public static IEnumerator LoadLevelAnimated(LevelScene scene, Vector2 playerSpanPoint,
             AnimPlus.Direction playerSpanDirection)
         {
-            using (new CutScene.Window())
+            using (new CutScene.CutScene.Window())
             {
                 yield return GameUI.ToggleLoadingScreen(true);
                 LoadLevel(scene, playerSpanPoint, playerSpanDirection);
@@ -110,7 +111,7 @@ namespace Managers
 
         public static IEnumerator LoadLevelAnimated(LevelScene scene, DoorController.DoorTag playerSpanDoor)
         {
-            using (new CutScene.Window())
+            using (new CutScene.CutScene.Window())
             {
                 yield return GameUI.ToggleLoadingScreen(true);
                 LoadLevel(scene, playerSpanDoor);

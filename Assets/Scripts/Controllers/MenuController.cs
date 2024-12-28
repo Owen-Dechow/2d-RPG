@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Battle;
 using Managers;
+using Managers.CutScene;
 using UnityEngine;
 
 namespace Controllers
