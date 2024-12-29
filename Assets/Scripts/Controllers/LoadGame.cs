@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Data;
 using Managers;
 using Managers.CutScene;
 using UnityEngine;

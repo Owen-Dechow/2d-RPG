@@ -1,22 +1,28 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu()]
-public class ItemScriptable : ScriptableObject
+namespace Data
 {
-    public enum ItemType
+    [CreateAssetMenu()]
+    public class ItemScriptable : ScriptableObject
     {
-        Heal,
-        Attack,
-        Special
+        public enum ItemType
+        {
+            Heal,
+            Attack,
+            Special
+        }
+
+        [SerializeField] private string title;
+        public string Title => title;
+
+        [SerializeField] ItemType type;
+        public ItemType Type => type;
+
+        [SerializeField] bool canUseOutsideOfBattle;
+        public bool CanUseOutsideOfBattle => canUseOutsideOfBattle;
+
+        [SerializeField] int powerMin;
+        [SerializeField] int powerMax;
+        public int Power => Random.Range(powerMin, powerMax + 1);
     }
-
-    [SerializeField] ItemType type;
-    public ItemType Type { get => type; }
-
-    [SerializeField] bool canUseOutsideOfBattle;
-    public bool CanUseOutsideOfBattle { get => canUseOutsideOfBattle; }
-
-    [SerializeField] int powerMin;
-    [SerializeField] int powerMax;
-    public int Power { get => Random.Range(powerMin, powerMax + 1); }
 }

@@ -10,11 +10,17 @@ namespace Managers
     public class GameUI : MonoBehaviour
     {
         private static GameUI _i;
-        [SerializeField] GameObject textArea;
-        [SerializeField] GameObject optionArea;
-        [SerializeField] GameObject loadingScreen;
+        [SerializeField] private GameObject textArea;
+        [SerializeField] private GameObject optionArea;
+        [SerializeField] private GameObject loadingScreen;
 
-        void Awake()
+        public static string Answer => _i.answer;
+        [SerializeField] private string answer;
+        
+        public static int AnswerIndex => _i.answerIndex;
+        [SerializeField] private int answerIndex;
+        
+        private void Awake()
         {
             _i = this;
             gameObject.SetActive(false);
@@ -22,8 +28,9 @@ namespace Managers
 
         public static void RenderAtPosition(GameObject go, Vector2 position)
         {
-            float borderPad = 20;
-            float normalPad = 5;
+            const float borderPad = 20;
+            const float normalPad = 5;
+            
             Vector2 padding = new(1, -1);
             if (position.x == 0)
                 padding.x *= borderPad;
@@ -36,6 +43,12 @@ namespace Managers
 
             go.transform.SetParent(_i.transform, false);
             ((RectTransform)go.transform).anchoredPosition = position * new Vector2(1, -1) + padding;
+        }
+
+        public static void SetAnswer(int idx, string answer)
+        {
+            _i.answer = answer;
+            _i.answerIndex = idx;
         }
 
         public static IEnumerator TypeOut(string text, bool instant = false)
@@ -51,7 +64,7 @@ namespace Managers
         {
             Vector2 position;
             GameObject textAreaObject;
-            if (prompt != null && prompt != "")
+            if (!string.IsNullOrEmpty(prompt))
             {
                 textAreaObject = Instantiate(_i.textArea);
                 yield return textAreaObject.GetComponent<TextBox>().TypeOut(prompt, false, Vector2.zero);
@@ -174,10 +187,10 @@ namespace Managers
 
             yield return fullMenu.RunMenu(0, allowCancel);
 
-            if (GameManager.AnswerIndex != -1)
+            if (AnswerIndex != -1)
             {
-                GameManager.Answer = GameManager.Answer.Trim('\\');
-                GameManager.AnswerIndex = System.Array.IndexOf(options, GameManager.Answer);
+                _i.answer = Answer.Trim('\\');
+                _i.answerIndex = System.Array.IndexOf(options, Answer);
             }
 
             fullMenu.DestroyMenu();
@@ -206,18 +219,18 @@ namespace Managers
                 string[] stringOptions = Options.Select(x => x.DisplayText).ToArray();
                 yield return choicePanel.GetComponent<OptionMenu>().Options(stringOptions, new Vector2(choicePanelOffset, 0), 1, allowCancel);
 
-                if (GameManager.AnswerIndex != -1)
+                if (AnswerIndex != -1)
                 {
-                    FullMenuOption selectedOption = Options[GameManager.AnswerIndex];
+                    FullMenuOption selectedOption = Options[AnswerIndex];
                     if (selectedOption.IsWrapper)
                     {
                         RectTransform rt = choicePanel.transform as RectTransform;
                         float xOffset = rt.anchorMax.x + rt.offsetMax.x;
                         yield return selectedOption.RunMenu(xOffset, true);
 
-                        if (GameManager.AnswerIndex != -1)
+                        if (AnswerIndex != -1)
                         {
-                            GameManager.Answer = DisplayText + '\\' + GameManager.Answer;
+                            _i.answer = DisplayText + '\\' + Answer;
                         }
                         else
                         {
@@ -226,7 +239,7 @@ namespace Managers
                     }
                     else
                     {
-                        GameManager.Answer = DisplayText + '\\' + GameManager.Answer;
+                        _i.answer = DisplayText + '\\' + Answer;
                     }
                 }
 

@@ -1,7 +1,10 @@
-public enum LevelScene
+namespace Data
 {
-    ShipTop,
-    ShipBottom,
-    Beach,
-    BeachDungeon
+    public enum LevelScene
+    {
+        ShipTop,
+        ShipBottom,
+        Beach,
+        BeachDungeon
+    }
 }

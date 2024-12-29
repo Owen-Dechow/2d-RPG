@@ -1,4 +1,5 @@
 using System.Collections;
+using Data;
 using Managers;
 using Managers.CutScene;
 using UnityEngine;
@@ -19,7 +20,7 @@ namespace Controllers
         public int uniqueId;
 
         public ContentType contentType;
-        public GameItems.Options itemOption;
+        public ItemScriptable itemOption;
         public int goldOption;
 
         SpriteRenderer spriteRenderer;

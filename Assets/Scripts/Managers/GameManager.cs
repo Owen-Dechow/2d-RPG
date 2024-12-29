@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Battle;
 using Controllers;
+using Data;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -11,22 +12,12 @@ namespace Managers
     {
         private static GameManager _i;
 
-        [SerializeField] private CheckpointSystem.CheckpointFlag checkpoint;
-
         [SerializeField] private GameObject battleSystemPrefab;
-
-        [SerializeField] private GameItems.DataSet[] itemData;
-        public static GameItems.DataSet[] ItemData => _i.itemData;
-
-        [SerializeField] private GameMagic.DataSet[] magicData;
-        public static GameMagic.DataSet[] MagicData => _i.magicData;
 
         public static List<int> postInteractionProtectionIDs;
 
         public static int id;
 
-        public static string Answer { get; set; }
-        public static int AnswerIndex { get; set; }
 
         public static PlayerController.PlacementSettings PlayerPlacementSettings { get; private set; }
 
@@ -54,9 +45,9 @@ namespace Managers
         {
             string cleanedText = text.Trim();
             cleanedText = cleanedText.Replace("{{NAME}}", Player.Name);
-            cleanedText = cleanedText.Replace("{{ANSWER}}", Answer);
+            cleanedText = cleanedText.Replace("{{ANSWER}}", GameUI.Answer);
             cleanedText = cleanedText.Replace('_', ' ');
-            cleanedText = cleanedText.Replace("{{ANSWER_IDX}}", AnswerIndex.ToString());
+            cleanedText = cleanedText.Replace("{{ANSWER_IDX}}", GameUI.AnswerIndex.ToString());
 
             return cleanedText;
         }

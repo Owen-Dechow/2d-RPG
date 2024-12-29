@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using Data;
 using UnityEngine;
 using Random = UnityEngine.Random;
 

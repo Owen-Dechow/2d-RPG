@@ -208,6 +208,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d01b4c948d40a69335563f1045ca5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  activeWindows: 0
+  activeHardWindows: 0
 --- !u!1 &4326378080082672333
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,6 +500,8 @@ MonoBehaviour:
   textArea: {fileID: 5274386076459265888, guid: ddf324af1ee15cc4da15036adb156c41, type: 3}
   optionArea: {fileID: 5970641827195594597, guid: 5940cd7e63b53704ab1533c64907c9f2, type: 3}
   loadingScreen: {fileID: 8042831398115974259}
+  answer: 
+  answerIndex: 0
 --- !u!1 &8042831398115974259
 GameObject:
   m_ObjectHideFlags: 0

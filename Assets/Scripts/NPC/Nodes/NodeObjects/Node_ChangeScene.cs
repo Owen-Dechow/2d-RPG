@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Controllers;
+using Data;
 using Managers;
 using Managers.CutScene;
 using NPC;

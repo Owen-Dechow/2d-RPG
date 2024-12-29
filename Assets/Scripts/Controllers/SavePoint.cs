@@ -37,7 +37,7 @@ namespace Controllers
             using (new CutScene.Window())
             {
                 yield return GameUI.GetYesNo("Save Game?");
-                if (GameManager.Answer == "Yes") SaveSystem.SaveGame();
+                if (GameUI.Answer == "Yes") SaveSystem.SaveGame();
             }
         }
     }

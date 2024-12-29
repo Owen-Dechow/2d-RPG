@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Battle;
+using Data;
 using UnityEngine;
 
 namespace Managers
@@ -10,8 +11,8 @@ namespace Managers
 
         public static string Name => _i.playerBattleUnit.data.title;
         public static int Gold { get => _i.playerBattleUnit.data.gold; set => _i.playerBattleUnit.data.gold = value; }
-        public static List<GameItems.Options> Items => _i.playerBattleUnit.data.itemOptionsForUnit;
-        public static List<GameMagic.Options> Magic => _i.playerBattleUnit.data.magicOptionsForUnit;
+        public static List<ItemScriptable> Items => _i.playerBattleUnit.data.itemOptionsForUnit;
+        public static List<MagicScriptable> Magic => _i.playerBattleUnit.data.magicOptionsForUnit;
         public static List<BattleUnit> ComradeBattleUnits => _i.comradeBattleUnits;
 
         BattleUnit playerBattleUnit;
@@ -89,7 +90,7 @@ namespace Managers
             return false;
         }
 
-        public static bool AddItemToInventory(GameItems.Options item)
+        public static bool AddItemToInventory(ItemScriptable item)
         {
             foreach (BattleUnit unit in GetBattleUnits())
             {

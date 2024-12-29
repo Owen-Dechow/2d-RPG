@@ -1,4 +1,5 @@
 using System.Collections;
+using Data;
 using Managers;
 using Managers.CutScene;
 using UnityEngine;

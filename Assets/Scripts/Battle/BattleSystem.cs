@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Controllers;
+using Data;
 using Managers;
 using Managers.CutScene;
 using UnityEngine;
@@ -38,13 +39,13 @@ namespace Battle
         private BattleState battleState;
         private BattleFinish battleFinish;
 
-        string PlayerTitle =>
+        private string PlayerTitle =>
             $"{Player.Name}{(players.Length == 1 ? "" : " and his companion" + (players.Length == 2 ? "" : "s"))}";
 
-        string EnemyTitle =>
+        private string EnemyTitle =>
             $"the {enemies[0].data.title}{(enemies.Length == 1 ? "" : enemies.Length == 2 ? " and his brother" : "'s mob")}";
 
-        enum BattleState
+        private enum BattleState
         {
             PlayerTurn,
             EnemyTurn,
@@ -66,15 +67,19 @@ namespace Battle
             for (int i = 0; i < players.Length; i++)
             {
                 // Player sprite
-                players[i].stationGo = new($"PlayerBattleUnit_{i}", new System.Type[] { typeof(SpriteRenderer) });
-                players[i].stationGo.transform.parent = playerBattleStation;
+                players[i].stationGo = new GameObject($"PlayerBattleUnit_{i}", typeof(SpriteRenderer))
+                {
+                    transform =
+                    {
+                        parent = playerBattleStation
+                    }
+                };
 
                 players[i].spriteRenderer = players[i].stationGo.GetComponent<SpriteRenderer>();
                 players[i].spriteRenderer.sprite = players[i].sprite;
                 players[i].spriteRenderer.sortingLayerName = "Battle";
 
-                float playerMove;
-                playerMove = (i * playerSpread) - (players.Length * playerSpread / 2);
+                var playerMove = (i * playerSpread) - (players.Length * playerSpread / 2);
                 playerMove += playerSpread / 2;
                 players[i].stationGo.transform.localPosition = Vector3.zero;
                 players[i].stationGo.transform.Translate(playerMove, 0, 0);
@@ -94,7 +99,7 @@ namespace Battle
             Dictionary<string, int> enemyNumbers = new();
             for (int i = 0; i < enemies.Length; i++)
             {
-                enemies[i].stationGo = new($"EnemyBattleUnit_{i}", new System.Type[] { typeof(SpriteRenderer) });
+                enemies[i].stationGo = new($"EnemyBattleUnit_{i}", typeof(SpriteRenderer));
                 enemies[i].stationGo.transform.parent = enemyBattleStation;
 
                 enemies[i].spriteRenderer = enemies[i].stationGo.GetComponent<SpriteRenderer>();
@@ -191,8 +196,9 @@ namespace Battle
                 yield return GameUI.TypeOut($"{Player.Name} engages {enemyGroupName}.");
 
                 // Pick randomly who goes first
-                if (Random.Range(0, 1) == 0) battleState = BattleState.PlayerTurn;
-                else battleState = BattleState.EnemyTurn;
+                battleState = Random.Range(0, 1) == 0
+                    ? BattleState.PlayerTurn
+                    : BattleState.EnemyTurn;
 
                 // Clear extra data
                 foreach (BattleUnit unit in players)
@@ -476,7 +482,7 @@ namespace Battle
 
             // Get desired action
             yield return GameUI.ChoiceMenu(null, possibleActions.ToArray(), 1);
-            System.Enum.TryParse(GameManager.Answer, out BattleUnit.TurnOptions choice);
+            System.Enum.TryParse(GameUI.Answer, out BattleUnit.TurnOptions choice);
 
             // Run choice
             switch (choice)
@@ -519,16 +525,19 @@ namespace Battle
                         int cols;
                         {
                             int itemCount = unit.data.itemOptionsForUnit.Count;
-                            if (itemCount <= 3) cols = 1;
-                            else if (itemCount <= 6) cols = 2;
-                            else cols = 3;
+                            cols = itemCount switch
+                            {
+                                <= 3 => 1,
+                                <= 6 => 2,
+                                _ => 3
+                            };
                         }
 
                         // Get choice
                         yield return GameUI.ChoiceMenu(null, itemOptions, cols, true);
 
                         // Check if player changes mind
-                        if (GameManager.AnswerIndex == -1)
+                        if (GameUI.AnswerIndex == -1)
                         {
                             yield return PlayerUnitTurn(unit);
                             yield break;
@@ -536,11 +545,11 @@ namespace Battle
                     }
 
                     // Get data for item choice
-                    GameItems.DataSet itemData = GameItems.GetDataForOption(GameManager.Answer);
+                    ItemScriptable item = unit.data.itemOptionsForUnit[GameUI.AnswerIndex];
 
                     // Choose target
                     BattleUnit target;
-                    if (itemData.scriptable.Type == ItemScriptable.ItemType.Attack)
+                    if (item.Type == ItemScriptable.ItemType.Attack)
                     {
                         yield return ChooseUnitPlayer(enemies);
                         if (selectedUnit == null)
@@ -550,7 +559,7 @@ namespace Battle
 
                         target = selectedUnit;
                     }
-                    else if (itemData.scriptable.Type == ItemScriptable.ItemType.Heal)
+                    else if (item.Type == ItemScriptable.ItemType.Heal)
                     {
                         yield return ChooseUnitPlayer(players);
                         if (selectedUnit == null)
@@ -565,7 +574,7 @@ namespace Battle
                         throw new System.NotImplementedException();
                     }
 
-                    yield return Item(unit, target, itemData, ChangeLifeOnPlayerUnit, ChangeLifeOnEnemyUnit);
+                    yield return Item(unit, target, item, ChangeLifeOnPlayerUnit, ChangeLifeOnEnemyUnit);
                     break;
                 }
 
@@ -573,38 +582,28 @@ namespace Battle
                 {
                     // Get desired magic
                     {
-                        // Get magic options
-                        string[] magicOptions = new string[unit.data.magicOptionsForUnit.Count];
-                        for (int i = 0; i < magicOptions.Length; i++)
-                        {
-                            string stringName = unit.data.magicOptionsForUnit[i].ToString();
-                            magicOptions[i] = stringName;
-                            magicOptions[i] = magicOptions[i] + " : " +
-                                              GameMagic.GetDataForOption(stringName).scriptable.Price;
-                        }
+                        string[] magicOptions = unit.data.magicOptionsForUnit.Select(x => x.Title).ToArray();
 
                         yield return GameUI.ChoiceMenu(null, magicOptions, 1, allowCancel: true);
 
                         // Check if player changes mind
-                        if (GameManager.AnswerIndex == -1)
+                        if (GameUI.AnswerIndex == -1)
                         {
                             yield return PlayerUnitTurn(unit);
                             yield break;
                         }
                     }
-
-                    // Get data for magic choice
-                    GameMagic.DataSet magicData = GameMagic.GetDataForOption(GameManager.Answer.Split(" : ")[0]);
+                    
+                    MagicScriptable magic  = unit.data.magicOptionsForUnit[GameUI.AnswerIndex];
 
                     // Choose target
                     BattleUnit[] targets;
-                    if (magicData.scriptable.Type == MagicScriptable.MagicType.Attack)
+                    switch (magic.Type)
                     {
-                        if (magicData.scriptable.EffectsAll)
-                        {
+                        case MagicScriptable.MagicType.Attack when magic.EffectsAll:
                             targets = enemies;
-                        }
-                        else
+                            break;
+                        case MagicScriptable.MagicType.Attack:
                         {
                             yield return ChooseUnitPlayer(enemies);
                             if (selectedUnit == null)
@@ -612,16 +611,13 @@ namespace Battle
                                 yield return PlayerUnitTurn(unit);
                             }
 
-                            targets = new BattleUnit[] { selectedUnit };
+                            targets = new[] { selectedUnit };
+                            break;
                         }
-                    }
-                    else if (magicData.scriptable.Type == MagicScriptable.MagicType.Heal)
-                    {
-                        if (magicData.scriptable.EffectsAll)
-                        {
+                        case MagicScriptable.MagicType.Heal when magic.EffectsAll:
                             targets = players;
-                        }
-                        else
+                            break;
+                        case MagicScriptable.MagicType.Heal:
                         {
                             yield return ChooseUnitPlayer(players);
                             if (selectedUnit == null)
@@ -629,15 +625,14 @@ namespace Battle
                                 yield return PlayerUnitTurn(unit);
                             }
 
-                            targets = new BattleUnit[] { selectedUnit };
+                            targets = new[] { selectedUnit };
+                            break;
                         }
-                    }
-                    else
-                    {
-                        throw new System.NotImplementedException();
+                        default:
+                            throw new System.NotImplementedException();
                     }
 
-                    yield return Magic(unit, targets, magicData, ChangeLifeOnPlayerUnit, ChangeLifeOnEnemyUnit);
+                    yield return Magic(unit, targets, magic, ChangeLifeOnPlayerUnit, ChangeLifeOnEnemyUnit);
                     break;
                 }
             }
@@ -686,17 +681,16 @@ namespace Battle
                 {
                     // Get item
                     string[] itemOptions = GetPossibleItems(unit);
-                    GameItems.DataSet itemData =
-                        GameItems.GetDataForOption(itemOptions[Random.Range(0, itemOptions.Length)]);
+                    ItemScriptable item = unit.data.itemOptionsForUnit[Random.Range(0, itemOptions.Length)];
 
                     // Choose target
                     BattleUnit target;
-                    if (itemData.scriptable.Type == ItemScriptable.ItemType.Attack)
+                    if (item.Type == ItemScriptable.ItemType.Attack)
                     {
                         ChooseUnitEnemy(players);
                         target = selectedUnit;
                     }
-                    else if (itemData.scriptable.Type == ItemScriptable.ItemType.Heal)
+                    else if (item.Type == ItemScriptable.ItemType.Heal)
                     {
                         ChooseUnitEnemy(enemies);
                         target = selectedUnit;
@@ -706,7 +700,7 @@ namespace Battle
                         throw new System.NotImplementedException();
                     }
 
-                    yield return Item(unit, target, itemData, ChangeLifeOnEnemyUnit, ChangeLifeOnPlayerUnit);
+                    yield return Item(unit, target, item, ChangeLifeOnEnemyUnit, ChangeLifeOnPlayerUnit);
                     break;
                 }
 
@@ -714,33 +708,32 @@ namespace Battle
                 {
                     // Get desired magic
                     string[] magicOptions = GetPossibleMagic(unit);
-                    GameMagic.DataSet magicData =
-                        GameMagic.GetDataForOption(magicOptions[Random.Range(0, magicOptions.Length)]);
+                    MagicScriptable magic = unit.data.magicOptionsForUnit[Random.Range(0, magicOptions.Length)];
 
                     // Choose target
                     BattleUnit[] targets;
-                    if (magicData.scriptable.Type == MagicScriptable.MagicType.Attack)
+                    if (magic.Type == MagicScriptable.MagicType.Attack)
                     {
-                        if (magicData.scriptable.EffectsAll)
+                        if (magic.EffectsAll)
                         {
                             targets = players;
                         }
                         else
                         {
                             ChooseUnitEnemy(players);
-                            targets = new BattleUnit[] { selectedUnit };
+                            targets = new[] { selectedUnit };
                         }
                     }
-                    else if (magicData.scriptable.Type == MagicScriptable.MagicType.Heal)
+                    else if (magic.Type == MagicScriptable.MagicType.Heal)
                     {
-                        if (magicData.scriptable.EffectsAll)
+                        if (magic.EffectsAll)
                         {
                             targets = enemies;
                         }
                         else
                         {
                             ChooseUnitEnemy(enemies);
-                            targets = new BattleUnit[] { selectedUnit };
+                            targets = new[] { selectedUnit };
                         }
                     }
                     else
@@ -748,7 +741,7 @@ namespace Battle
                         throw new System.NotImplementedException();
                     }
 
-                    yield return Magic(unit, targets, magicData, ChangeLifeOnEnemyUnit, ChangeLifeOnPlayerUnit);
+                    yield return Magic(unit, targets, magic, ChangeLifeOnEnemyUnit, ChangeLifeOnPlayerUnit);
 
                     break;
                 }
@@ -824,27 +817,25 @@ namespace Battle
             return attack;
         }
 
-        IEnumerator Item(BattleUnit unit, BattleUnit target, GameItems.DataSet itemData,
+        IEnumerator Item(BattleUnit unit, BattleUnit target, ItemScriptable item,
             System.Func<BattleUnit, int, IEnumerator> changeLifeOnFriendFunc,
             System.Func<BattleUnit, int, IEnumerator> changeLifeOnOpponentFunc)
         {
             // Preliminary message
-            yield return GameUI.TypeOut($"{unit.data.title} tried using {itemData.Title}.");
-
-            // Remove item from inventory
-            unit.data.itemOptionsForUnit.Remove(itemData.identity);
+            yield return GameUI.TypeOut($"{unit.data.title} tried using {item.Title}.");
+            unit.data.itemOptionsForUnit.Remove(item);
 
             // Run Item
             yield return new WaitForEndOfFrame();
-            if (itemData.scriptable.Type == ItemScriptable.ItemType.Attack)
+            if (item.Type == ItemScriptable.ItemType.Attack)
             {
-                int hit = target.GetDefenseChange(itemData.scriptable.Power);
+                int hit = target.GetDefenseChange(item.Power);
                 yield return GameUI.TypeOut($"{hit} damage to {target.data.title}.");
                 yield return changeLifeOnOpponentFunc(target, -hit);
             }
-            else if (itemData.scriptable.Type == ItemScriptable.ItemType.Heal)
+            else if (item.Type == ItemScriptable.ItemType.Heal)
             {
-                int heal = itemData.scriptable.Power;
+                int heal = item.Power;
                 yield return GameUI.TypeOut($"{target.data.title} gained {heal} HP.");
                 yield return changeLifeOnFriendFunc(target, heal);
             }
@@ -852,26 +843,20 @@ namespace Battle
 
         string[] GetPossibleItems(BattleUnit unit)
         {
-            string[] itemOptions = new string[unit.data.itemOptionsForUnit.Count];
-            for (int i = 0; i < itemOptions.Length; i++)
-            {
-                itemOptions[i] = unit.data.itemOptionsForUnit[i].ToString();
-            }
-
-            return itemOptions;
+            return unit.data.itemOptionsForUnit.Select(item => item.ToString()).ToArray();
         }
 
-        IEnumerator Magic(BattleUnit unit, BattleUnit[] targets, GameMagic.DataSet magicData,
+        IEnumerator Magic(BattleUnit unit, BattleUnit[] targets, MagicScriptable magic,
             System.Func<BattleUnit, int, IEnumerator> changeLifeOnFriendFunc,
             System.Func<BattleUnit, int, IEnumerator> changeLifeOnOpponentFunc)
         {
             // Preliminary message
-            yield return GameUI.TypeOut($"{unit.data.title} tried {magicData.Title}.");
+            yield return GameUI.TypeOut($"{unit.data.title} tried {magic.Title}.");
 
             // Handel tax
-            if (unit.data.magic >= magicData.scriptable.Price)
+            if (unit.data.magic >= magic.Price)
             {
-                unit.data.magic -= magicData.scriptable.Price;
+                unit.data.magic -= magic.Price;
             }
             else
             {
@@ -881,20 +866,20 @@ namespace Battle
 
             // Run magic
             yield return new WaitForEndOfFrame();
-            if (magicData.scriptable.Type == MagicScriptable.MagicType.Attack)
+            if (magic.Type == MagicScriptable.MagicType.Attack)
             {
                 foreach (BattleUnit target in targets)
                 {
-                    int hit = target.GetDefenseChange(magicData.scriptable.Power);
+                    int hit = target.GetDefenseChange(magic.Power);
                     yield return GameUI.TypeOut($"{hit} damage to {target.data.title}.");
                     yield return changeLifeOnOpponentFunc(target, -hit);
                 }
             }
-            else if (magicData.scriptable.Type == MagicScriptable.MagicType.Heal)
+            else if (magic.Type == MagicScriptable.MagicType.Heal)
             {
                 foreach (BattleUnit target in targets)
                 {
-                    int heal = magicData.scriptable.Power;
+                    int heal = magic.Power;
                     yield return GameUI.TypeOut($"{target.data.title} gained {heal} HP.");
                     yield return changeLifeOnFriendFunc(target, heal);
                 }
@@ -978,7 +963,7 @@ namespace Battle
             pointer.transform.position = unit.spriteRenderer.transform.position;
 
             int moveDir;
-            if (Camera.main.WorldToScreenPoint(pointer.transform.position).y - Camera.main.scaledPixelHeight / 2 > 0)
+            if (Camera.main!.WorldToScreenPoint(pointer.transform.position).y - Camera.main.scaledPixelHeight / 2 > 0)
             {
                 moveDir = -1;
             }

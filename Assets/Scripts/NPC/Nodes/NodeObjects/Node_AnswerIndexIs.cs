@@ -15,9 +15,10 @@ public class Node_AnswerIndexIs : IFNode
     {
         foreach (int i in answerIndexes)
         {
-            if( GameManager.AnswerIndex == i)
+            if (GameUI.AnswerIndex == i)
                 return true;
         }
+
         return false;
     }
 }

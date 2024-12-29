@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Data;
 using Managers;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -24,9 +25,8 @@ namespace Battle
             public int attack;
 
             [Header("Items/Magic")] public const int MaxItems = 30;
-
-            public List<GameMagic.Options> magicOptionsForUnit;
-            public List<GameItems.Options> itemOptionsForUnit;
+            public List<MagicScriptable> magicOptionsForUnit;
+            public List<ItemScriptable> itemOptionsForUnit;
 
             [Header("Player Only")]
             public int exp;

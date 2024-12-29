@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using Controllers;
+using Data;
 using Managers;
 using NPC;
 using UnityEngine;
 
 public class Node_TeachPower : ActionNode
 {
-    [SerializeField] GameMagic.Options magic;
+    [SerializeField] MagicScriptable magic;
 
     public override string MenuLocation => "Actions/Teach Player Power";
 

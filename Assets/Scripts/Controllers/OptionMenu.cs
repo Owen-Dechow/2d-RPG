@@ -96,16 +96,14 @@ namespace Controllers
                     }
                     else if (action == MyInput.Action.Select)
                     {
-                        GameManager.Answer = options[selected];
-                        GameManager.AnswerIndex = selected;
+                        GameUI.SetAnswer(selected, options[selected]);
                         break;
                     }
                     else if (action == MyInput.Action.Cancel)
                     {
                         if (allowCancel)
                         {
-                            GameManager.Answer = "{{CANCEL}}";
-                            GameManager.AnswerIndex = -1;
+                            GameUI.SetAnswer(-1, "{{CANCEL}}");
                             break;
                         }
                     }

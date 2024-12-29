@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using Controllers;
+﻿using Controllers;
+using Data;
 using Managers;
 using NPC;
 using UnityEngine;
@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class Node_HasItem : IFNode
 {
-    [SerializeField] GameItems.Options item;
+    [SerializeField] ItemScriptable item;
 
     public override string MenuLocation => "Control/Has Item";
 

@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using Controllers;
+using Data;
 using Managers;
 using NPC;
 using UnityEngine;
 
 public class Node_TakeItem : ActionNode
 {
-    [SerializeField] GameItems.Options item;
+    [SerializeField] ItemScriptable item;
 
     public override string MenuLocation => "Actions/Take Player Item";
 
