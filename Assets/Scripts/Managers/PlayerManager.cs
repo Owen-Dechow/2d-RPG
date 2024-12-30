@@ -28,8 +28,8 @@ namespace Managers
             set => _i.playerBattleUnit.data.gold = value;
         }
 
-        public static List<ItemScriptable> Items => _i.playerBattleUnit.data.itemOptionsForUnit;
-        public static List<MagicScriptable> Magic => _i.playerBattleUnit.data.magicOptionsForUnit;
+        public static List<ItemScriptable> Items => _i.playerBattleUnit.itemOptionsForUnit;
+        public static List<MagicScriptable> Magic => _i.playerBattleUnit.magicOptionsForUnit;
 
         private List<BattleUnit> comradeBattleUnits;
         public static List<BattleUnit> ComradeBattleUnits => _i.comradeBattleUnits;
@@ -54,7 +54,7 @@ namespace Managers
             _i.playerBattleUnit.data.magic = levelData.magic;
         }
 
-        public static void AddBattleUnit(BattleUnit.BattleUnitData battleUnit, Sprite sprite)
+        public static void AddBattleUnit(BattleUnit.BattleUnitData battleUnit)
         {
             GameObject go = new(battleUnit.title)
             {
@@ -66,7 +66,7 @@ namespace Managers
 
             BattleUnit bu = go.AddComponent<BattleUnit>();
             bu.data = battleUnit;
-            bu.sprite = sprite;
+            bu.data.SyncUnit(bu);
             _i.comradeBattleUnits.Add(bu);
         }
 
@@ -81,7 +81,11 @@ namespace Managers
             return playerBattleUnits.ToArray();
         }
 
-        public static BattleUnit.BattleUnitData GetBattleUnitData() => _i.playerBattleUnit.data;
+        public static BattleUnit.BattleUnitData GetBattleUnitData()
+        {
+            _i.playerBattleUnit.data.SyncSelf(_i.playerBattleUnit);
+            return _i.playerBattleUnit.data;
+        }
 
         public static void SetBattleUnitData(BattleUnit.BattleUnitData battleUnitData)
         {
@@ -96,16 +100,16 @@ namespace Managers
         public static bool HasRoomInInventory()
         {
             return GetBattleUnits()
-                .Any(unit => unit.data.itemOptionsForUnit.Count < BattleUnit.BattleUnitData.MaxItems);
+                .Any(unit => unit.itemOptionsForUnit.Count < BattleUnit.BattleUnitData.MaxItems);
         }
 
         public static bool AddItemToInventory(ItemScriptable item)
         {
             foreach (BattleUnit unit in GetBattleUnits())
             {
-                if (unit.data.itemOptionsForUnit.Count < BattleUnit.BattleUnitData.MaxItems)
+                if (unit.itemOptionsForUnit.Count < BattleUnit.BattleUnitData.MaxItems)
                 {
-                    unit.data.itemOptionsForUnit.Add(item);
+                    unit.itemOptionsForUnit.Add(item);
                     return true;
                 }
             }

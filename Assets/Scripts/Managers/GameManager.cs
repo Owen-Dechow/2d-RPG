@@ -14,9 +14,11 @@ namespace Managers
         private HashSet<int> postInteractionProtectionIDs;
         public static HashSet<int> PostInteractionProtectionIDs => _i.postInteractionProtectionIDs;
 
-
         [SerializeField] private int id;
         public static int Id => _i.id;
+
+        [SerializeField] private bool saveAsJson;
+        public static bool SaveAsJson => _i.saveAsJson;
 
 
         void Start()

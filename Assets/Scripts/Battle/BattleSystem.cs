@@ -524,7 +524,7 @@ namespace Battle
                         // Get display settings
                         int cols;
                         {
-                            int itemCount = unit.data.itemOptionsForUnit.Count;
+                            int itemCount = unit.itemOptionsForUnit.Count;
                             cols = itemCount switch
                             {
                                 <= 3 => 1,
@@ -545,7 +545,7 @@ namespace Battle
                     }
 
                     // Get data for item choice
-                    ItemScriptable item = unit.data.itemOptionsForUnit[GameUIManager.AnswerIndex];
+                    ItemScriptable item = unit.itemOptionsForUnit[GameUIManager.AnswerIndex];
 
                     // Choose target
                     BattleUnit target;
@@ -582,7 +582,7 @@ namespace Battle
                 {
                     // Get desired magic
                     {
-                        string[] magicOptions = unit.data.magicOptionsForUnit.Select(x => x.Title).ToArray();
+                        string[] magicOptions = unit.magicOptionsForUnit.Select(x => x.Title).ToArray();
 
                         yield return GameUIManager.ChoiceMenu(null, magicOptions, 1, allowCancel: true);
 
@@ -594,7 +594,7 @@ namespace Battle
                         }
                     }
                     
-                    MagicScriptable magic  = unit.data.magicOptionsForUnit[GameUIManager.AnswerIndex];
+                    MagicScriptable magic  = unit.magicOptionsForUnit[GameUIManager.AnswerIndex];
 
                     // Choose target
                     BattleUnit[] targets;
@@ -681,7 +681,7 @@ namespace Battle
                 {
                     // Get item
                     string[] itemOptions = GetPossibleItems(unit);
-                    ItemScriptable item = unit.data.itemOptionsForUnit[Random.Range(0, itemOptions.Length)];
+                    ItemScriptable item = unit.itemOptionsForUnit[Random.Range(0, itemOptions.Length)];
 
                     // Choose target
                     BattleUnit target;
@@ -708,7 +708,7 @@ namespace Battle
                 {
                     // Get desired magic
                     string[] magicOptions = GetPossibleMagic(unit);
-                    MagicScriptable magic = unit.data.magicOptionsForUnit[Random.Range(0, magicOptions.Length)];
+                    MagicScriptable magic = unit.magicOptionsForUnit[Random.Range(0, magicOptions.Length)];
 
                     // Choose target
                     BattleUnit[] targets;
@@ -762,14 +762,14 @@ namespace Battle
             bar += ai.item;
             if (choiceInt <= bar)
             {
-                if (enemy.data.itemOptionsForUnit.Count == 0) return GetEnemyTurnChoice(enemy);
+                if (enemy.itemOptionsForUnit.Count == 0) return GetEnemyTurnChoice(enemy);
                 return BattleUnit.TurnOptions.Item;
             }
 
             bar += ai.magic;
             if (choiceInt <= bar)
             {
-                if (enemy.data.magicOptionsForUnit.Count == 0) return GetEnemyTurnChoice(enemy);
+                if (enemy.magicOptionsForUnit.Count == 0) return GetEnemyTurnChoice(enemy);
                 return BattleUnit.TurnOptions.Magic;
             }
 
@@ -823,7 +823,7 @@ namespace Battle
         {
             // Preliminary message
             yield return GameUIManager.TypeOut($"{unit.data.title} tried using {item.Title}.");
-            unit.data.itemOptionsForUnit.Remove(item);
+            unit.itemOptionsForUnit.Remove(item);
 
             // Run Item
             yield return new WaitForEndOfFrame();
@@ -843,7 +843,7 @@ namespace Battle
 
         string[] GetPossibleItems(BattleUnit unit)
         {
-            return unit.data.itemOptionsForUnit.Select(item => item.ToString()).ToArray();
+            return unit.itemOptionsForUnit.Select(item => item.ToString()).ToArray();
         }
 
         IEnumerator Magic(BattleUnit unit, BattleUnit[] targets, MagicScriptable magic,
@@ -888,10 +888,10 @@ namespace Battle
 
         string[] GetPossibleMagic(BattleUnit unit)
         {
-            string[] magicOptions = new string[unit.data.magicOptionsForUnit.Count];
+            string[] magicOptions = new string[unit.magicOptionsForUnit.Count];
             for (int i = 0; i < magicOptions.Length; i++)
             {
-                string stringName = unit.data.magicOptionsForUnit[i].ToString();
+                string stringName = unit.magicOptionsForUnit[i].ToString();
                 magicOptions[i] = stringName;
             }
 
@@ -902,10 +902,10 @@ namespace Battle
         {
             List<string> possibleActions = new(System.Enum.GetNames(typeof(BattleUnit.TurnOptions)));
 
-            if (unit.data.magicOptionsForUnit.Count == 0)
+            if (unit.magicOptionsForUnit.Count == 0)
                 possibleActions.Remove("Magic");
 
-            if (unit.data.itemOptionsForUnit.Count == 0)
+            if (unit.itemOptionsForUnit.Count == 0)
                 possibleActions.Remove("Item");
 
             return possibleActions.ToArray();

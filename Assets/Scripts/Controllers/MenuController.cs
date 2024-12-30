@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Battle;
-using Data;
 using Managers;
 using Managers.CutScene;
 using UnityEngine;
@@ -23,10 +22,10 @@ namespace Controllers
                 {
                     string tag;
 
-                    if (unit.data.itemOptionsForUnit.Count > 0)
+                    if (unit.itemOptionsForUnit.Count > 0)
                     {
                         tag = $"{unit.data.title}\\Items\\";
-                        options.AddRange(unit.data.itemOptionsForUnit.Select(item =>
+                        options.AddRange(unit.itemOptionsForUnit.Select(item =>
                             tag + GameUIManager.GetCleanedText(item.ToString())));
                     }
                     else
@@ -34,10 +33,10 @@ namespace Controllers
                         options.Add($"{unit.data.title}\\Items [empty]");
                     }
 
-                    if (unit.data.magicOptionsForUnit.Count > 0)
+                    if (unit.magicOptionsForUnit.Count > 0)
                     {
                         tag = $@"{unit.data.title}\Magic\";
-                        options.AddRange(unit.data.magicOptionsForUnit.Select(magic =>
+                        options.AddRange(unit.magicOptionsForUnit.Select(magic =>
                             tag + GameUIManager.GetCleanedText(magic.ToString())));
                     }
                     else

@@ -1,149 +1,121 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization.Json;
 using Data;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Managers
 {
-    public static class SaveSystem 
+    public static class SaveSystem
     {
-        public static string Path => Application.persistentDataPath + "/game.savedata";
+        private static string PathRoot => Application.persistentDataPath + "/game.";
+        public static string Path => PathRoot + (GameManager.SaveAsJson ? "json" : "savedata");
 
         public static void SaveGame()
         {
             SaveDataSerializable saveData = new();
 
-            SaveDataSerializable[] dataSlots = GetDataSlots();
-            SaveDataSerializable oldDataSlot = null;
-            int oldDataSlotIdx = 0;
+            List<SaveDataSerializable> dataSlots = GetDataSlots();
+            SaveDataSerializable oldDataSlot = dataSlots.FirstOrDefault(x => x.id == saveData.id);
 
-            if (File.Exists(Path))
-            {
-                // Check if already save data 
-                foreach (SaveDataSerializable dataSlot in dataSlots)
-                {
-                    if (dataSlot.id == saveData.id)
-                    {
-                        oldDataSlot = saveData;
-                        break;
-                    }
-                    oldDataSlotIdx++;
-                }
-            }
-            else
-            {
-                dataSlots = Array.Empty<SaveDataSerializable>();
-            }
-
-            // Replace or create save data
-            SaveDataSerializable[] newDataSlots;
             if (oldDataSlot == null)
             {
-                newDataSlots = new SaveDataSerializable[dataSlots.Length + 1];
-                dataSlots.CopyTo(newDataSlots, 0);
-                newDataSlots[^1] = saveData;
+                dataSlots.Add(saveData);
             }
             else
             {
-                newDataSlots = dataSlots;
-                newDataSlots[oldDataSlotIdx] = saveData;
+                dataSlots.Remove(oldDataSlot);
+                dataSlots.Add(saveData);
             }
 
-            SetDataSlots(newDataSlots);
+            SetDataSlots(dataSlots);
             Debug.Log("Game Saved: [path] " + SaveSystem.Path);
         }
 
         public static SaveDataSerializable LoadData(int id)
         {
-            SaveDataSerializable[] dataSlots = GetDataSlots();
+            List<SaveDataSerializable> dataSlots = GetDataSlots();
 
             // Find proper save profile
-            foreach (SaveDataSerializable data in dataSlots)
+            foreach (var data in dataSlots.Where(data => data.id == id))
             {
-                if (data.id == id) return data;
+                return data;
             }
+
             Debug.LogError("File not found at path: " + Path);
             return null;
         }
 
         public static int GetNewId()
         {
-            int id = Random.Range(0, int.MaxValue);
-
-            SaveDataSerializable[] dataSlots = GetDataSlots();
-
-            // Find proper save profile
-            foreach (SaveDataSerializable data in dataSlots)
-            {
-                if (data.id == id) return GetNewId();
-            }
-            return id;
+            return Random.Range(int.MinValue, int.MaxValue);
         }
 
         public static Dictionary<int, string> GetSaveProfiles()
         {
             Dictionary<int, string> profiles = new();
-            if (File.Exists(Path))
-            {
-                // Get save data
-                SaveDataSerializable[] dataSlots = GetDataSlots();
+            List<SaveDataSerializable> dataSlots = GetDataSlots();
 
-                foreach (SaveDataSerializable data in dataSlots)
-                {
-                    profiles[data.id] = data.battleUnitData.title;
-                }
+            foreach (SaveDataSerializable data in dataSlots)
+            {
+                profiles[data.id] = data.battleUnitData.title;
             }
+
             return profiles;
         }
 
         public static void RemoveSaveProfile(int key)
         {
-            SaveDataSerializable[] dataSlots = GetDataSlots();
-            SaveDataSerializable[] newDataSlots;
-
-            int idxOn = 0;
-            newDataSlots = new SaveDataSerializable[dataSlots.Length - 1];
-            foreach (SaveDataSerializable dataSlot in dataSlots)
-            {
-                if (dataSlot.id == key) continue;
-                newDataSlots[idxOn] = dataSlot;
-                idxOn += 1;
-            }
-
-            SetDataSlots(newDataSlots);
+            List<SaveDataSerializable> dataSlots = GetDataSlots();
+            dataSlots.RemoveAll(x => x.id == key);
+            SetDataSlots(dataSlots);
         }
 
-        private static SaveDataSerializable[] GetDataSlots()
+        private static List<SaveDataSerializable> GetDataSlots()
         {
             if (!File.Exists(Path))
             {
                 Debug.Log("No file found at path :" + Path);
-                return new SaveDataSerializable[0];
+                return new List<SaveDataSerializable>();
             }
 
-            BinaryFormatter formatter = new();
-            FileStream stream = new(Path, FileMode.Open);
+            using FileStream stream = new(Path, FileMode.Open);
 
-            SaveDataSerializable[] data = formatter.Deserialize(stream) as SaveDataSerializable[];
-            stream.Close();
-            return data;
+            if (GameManager.SaveAsJson)
+            {
+                DataContractJsonSerializer formatter = new DataContractJsonSerializer(typeof(List<SaveDataSerializable>));
+                return (List<SaveDataSerializable>)formatter.ReadObject(stream);
+            }
+            else
+            {
+                BinaryFormatter formatter = new();
+                return (List<SaveDataSerializable>)formatter.Deserialize(stream);
+            }
         }
-        private static void SetDataSlots(SaveDataSerializable[] dataSlots)
+
+        private static void SetDataSlots(List<SaveDataSerializable> dataSlots)
         {
             try
             {
-                BinaryFormatter formatter = new();
-                FileStream stream = new(Path, FileMode.Create);
-                formatter.Serialize(stream, dataSlots);
-                stream.Close();
+                using FileStream stream = new(Path, FileMode.Create);
+                if (GameManager.SaveAsJson)
+                {
+                    DataContractJsonSerializer formatter =
+                        new DataContractJsonSerializer(typeof(List<SaveDataSerializable>));
+                    formatter.WriteObject(stream, dataSlots);
+                }
+                else
+                {
+                    BinaryFormatter formatter = new();
+                    formatter.Serialize(stream, dataSlots);
+                }
             }
             catch
             {
                 Debug.LogError("File saving error at path :" + Path);
-                return;
             }
         }
     }

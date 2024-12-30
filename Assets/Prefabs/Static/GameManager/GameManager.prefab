@@ -235,7 +235,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4326378080082672333}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -270,7 +270,7 @@ GameObject:
   - component: {fileID: 5174225853485602981}
   - component: {fileID: 8952602296549647302}
   m_Layer: 0
-  m_Name: NPCSpriteIDMap
+  m_Name: UnserializedDataList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -304,7 +304,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprites:
-  - {fileID: -839745521, guid: 8fa60a061494d8d4b848fc7cc6708638, type: 3}
+  - {fileID: 567154696, guid: 155d099ea56cdcb4b852e7852f4e837c, type: 3}
+  items:
+  - {fileID: 11400000, guid: 9d1eadda87ccb6e4daa7e1500e0dd4fd, type: 2}
+  - {fileID: 11400000, guid: ca0d3aa4d3babac4d81ad05fd6a5dc71, type: 2}
+  - {fileID: 11400000, guid: 21581e710b535784c911c6f9f8c4b9a4, type: 2}
+  magic:
+  - {fileID: 11400000, guid: c6d65d5c76231de4faefc63fea5edc63, type: 2}
+  - {fileID: 11400000, guid: 9ff808d7a3d99d84593d3fe08014f455, type: 2}
+  - {fileID: 11400000, guid: b4d83069aa11a0e458d0de7930d93130, type: 2}
+  - {fileID: 11400000, guid: 5667fab0db3832440a02dcabf0f46bcf, type: 2}
+  - {fileID: 11400000, guid: d48fec5fb60e9a94d99f2fd6ff14ea40, type: 2}
+  - {fileID: 11400000, guid: b9e5083e2d844254d9827f1345d92fc0, type: 2}
+  - {fileID: 11400000, guid: 433db95d45a37e846be93306c0e9ab5f, type: 2}
+  - {fileID: 11400000, guid: 71755f47b42c8c7479db0da8f50e04f3, type: 2}
 --- !u!1 &6483088251835158207
 GameObject:
   m_ObjectHideFlags: 0
@@ -341,6 +354,7 @@ Transform:
   - {fileID: 9187887852910297072}
   - {fileID: 5174225853485602981}
   - {fileID: 8816736071346866647}
+  - {fileID: 6510723634997340898}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6483088251835158204
@@ -355,33 +369,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be08f41484d2d5c4fa16cf886ec2aa58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkpoint:
-    name: _
-  battleSystemPrefab: {fileID: 3272117986164641667, guid: 5fd7af94004125744b97b20aeca8d890, type: 3}
-  itemData:
-  - identity: 0
-    scriptable: {fileID: 11400000, guid: ca0d3aa4d3babac4d81ad05fd6a5dc71, type: 2}
-  - identity: 1
-    scriptable: {fileID: 11400000, guid: 9d1eadda87ccb6e4daa7e1500e0dd4fd, type: 2}
-  - identity: 2
-    scriptable: {fileID: 11400000, guid: 21581e710b535784c911c6f9f8c4b9a4, type: 2}
-  magicData:
-  - identity: 0
-    scriptable: {fileID: 11400000, guid: 71755f47b42c8c7479db0da8f50e04f3, type: 2}
-  - identity: 1
-    scriptable: {fileID: 11400000, guid: 9ff808d7a3d99d84593d3fe08014f455, type: 2}
-  - identity: 2
-    scriptable: {fileID: 11400000, guid: c6d65d5c76231de4faefc63fea5edc63, type: 2}
-  - identity: 3
-    scriptable: {fileID: 11400000, guid: 433db95d45a37e846be93306c0e9ab5f, type: 2}
-  - identity: 4
-    scriptable: {fileID: 11400000, guid: b4d83069aa11a0e458d0de7930d93130, type: 2}
-  - identity: 5
-    scriptable: {fileID: 11400000, guid: 5667fab0db3832440a02dcabf0f46bcf, type: 2}
-  - identity: 6
-    scriptable: {fileID: 11400000, guid: d48fec5fb60e9a94d99f2fd6ff14ea40, type: 2}
-  - identity: 7
-    scriptable: {fileID: 11400000, guid: b9e5083e2d844254d9827f1345d92fc0, type: 2}
+  id: 0
+  saveAsJson: 1
 --- !u!1 &6483088252439544798
 GameObject:
   m_ObjectHideFlags: 0
@@ -577,6 +566,51 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &8823666784130819764
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6510723634997340898}
+  - component: {fileID: 6872772206096453201}
+  m_Layer: 0
+  m_Name: Battle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6510723634997340898
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8823666784130819764}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 917.4198, y: 397.11157, z: -4.319378}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6483088251835158205}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6872772206096453201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8823666784130819764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 605aa9ce2b074b5dae463684b5f6e751, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  battleSystemPrefab: {fileID: 3272117986164641667, guid: 5fd7af94004125744b97b20aeca8d890, type: 3}
 --- !u!1 &8879153701111742483
 GameObject:
   m_ObjectHideFlags: 0
@@ -644,8 +678,6 @@ MonoBehaviour:
     maxMagic: 5
     defense: 1
     attack: 1
-    magicOptionsForUnit: 
-    itemOptionsForUnit: 
     exp: 0
     level: 0
     gold: 0
@@ -660,6 +692,11 @@ MonoBehaviour:
       dataStatus: 1
       lastCheck: 1
     escapePercentageAllowed: 30
+    spriteId: 0
+    magicOptionsForUnitIds: 
+    itemsIds: 
   onDefense: 0
   stationGo: {fileID: 0}
   spriteRenderer: {fileID: 0}
+  magicOptionsForUnit: []
+  itemOptionsForUnit: []
