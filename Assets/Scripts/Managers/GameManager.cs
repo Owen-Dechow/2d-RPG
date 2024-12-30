@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Battle;
 using Controllers;
 using Data;
 using UnityEngine;
@@ -12,44 +11,30 @@ namespace Managers
     {
         private static GameManager _i;
 
-        [SerializeField] private GameObject battleSystemPrefab;
-
-        public static List<int> postInteractionProtectionIDs;
-
-        public static int id;
+        private HashSet<int> postInteractionProtectionIDs;
+        public static HashSet<int> PostInteractionProtectionIDs => _i.postInteractionProtectionIDs;
 
 
-        public static PlayerController.PlacementSettings PlayerPlacementSettings { get; private set; }
+        [SerializeField] private int id;
+        public static int Id => _i.id;
+
 
         void Start()
         {
             DontDestroyOnLoad(this);
-
-            postInteractionProtectionIDs = new();
-
+            postInteractionProtectionIDs = new HashSet<int>();
             id = SaveSystem.GetNewId();
-
             _i = this;
         }
 
-        public static void StartBattle(BattleUnit[] enemyUnits, GameObject enemyGameObject)
+        public static void SetId(int id)
         {
-            BattleSystem battleSystem = _i.battleSystemPrefab.GetComponent<BattleSystem>();
-            battleSystem.enemies = enemyUnits;
-            battleSystem.players = Player.GetBattleUnits();
-            battleSystem.enemyGameObject = enemyGameObject;
-            Instantiate(_i.battleSystemPrefab);
+            _i.id = id;
         }
 
-        public static string GetCleanedText(string text)
+        public static void SetPostInteractionProtectionIDs(HashSet<int> postInteractionProtectionIDs)
         {
-            string cleanedText = text.Trim();
-            cleanedText = cleanedText.Replace("{{NAME}}", Player.Name);
-            cleanedText = cleanedText.Replace("{{ANSWER}}", GameUI.Answer);
-            cleanedText = cleanedText.Replace('_', ' ');
-            cleanedText = cleanedText.Replace("{{ANSWER_IDX}}", GameUI.AnswerIndex.ToString());
-
-            return cleanedText;
+            _i.postInteractionProtectionIDs = postInteractionProtectionIDs;
         }
 
         public static void LoadFromSavePoint(int savePointId)
@@ -59,33 +44,17 @@ namespace Managers
             LoadLevel(data.levelScene, new Vector2(data.position[0], data.position[1]), AnimPlus.Direction.Down);
         }
 
-        public static void LostBattle()
-        {
-            static IEnumerator lostBattle()
-            {
-                using (new CutScene.CutScene.Window(true))
-                {
-                    yield return GameUI.ToggleLoadingScreen(true, instant: true);
-
-                    LoadFromSavePoint(id);
-
-                    yield return GameUI.ToggleLoadingScreen(false);
-                }
-            }
-
-            _i.StartCoroutine(lostBattle());
-        }
 
         public static void LoadLevel(LevelScene scene, Vector2 playerSpanPoint, AnimPlus.Direction playerSpanDirection)
         {
-            PlayerPlacementSettings = new(playerSpanPoint, playerSpanDirection);
+            PlayerManager.PlacementSettings = new PlayerController.PlacementSettings(playerSpanPoint, playerSpanDirection);
             SceneManager.LoadScene(scene.ToString());
             CutScene.CutScene.DisableAllSoftCutscenes();
         }
 
         public static void LoadLevel(LevelScene scene, DoorController.DoorTag playerSpanDoor)
         {
-            PlayerPlacementSettings = new(playerSpanDoor);
+            PlayerManager.PlacementSettings = new PlayerController.PlacementSettings(playerSpanDoor);
             SceneManager.LoadScene(scene.ToString());
         }
 
@@ -94,9 +63,9 @@ namespace Managers
         {
             using (new CutScene.CutScene.Window())
             {
-                yield return GameUI.ToggleLoadingScreen(true);
+                yield return GameUIManager.ToggleLoadingScreen(true);
                 LoadLevel(scene, playerSpanPoint, playerSpanDirection);
-                yield return GameUI.ToggleLoadingScreen(false);
+                yield return GameUIManager.ToggleLoadingScreen(false);
             }
         }
 
@@ -104,9 +73,9 @@ namespace Managers
         {
             using (new CutScene.CutScene.Window())
             {
-                yield return GameUI.ToggleLoadingScreen(true);
+                yield return GameUIManager.ToggleLoadingScreen(true);
                 LoadLevel(scene, playerSpanDoor);
-                yield return GameUI.ToggleLoadingScreen(false);
+                yield return GameUIManager.ToggleLoadingScreen(false);
             }
         }
 

@@ -139,7 +139,7 @@ namespace Controllers
             cohorts.CopyTo(battleUnits, 1);
             battleUnits[0] = battleUnit;
 
-            GameManager.StartBattle(battleUnits, gameObject);
+            BattleManager.StartBattle(battleUnits, gameObject);
         }
 
         private Vector2 GetDelta(Vector2 position, Vector2 target)

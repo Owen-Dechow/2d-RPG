@@ -13,6 +13,6 @@ public class Node_ComplexMenu : ActionNode
 
     protected override IEnumerator Execute(Npc npc, BehaviorTree.TreeData treeData)
     {
-        yield return GameUI.FullMenu(choices, allowNoAnswer);
+        yield return GameUIManager.FullMenu(choices, allowNoAnswer);
     }
 }

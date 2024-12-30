@@ -10,6 +10,6 @@ public class Node_HasRoomInInventory : IFNode
 
     protected override bool Evaluate(Npc npc, BehaviorTree.TreeData treeData)
     {
-        return Player.HasRoomInInventory();
+        return PlayerManager.HasRoomInInventory();
     }
 }

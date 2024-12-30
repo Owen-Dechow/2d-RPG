@@ -54,19 +54,19 @@ namespace Controllers
                 return;
             }
 
-            Player.SetName(fixedName);
+            PlayerManager.SetName(fixedName);
  
             getNamePanel.SetActive(false);
             IEnumerator startGame()
             {
                 DontDestroyOnLoad(gameObject);
-                yield return GameUI.ToggleLoadingScreen(true);
+                yield return GameUIManager.ToggleLoadingScreen(true);
 
                 gameObject.GetComponent<Canvas>().enabled = false;
                 GameManager.LoadLevel(LevelScene.ShipTop, Vector2.zero, AnimPlus.Direction.Down);
 
-                yield return GameUI.ToggleLoadingScreen(false);
-                Player.UpdateToLevel1();
+                yield return GameUIManager.ToggleLoadingScreen(false);
+                PlayerManager.UpdateToLevel1();
                 SaveSystem.SaveGame();
                 Destroy(gameObject);
             }
@@ -149,12 +149,12 @@ namespace Controllers
                 using (new CutScene.Window())
                 {
                     DontDestroyOnLoad(gameObject);
-                    yield return GameUI.ToggleLoadingScreen(true);
+                    yield return GameUIManager.ToggleLoadingScreen(true);
 
                     gameObject.GetComponent<Canvas>().enabled = false;
                     GameManager.LoadFromSavePoint(key);
 
-                    yield return GameUI.ToggleLoadingScreen(false);
+                    yield return GameUIManager.ToggleLoadingScreen(false);
                     Destroy(gameObject);
                 }
             }

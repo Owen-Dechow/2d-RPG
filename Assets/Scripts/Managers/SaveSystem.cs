@@ -10,7 +10,7 @@ namespace Managers
 {
     public static class SaveSystem 
     {
-        private static string Path => Application.persistentDataPath + "/game.savedata";
+        public static string Path => Application.persistentDataPath + "/game.savedata";
 
         public static void SaveGame()
         {

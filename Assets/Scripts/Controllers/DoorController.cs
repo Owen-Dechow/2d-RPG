@@ -44,11 +44,11 @@ namespace Controllers
         public LevelScene toLevel;
         public DoorOpenDir doorOpening;
 
-        [SerializeField] DoorTag doorTag;
+        [SerializeField] private DoorTag doorTag;
 
-        [SerializeField] LoadType loadType;
-        [SerializeField] DoorTag connectedDoor;
-        [SerializeField] Vector2 spanPosition;
+        [SerializeField] private LoadType loadType;
+        [SerializeField] private DoorTag connectedDoor;
+        [SerializeField] private Vector2 spanPosition;
 
         public string disallowEnterText;
 
@@ -56,7 +56,7 @@ namespace Controllers
 
         private void Awake()
         {
-            if (GameManager.PlayerPlacementSettings.DoorTag == doorTag)
+            if (PlayerManager.PlacementSettings.DoorTag == doorTag)
             {
                 doorController = this;
             }
@@ -76,7 +76,7 @@ namespace Controllers
         {
             if (!collision.collider.CompareTag("Player")) return;
 
-            string text = GameManager.GetCleanedText(disallowEnterText);
+            string text = GameUIManager.GetCleanedText(disallowEnterText);
 
             if (loadType == LoadType.NoEnter)
             {
@@ -99,7 +99,7 @@ namespace Controllers
         {
             using (new CutScene.Window())
             {
-                yield return GameUI.TypeOut(text);
+                yield return GameUIManager.TypeOut(text);
             }
         }
     }

@@ -7,30 +7,41 @@ using UnityEngine.UI;
 
 namespace Managers
 {
-    public class GameUI : MonoBehaviour
+    public class GameUIManager : MonoBehaviour
     {
-        private static GameUI _i;
+        private static GameUIManager _i;
         [SerializeField] private GameObject textArea;
         [SerializeField] private GameObject optionArea;
         [SerializeField] private GameObject loadingScreen;
 
         public static string Answer => _i.answer;
         [SerializeField] private string answer;
-        
+
         public static int AnswerIndex => _i.answerIndex;
         [SerializeField] private int answerIndex;
-        
+
         private void Awake()
         {
             _i = this;
             gameObject.SetActive(false);
         }
 
+        public static string GetCleanedText(string text)
+        {
+            string cleanedText = text.Trim();
+            cleanedText = cleanedText.Replace("{{NAME}}", PlayerManager.Name);
+            cleanedText = cleanedText.Replace("{{ANSWER}}", Answer);
+            cleanedText = cleanedText.Replace('_', ' ');
+            cleanedText = cleanedText.Replace("{{ANSWER_IDX}}", AnswerIndex.ToString());
+
+            return cleanedText;
+        }
+
         public static void RenderAtPosition(GameObject go, Vector2 position)
         {
             const float borderPad = 20;
             const float normalPad = 5;
-            
+
             Vector2 padding = new(1, -1);
             if (position.x == 0)
                 padding.x *= borderPad;
@@ -53,7 +64,7 @@ namespace Managers
 
         public static IEnumerator TypeOut(string text, bool instant = false)
         {
-            string newText = GameManager.GetCleanedText(text);
+            string newText = GetCleanedText(text);
 
             GameObject textAreaObject = Instantiate(_i.textArea);
             yield return textAreaObject.GetComponent<TextBox>().TypeOut(newText, instant, Vector2.zero);
@@ -84,7 +95,7 @@ namespace Managers
             string[] newOptions = options;
             for (int i = 0; i < options.Length; i++)
             {
-                newOptions[i] = GameManager.GetCleanedText(options[i]);
+                newOptions[i] = GetCleanedText(options[i]);
             }
 
             GameObject optionsAreaObject = Instantiate(_i.optionArea);
@@ -98,7 +109,7 @@ namespace Managers
         {
             string[] options;
             if (thirdOption != null && thirdOption.Length > 0)
-                options = new string[] { "Yes", "No", GameManager.GetCleanedText(thirdOption) };
+                options = new string[] { "Yes", "No", GetCleanedText(thirdOption) };
             else
                 options = new string[] { "Yes", "No" };
 
@@ -124,7 +135,8 @@ namespace Managers
             {
                 while (loadingScreenImage.color.a < 1)
                 {
-                    loadingScreenImage.color = new Color(0, 0, 0, Mathf.Clamp(loadingScreenImage.color.a + Time.deltaTime, 0, 1));
+                    loadingScreenImage.color = new Color(0, 0, 0,
+                        Mathf.Clamp(loadingScreenImage.color.a + Time.deltaTime, 0, 1));
 
                     if (controlVol)
                         AudioListener.volume = 1 - loadingScreenImage.color.a;
@@ -136,7 +148,8 @@ namespace Managers
             {
                 while (loadingScreenImage.color.a > 0)
                 {
-                    loadingScreenImage.color = new Color(0, 0, 0, Mathf.Clamp(loadingScreenImage.color.a - Time.deltaTime, 0, 1));
+                    loadingScreenImage.color = new Color(0, 0, 0,
+                        Mathf.Clamp(loadingScreenImage.color.a - Time.deltaTime, 0, 1));
 
                     if (controlVol)
                         AudioListener.volume = Mathf.Abs(loadingScreenImage.color.a - 1);
@@ -172,12 +185,12 @@ namespace Managers
 
                 depth = selectedPath;
             }
+
             depth.Options.Add(new(optionPathArray[^1]));
         }
 
         public static IEnumerator FullMenu(string[] options, bool allowCancel)
         {
-
             FullMenuOption fullMenu = new("");
 
             foreach (string option in options)
@@ -217,7 +230,8 @@ namespace Managers
                 choicePanel.SetActive(true);
 
                 string[] stringOptions = Options.Select(x => x.DisplayText).ToArray();
-                yield return choicePanel.GetComponent<OptionMenu>().Options(stringOptions, new Vector2(choicePanelOffset, 0), 1, allowCancel);
+                yield return choicePanel.GetComponent<OptionMenu>()
+                    .Options(stringOptions, new Vector2(choicePanelOffset, 0), 1, allowCancel);
 
                 if (AnswerIndex != -1)
                 {
@@ -252,6 +266,7 @@ namespace Managers
                 {
                     option.DestroyMenu();
                 }
+
                 Destroy(choicePanel);
             }
         }

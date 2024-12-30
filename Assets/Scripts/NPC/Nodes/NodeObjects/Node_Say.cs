@@ -13,6 +13,6 @@ public class Node_Say : ActionNode
 
     protected override IEnumerator Execute(Npc npc, BehaviorTree.TreeData treeData)
     {
-        yield return GameUI.TypeOut(text);
+        yield return GameUIManager.TypeOut(text);
     }
 }

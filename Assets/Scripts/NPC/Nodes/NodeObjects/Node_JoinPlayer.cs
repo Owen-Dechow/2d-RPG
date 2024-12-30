@@ -15,8 +15,8 @@ public class Node_JoinPlayer : ActionNode
 
     protected override IEnumerator Execute(Npc npc, BehaviorTree.TreeData treeData)
     {
-        yield return GameUI.TypeOut($"{battleUnit.title} joined {Player.Name}");
-        Player.AddBattleUnit(battleUnit, sprite);
+        yield return GameUIManager.TypeOut($"{battleUnit.title} joined {PlayerManager.Name}");
+        PlayerManager.AddBattleUnit(battleUnit, sprite);
         CheckpointSystem.SetCheckpoint(joinedPlayerCheckpoint);
     }
 }

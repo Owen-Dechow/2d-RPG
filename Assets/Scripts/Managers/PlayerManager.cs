@@ -1,28 +1,44 @@
 using System.Collections.Generic;
+using System.Linq;
 using Battle;
+using Controllers;
 using Data;
 using UnityEngine;
 
 namespace Managers
 {
-    public class Player : MonoBehaviour
+    public class PlayerManager : MonoBehaviour
     {
-        private static Player _i;
+        private static PlayerManager _i;
 
+        private PlayerController.PlacementSettings placementSettings;
+
+        public static PlayerController.PlacementSettings PlacementSettings
+        {
+            get => _i.placementSettings;
+            set => _i.placementSettings = value;
+        }
+
+        private BattleUnit playerBattleUnit;
         public static string Name => _i.playerBattleUnit.data.title;
-        public static int Gold { get => _i.playerBattleUnit.data.gold; set => _i.playerBattleUnit.data.gold = value; }
+
+        public static int Gold
+        {
+            get => _i.playerBattleUnit.data.gold;
+            set => _i.playerBattleUnit.data.gold = value;
+        }
+
         public static List<ItemScriptable> Items => _i.playerBattleUnit.data.itemOptionsForUnit;
         public static List<MagicScriptable> Magic => _i.playerBattleUnit.data.magicOptionsForUnit;
-        public static List<BattleUnit> ComradeBattleUnits => _i.comradeBattleUnits;
 
-        BattleUnit playerBattleUnit;
-        List<BattleUnit> comradeBattleUnits;
+        private List<BattleUnit> comradeBattleUnits;
+        public static List<BattleUnit> ComradeBattleUnits => _i.comradeBattleUnits;
 
         private void Start()
         {
             _i = this;
             playerBattleUnit = GetComponent<BattleUnit>();
-            comradeBattleUnits = new();
+            comradeBattleUnits = new List<BattleUnit>();
         }
 
         public static void UpdateToLevel1()
@@ -79,15 +95,8 @@ namespace Managers
 
         public static bool HasRoomInInventory()
         {
-            foreach (BattleUnit unit in GetBattleUnits())
-            {
-                if (unit.data.itemOptionsForUnit.Count < BattleUnit.BattleUnitData.MaxItems)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return GetBattleUnits()
+                .Any(unit => unit.data.itemOptionsForUnit.Count < BattleUnit.BattleUnitData.MaxItems);
         }
 
         public static bool AddItemToInventory(ItemScriptable item)

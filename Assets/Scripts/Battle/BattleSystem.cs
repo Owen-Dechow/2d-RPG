@@ -40,7 +40,7 @@ namespace Battle
         private BattleFinish battleFinish;
 
         private string PlayerTitle =>
-            $"{Player.Name}{(players.Length == 1 ? "" : " and his companion" + (players.Length == 2 ? "" : "s"))}";
+            $"{PlayerManager.Name}{(players.Length == 1 ? "" : " and his companion" + (players.Length == 2 ? "" : "s"))}";
 
         private string EnemyTitle =>
             $"the {enemies[0].data.title}{(enemies.Length == 1 ? "" : enemies.Length == 2 ? " and his brother" : "'s mob")}";
@@ -193,7 +193,7 @@ namespace Battle
                 else enemyGroupName = "a " + enemyGroupName;
 
                 // Display Message
-                yield return GameUI.TypeOut($"{Player.Name} engages {enemyGroupName}.");
+                yield return GameUIManager.TypeOut($"{PlayerManager.Name} engages {enemyGroupName}.");
 
                 // Pick randomly who goes first
                 battleState = Random.Range(0, 1) == 0
@@ -297,14 +297,14 @@ namespace Battle
                 case BattleFinish.PlayerWin:
                     Destroy(enemyGameObject);
                     PlayerController.playerController.SetInactive();
-                    yield return GameUI.TypeOut($"{PlayerTitle} won the battle!");
+                    yield return GameUIManager.TypeOut($"{PlayerTitle} won the battle!");
 
                     int exp = enemies.Sum(x => x.data.expAward);
-                    yield return GameUI.TypeOut($"{PlayerTitle} gained {exp} experience.");
+                    yield return GameUIManager.TypeOut($"{PlayerTitle} gained {exp} experience.");
 
                     int gold = enemies.Sum(x => x.data.goldAward);
-                    yield return GameUI.TypeOut($"{PlayerTitle} gained {gold} gold.");
-                    Player.Gold += gold;
+                    yield return GameUIManager.TypeOut($"{PlayerTitle} gained {gold} gold.");
+                    PlayerManager.Gold += gold;
 
                     players[0].data.exp += exp;
                     yield return players[0].LevelUpUnit();
@@ -318,8 +318,8 @@ namespace Battle
                     break;
 
                 case BattleFinish.EnemyWin:
-                    yield return GameUI.TypeOut($"{PlayerTitle} lost the battle!");
-                    GameManager.LostBattle();
+                    yield return GameUIManager.TypeOut($"{PlayerTitle} lost the battle!");
+                    BattleManager.LostBattle();
                     yield return new WaitWhile(() => true);
                     break;
 
@@ -423,12 +423,12 @@ namespace Battle
             if (unit.data.life >= unit.data.maxLife)
             {
                 unit.data.life = unit.data.maxLife;
-                yield return GameUI.TypeOut($"{unit.data.title}'s life is maxed out.");
+                yield return GameUIManager.TypeOut($"{unit.data.title}'s life is maxed out.");
             }
 
             if (!unit.data.Alive)
             {
-                yield return GameUI.TypeOut($"{unit.data.title} has been destroyed.");
+                yield return GameUIManager.TypeOut($"{unit.data.title} has been destroyed.");
 
                 int iterations = 6;
                 for (float i = 0; i < iterations; i++)
@@ -458,12 +458,12 @@ namespace Battle
             if (unit.data.life >= unit.data.maxLife)
             {
                 unit.data.life = unit.data.maxLife;
-                yield return GameUI.TypeOut($"{unit.data.title}'s life is maxed out.");
+                yield return GameUIManager.TypeOut($"{unit.data.title}'s life is maxed out.");
             }
 
             if (!unit.data.Alive)
             {
-                yield return GameUI.TypeOut($"{unit.data.title} died.");
+                yield return GameUIManager.TypeOut($"{unit.data.title} died.");
             }
         }
 
@@ -481,15 +481,15 @@ namespace Battle
             string[] possibleActions = GetPossibleActions(unit);
 
             // Get desired action
-            yield return GameUI.ChoiceMenu(null, possibleActions.ToArray(), 1);
-            System.Enum.TryParse(GameUI.Answer, out BattleUnit.TurnOptions choice);
+            yield return GameUIManager.ChoiceMenu(null, possibleActions.ToArray(), 1);
+            System.Enum.TryParse(GameUIManager.Answer, out BattleUnit.TurnOptions choice);
 
             // Run choice
             switch (choice)
             {
                 case BattleUnit.TurnOptions.Run:
                 {
-                    yield return GameUI.TypeOut(GetActionStatement(unit, runText, EnemyTitle));
+                    yield return GameUIManager.TypeOut(GetActionStatement(unit, runText, EnemyTitle));
                     yield return Run(GetCanRun(players[0]));
                     break;
                 }
@@ -511,7 +511,7 @@ namespace Battle
 
                 case BattleUnit.TurnOptions.Defend:
                     unit.onDefense = true;
-                    yield return GameUI.TypeOut(GetActionStatement(unit, defendText, EnemyTitle));
+                    yield return GameUIManager.TypeOut(GetActionStatement(unit, defendText, EnemyTitle));
                     break;
 
                 case BattleUnit.TurnOptions.Item:
@@ -534,10 +534,10 @@ namespace Battle
                         }
 
                         // Get choice
-                        yield return GameUI.ChoiceMenu(null, itemOptions, cols, true);
+                        yield return GameUIManager.ChoiceMenu(null, itemOptions, cols, true);
 
                         // Check if player changes mind
-                        if (GameUI.AnswerIndex == -1)
+                        if (GameUIManager.AnswerIndex == -1)
                         {
                             yield return PlayerUnitTurn(unit);
                             yield break;
@@ -545,7 +545,7 @@ namespace Battle
                     }
 
                     // Get data for item choice
-                    ItemScriptable item = unit.data.itemOptionsForUnit[GameUI.AnswerIndex];
+                    ItemScriptable item = unit.data.itemOptionsForUnit[GameUIManager.AnswerIndex];
 
                     // Choose target
                     BattleUnit target;
@@ -584,17 +584,17 @@ namespace Battle
                     {
                         string[] magicOptions = unit.data.magicOptionsForUnit.Select(x => x.Title).ToArray();
 
-                        yield return GameUI.ChoiceMenu(null, magicOptions, 1, allowCancel: true);
+                        yield return GameUIManager.ChoiceMenu(null, magicOptions, 1, allowCancel: true);
 
                         // Check if player changes mind
-                        if (GameUI.AnswerIndex == -1)
+                        if (GameUIManager.AnswerIndex == -1)
                         {
                             yield return PlayerUnitTurn(unit);
                             yield break;
                         }
                     }
                     
-                    MagicScriptable magic  = unit.data.magicOptionsForUnit[GameUI.AnswerIndex];
+                    MagicScriptable magic  = unit.data.magicOptionsForUnit[GameUIManager.AnswerIndex];
 
                     // Choose target
                     BattleUnit[] targets;
@@ -658,7 +658,7 @@ namespace Battle
             {
                 case BattleUnit.TurnOptions.Run:
                 {
-                    yield return GameUI.TypeOut(GetActionStatement(unit, runText, PlayerTitle));
+                    yield return GameUIManager.TypeOut(GetActionStatement(unit, runText, PlayerTitle));
                     yield return Run(GetCanRun(players[0]));
                     break;
                 }
@@ -673,7 +673,7 @@ namespace Battle
                 case BattleUnit.TurnOptions.Defend:
                 {
                     unit.onDefense = true;
-                    yield return GameUI.TypeOut(GetActionStatement(unit, defendText, PlayerTitle));
+                    yield return GameUIManager.TypeOut(GetActionStatement(unit, defendText, PlayerTitle));
                     break;
                 }
 
@@ -783,13 +783,13 @@ namespace Battle
         {
             if (run)
             {
-                yield return GameUI.TypeOut("And got away!");
+                yield return GameUIManager.TypeOut("And got away!");
                 battleState = BattleState.Exit;
                 battleFinish = BattleFinish.Run;
             }
             else
             {
-                yield return GameUI.TypeOut("But couldn't get away.");
+                yield return GameUIManager.TypeOut("But couldn't get away.");
             }
         }
 
@@ -805,8 +805,8 @@ namespace Battle
             System.Func<BattleUnit, int, IEnumerator> lifeChangeFunc)
         {
             int attackPower = GetAttackPower(attacking, defending);
-            yield return GameUI.TypeOut(GetActionStatement(attacking, attackText, defending.data.title));
-            yield return GameUI.TypeOut($"{attackPower} damage to {defending.data.title}.");
+            yield return GameUIManager.TypeOut(GetActionStatement(attacking, attackText, defending.data.title));
+            yield return GameUIManager.TypeOut($"{attackPower} damage to {defending.data.title}.");
             yield return lifeChangeFunc(defending, -attackPower);
         }
 
@@ -822,7 +822,7 @@ namespace Battle
             System.Func<BattleUnit, int, IEnumerator> changeLifeOnOpponentFunc)
         {
             // Preliminary message
-            yield return GameUI.TypeOut($"{unit.data.title} tried using {item.Title}.");
+            yield return GameUIManager.TypeOut($"{unit.data.title} tried using {item.Title}.");
             unit.data.itemOptionsForUnit.Remove(item);
 
             // Run Item
@@ -830,13 +830,13 @@ namespace Battle
             if (item.Type == ItemScriptable.ItemType.Attack)
             {
                 int hit = target.GetDefenseChange(item.Power);
-                yield return GameUI.TypeOut($"{hit} damage to {target.data.title}.");
+                yield return GameUIManager.TypeOut($"{hit} damage to {target.data.title}.");
                 yield return changeLifeOnOpponentFunc(target, -hit);
             }
             else if (item.Type == ItemScriptable.ItemType.Heal)
             {
                 int heal = item.Power;
-                yield return GameUI.TypeOut($"{target.data.title} gained {heal} HP.");
+                yield return GameUIManager.TypeOut($"{target.data.title} gained {heal} HP.");
                 yield return changeLifeOnFriendFunc(target, heal);
             }
         }
@@ -851,7 +851,7 @@ namespace Battle
             System.Func<BattleUnit, int, IEnumerator> changeLifeOnOpponentFunc)
         {
             // Preliminary message
-            yield return GameUI.TypeOut($"{unit.data.title} tried {magic.Title}.");
+            yield return GameUIManager.TypeOut($"{unit.data.title} tried {magic.Title}.");
 
             // Handel tax
             if (unit.data.magic >= magic.Price)
@@ -860,7 +860,7 @@ namespace Battle
             }
             else
             {
-                yield return GameUI.TypeOut($"But didn't have enough magic.");
+                yield return GameUIManager.TypeOut($"But didn't have enough magic.");
                 yield break;
             }
 
@@ -871,7 +871,7 @@ namespace Battle
                 foreach (BattleUnit target in targets)
                 {
                     int hit = target.GetDefenseChange(magic.Power);
-                    yield return GameUI.TypeOut($"{hit} damage to {target.data.title}.");
+                    yield return GameUIManager.TypeOut($"{hit} damage to {target.data.title}.");
                     yield return changeLifeOnOpponentFunc(target, -hit);
                 }
             }
@@ -880,7 +880,7 @@ namespace Battle
                 foreach (BattleUnit target in targets)
                 {
                     int heal = magic.Power;
-                    yield return GameUI.TypeOut($"{target.data.title} gained {heal} HP.");
+                    yield return GameUIManager.TypeOut($"{target.data.title} gained {heal} HP.");
                     yield return changeLifeOnFriendFunc(target, heal);
                 }
             }

@@ -13,6 +13,6 @@ public class Node_HasItem : IFNode
 
     protected override bool Evaluate(Npc npc, BehaviorTree.TreeData treeData)
     {
-        return Player.Items.Contains(item);
+        return PlayerManager.Items.Contains(item);
     }
 }

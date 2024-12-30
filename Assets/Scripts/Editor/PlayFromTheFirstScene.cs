@@ -9,8 +9,6 @@ public static class PlayFromTheFirstScene
 
     const string PlayFromFirstMenuStr = "Custom/Always Start From LoadScene &p";
 
-    public static int currentScene;
-
     static bool PlayFromFirstScene
     {
         get => EditorPrefs.HasKey(PlayFromFirstMenuStr) && EditorPrefs.GetBool(PlayFromFirstMenuStr);
@@ -50,7 +48,6 @@ public static class PlayFromTheFirstScene
         foreach (GameObject go in Object.FindObjectsOfType<GameObject>())
             go.SetActive(false);
 
-        currentScene = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(0);
     }
 

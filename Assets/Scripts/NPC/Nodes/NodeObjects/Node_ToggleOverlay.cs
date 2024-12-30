@@ -16,6 +16,6 @@ public class Node_ToggleOverlay : ActionNode
     protected override IEnumerator Execute(Npc npc, BehaviorTree.TreeData treeData)
     {
         npc.StartCoroutine(CameraController.ShakeCamera(1, shakePower, false));
-        yield return GameUI.ToggleLoadingScreen(on, controlVol:controlVol, instant:instant);
+        yield return GameUIManager.ToggleLoadingScreen(on, controlVol:controlVol, instant:instant);
     }
 }

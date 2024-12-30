@@ -129,11 +129,11 @@ namespace Battle
             {
                 data.exp -= levelData.expNeeded;
 
-                yield return GameUI.TypeOut($"{data.title} reached level {levelData.level}!");
-                yield return GameUI.TypeOut($"Max life is now {levelData.life}! ({levelData.life - data.maxLife:+#;-#;+0})");
-                yield return GameUI.TypeOut($"Max magic is now {levelData.magic}! ({levelData.magic - data.maxMagic:+#;-#;+0})");
-                yield return GameUI.TypeOut($"Attack is now {levelData.attack}! ({levelData.attack - data.attack:+#;-#;+0})");
-                yield return GameUI.TypeOut($"Defense is now {levelData.defense}! ({levelData.defense - data.defense:+#;-#;+0})");
+                yield return GameUIManager.TypeOut($"{data.title} reached level {levelData.level}!");
+                yield return GameUIManager.TypeOut($"Max life is now {levelData.life}! ({levelData.life - data.maxLife:+#;-#;+0})");
+                yield return GameUIManager.TypeOut($"Max magic is now {levelData.magic}! ({levelData.magic - data.maxMagic:+#;-#;+0})");
+                yield return GameUIManager.TypeOut($"Attack is now {levelData.attack}! ({levelData.attack - data.attack:+#;-#;+0})");
+                yield return GameUIManager.TypeOut($"Defense is now {levelData.defense}! ({levelData.defense - data.defense:+#;-#;+0})");
 
                 data.level = levelData.level;
                 data.maxLife = levelData.life;

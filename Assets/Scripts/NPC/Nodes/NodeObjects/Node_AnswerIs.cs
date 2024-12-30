@@ -15,7 +15,7 @@ public class Node_AnswerIs : IFNode
     {
         foreach (string answer in answers)
         {
-            if (GameUI.Answer == GameManager.GetCleanedText(answer))
+            if (GameUIManager.Answer == GameUIManager.GetCleanedText(answer))
                 return true;
         }
 

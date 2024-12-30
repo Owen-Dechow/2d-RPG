@@ -30,7 +30,7 @@ namespace Controllers
             }
 
             // Place in UI
-            GameUI.RenderAtPosition(gameObject, position);
+            GameUIManager.RenderAtPosition(gameObject, position);
 
             // Create text boxes
             textboxes = new();
@@ -96,14 +96,14 @@ namespace Controllers
                     }
                     else if (action == MyInput.Action.Select)
                     {
-                        GameUI.SetAnswer(selected, options[selected]);
+                        GameUIManager.SetAnswer(selected, options[selected]);
                         break;
                     }
                     else if (action == MyInput.Action.Cancel)
                     {
                         if (allowCancel)
                         {
-                            GameUI.SetAnswer(-1, "{{CANCEL}}");
+                            GameUIManager.SetAnswer(-1, "{{CANCEL}}");
                             break;
                         }
                     }

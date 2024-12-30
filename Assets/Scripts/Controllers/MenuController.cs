@@ -19,7 +19,7 @@ namespace Controllers
 
                 List<string> options = new();
 
-                foreach (BattleUnit unit in Player.GetBattleUnits())
+                foreach (BattleUnit unit in PlayerManager.GetBattleUnits())
                 {
                     string tag;
 
@@ -27,7 +27,7 @@ namespace Controllers
                     {
                         tag = $"{unit.data.title}\\Items\\";
                         options.AddRange(unit.data.itemOptionsForUnit.Select(item =>
-                            tag + GameManager.GetCleanedText(item.ToString())));
+                            tag + GameUIManager.GetCleanedText(item.ToString())));
                     }
                     else
                     {
@@ -38,7 +38,7 @@ namespace Controllers
                     {
                         tag = $@"{unit.data.title}\Magic\";
                         options.AddRange(unit.data.magicOptionsForUnit.Select(magic =>
-                            tag + GameManager.GetCleanedText(magic.ToString())));
+                            tag + GameUIManager.GetCleanedText(magic.ToString())));
                     }
                     else
                     {
@@ -46,7 +46,7 @@ namespace Controllers
                     }
                 }
 
-                yield return GameUI.FullMenu(options.ToArray(), true);
+                yield return GameUIManager.FullMenu(options.ToArray(), true);
 
                 yield return new WaitUntil(() => MyInput.Select == 0);
             }

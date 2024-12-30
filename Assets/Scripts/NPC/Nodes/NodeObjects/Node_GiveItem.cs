@@ -13,8 +13,8 @@ public class Node_GiveItem : ActionNode
 
     protected override IEnumerator Execute(Npc npc, BehaviorTree.TreeData treeData)
     {
-        if (Player.HasRoomInInventory())
-            Player.AddItemToInventory(item);
+        if (PlayerManager.HasRoomInInventory())
+            PlayerManager.AddItemToInventory(item);
 
         yield return null;
     }

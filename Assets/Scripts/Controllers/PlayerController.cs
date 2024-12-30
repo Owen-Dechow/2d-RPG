@@ -35,12 +35,12 @@ namespace Controllers
             inactiveSeconds = 99;
 
 
-            if (GameManager.PlayerPlacementSettings.Relocation == PlacementSettings.RelocateType.Position)
+            if (PlayerManager.PlacementSettings.Relocation == PlacementSettings.RelocateType.Position)
             {
-                transform.position = GameManager.PlayerPlacementSettings.Position;
-                animPlus.SetDirection(GameManager.PlayerPlacementSettings.Direction);
+                transform.position = PlayerManager.PlacementSettings.Position;
+                animPlus.SetDirection(PlayerManager.PlacementSettings.Direction);
             }
-            else if (GameManager.PlayerPlacementSettings.Relocation == PlacementSettings.RelocateType.Door)
+            else if (PlayerManager.PlacementSettings.Relocation == PlacementSettings.RelocateType.Door)
             {
                 MoveToDoor(DoorController.doorController.transform.position, DoorController.doorController.doorOpening);
             }

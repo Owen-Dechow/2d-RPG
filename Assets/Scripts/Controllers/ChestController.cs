@@ -32,7 +32,7 @@ namespace Controllers
             spriteRenderer = GetComponent<SpriteRenderer>();
 
             inPlayerInteractionZone = false;
-            open = GameManager.postInteractionProtectionIDs.Contains(uniqueId);
+            open = GameManager.PostInteractionProtectionIDs.Contains(uniqueId);
             if (open)
                 spriteRenderer.sprite = openSprite;
             else
@@ -64,22 +64,22 @@ namespace Controllers
 
                 if (contentType == ContentType.Gold)
                 {
-                    Player.Gold += goldOption;
-                    yield return GameUI.TypeOut($"{Player.Name} found {goldOption} gold.");
+                    PlayerManager.Gold += goldOption;
+                    yield return GameUIManager.TypeOut($"{PlayerManager.Name} found {goldOption} gold.");
                     SetOpen();
                 }
                 else if (contentType == ContentType.Item)
                 {
-                    if (Player.HasRoomInInventory())
+                    if (PlayerManager.HasRoomInInventory())
                     {
-                        Player.AddItemToInventory(itemOption);
-                        yield return GameUI.TypeOut($"{Player.Name} found {itemOption}.");
+                        PlayerManager.AddItemToInventory(itemOption);
+                        yield return GameUIManager.TypeOut($"{PlayerManager.Name} found {itemOption}.");
                         SetOpen();
                     }
                     else
                     {
-                        yield return GameUI.TypeOut(
-                            $"{Player.Name} found {itemOption}, but didn't have space in inventory.");
+                        yield return GameUIManager.TypeOut(
+                            $"{PlayerManager.Name} found {itemOption}, but didn't have space in inventory.");
                         spriteRenderer.sprite = closedSprite;
                     }
                 }
@@ -88,7 +88,7 @@ namespace Controllers
 
         void SetOpen()
         {
-            GameManager.postInteractionProtectionIDs.Add(uniqueId);
+            GameManager.PostInteractionProtectionIDs.Add(uniqueId);
             open = true;
         }
 

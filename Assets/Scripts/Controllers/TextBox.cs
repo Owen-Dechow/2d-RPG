@@ -12,7 +12,7 @@ namespace Controllers
 
         public IEnumerator TypeOut(string text, bool instant, Vector2 position)
         {
-            GameUI.RenderAtPosition(gameObject, position);
+            GameUIManager.RenderAtPosition(gameObject, position);
 
             // Set Size
             GameObject model = Instantiate(gameObject);

@@ -12,13 +12,13 @@ public class Node_FirstTimeDownThisBranch : IFNode
 
     protected override bool Evaluate(Npc npc, BehaviorTree.TreeData treeData)
     {
-        if (GameManager.postInteractionProtectionIDs.Contains(uniqueId))
+        if (GameManager.PostInteractionProtectionIDs.Contains(uniqueId))
         {
             return false;
         }
         else
         {
-            GameManager.postInteractionProtectionIDs.Add(uniqueId);
+            GameManager.PostInteractionProtectionIDs.Add(uniqueId);
             return true;
         }
     }

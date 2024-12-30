@@ -21,6 +21,6 @@ public class Node_AskComplexQuestion : ActionNode
             else cols = 3;
         }
 
-        yield return GameUI.ChoiceMenu(prompt, choices, cols, allowNoAnswer);
+        yield return GameUIManager.ChoiceMenu(prompt, choices, cols, allowNoAnswer);
     }
 }

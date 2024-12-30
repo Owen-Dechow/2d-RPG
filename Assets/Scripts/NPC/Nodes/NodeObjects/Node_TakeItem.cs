@@ -13,9 +13,9 @@ public class Node_TakeItem : ActionNode
 
     protected override IEnumerator Execute(Npc npc, BehaviorTree.TreeData treeData)
     {
-        if (Player.Items.Contains(item))
+        if (PlayerManager.Items.Contains(item))
         {
-            Player.Items.Remove(item);
+            PlayerManager.Items.Remove(item);
         }
         yield return null;
     }

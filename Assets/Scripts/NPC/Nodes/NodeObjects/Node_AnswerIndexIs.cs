@@ -15,7 +15,7 @@ public class Node_AnswerIndexIs : IFNode
     {
         foreach (int i in answerIndexes)
         {
-            if (GameUI.AnswerIndex == i)
+            if (GameUIManager.AnswerIndex == i)
                 return true;
         }
 
