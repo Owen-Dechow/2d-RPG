@@ -340,19 +340,13 @@ MonoBehaviour:
   data:
     title: Deceptive Flower
     sex: 1
-    life: 2
-    maxLife: 2
-    magic: 0
-    maxMagic: 0
-    defense: 1
-    attack: 1
-    magicOptionsForUnit: 
-    itemOptionsForUnit: 
-    exp: 0
-    level: 0
-    gold: 0
-    expAward: 1
-    goldAward: 0
+    life:
+      value: 3
+    maxBadges: 3
+    badgesEquipped: 010101
+    magic:
+      value: 0
+    gold: 2
     enemyAI:
       attack: 67
       defend: 33
@@ -361,7 +355,18 @@ MonoBehaviour:
       run: 0
       dataStatus: 1
       lastCheck: 1
-    escapePercentageAllowed: 100
+    escapePercentageAllowed:
+      value: 100
+    spriteId: 0
+    magicOptionsForUnitIds: 
+    itemsIds: 
+    badgesOwnedIds: 
   onDefense: 0
   stationGo: {fileID: 0}
   spriteRenderer: {fileID: 0}
+  magicOptionsForUnit: []
+  itemOptionsForUnit: []
+  badgesForUnit:
+  - {fileID: 11400000, guid: 563b2501b8b0591318f268d1ae16331a, type: 2}
+  - {fileID: 11400000, guid: ce8164ce7cde647cb811a479cbbd917d, type: 2}
+  - {fileID: 11400000, guid: 43400a3e4558de267bfad8019784d116, type: 2}

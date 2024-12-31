@@ -299,15 +299,9 @@ namespace Battle
                     PlayerController.playerController.SetInactive();
                     yield return GameUIManager.TypeOut($"{PlayerTitle} won the battle!");
 
-                    int exp = enemies.Sum(x => x.data.expAward);
-                    yield return GameUIManager.TypeOut($"{PlayerTitle} gained {exp} experience.");
-
-                    int gold = enemies.Sum(x => x.data.goldAward);
+                    int gold = enemies.Sum(x => x.data.gold);
                     yield return GameUIManager.TypeOut($"{PlayerTitle} gained {gold} gold.");
                     PlayerManager.Gold += gold;
-
-                    players[0].data.exp += exp;
-                    yield return players[0].LevelUpUnit();
 
                     foreach (BattleUnit player in players)
                     {
@@ -419,10 +413,11 @@ namespace Battle
                 }
             }
 
+            Max100 maxLife = unit.GetMaxHealth();
             unit.data.life += lifeChange;
-            if (unit.data.life >= unit.data.maxLife)
+            if (unit.data.life >= maxLife)
             {
-                unit.data.life = unit.data.maxLife;
+                unit.data.life = maxLife;
                 yield return GameUIManager.TypeOut($"{unit.data.title}'s life is maxed out.");
             }
 
@@ -455,9 +450,10 @@ namespace Battle
             }
 
             unit.data.life += lifeChange;
-            if (unit.data.life >= unit.data.maxLife)
+            Max100 maxLife = unit.GetMaxHealth();
+            if (unit.data.life >= maxLife)
             {
-                unit.data.life = unit.data.maxLife;
+                unit.data.life = maxLife;
                 yield return GameUIManager.TypeOut($"{unit.data.title}'s life is maxed out.");
             }
 
@@ -810,10 +806,10 @@ namespace Battle
             yield return lifeChangeFunc(defending, -attackPower);
         }
 
-        int GetAttackPower(BattleUnit attacking, BattleUnit defending)
+        Max100 GetAttackPower(BattleUnit attacking, BattleUnit defending)
         {
-            int preDefenseAttack = attacking.GetAttack();
-            int attack = defending.GetDefenseChange(preDefenseAttack);
+            Max100 preDefenseAttack = attacking.GetAttack();
+            Max100 attack = defending.GetDefenseChange(preDefenseAttack);
             return attack;
         }
 

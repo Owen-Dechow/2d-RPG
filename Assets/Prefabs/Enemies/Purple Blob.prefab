@@ -256,19 +256,13 @@ MonoBehaviour:
   data:
     title: Purple Blob
     sex: 0
-    life: 3
-    maxLife: 3
-    magic: 0
-    maxMagic: 0
-    defense: 1
-    attack: 1
-    magicOptionsForUnit: 
-    itemOptionsForUnit: 
-    exp: 0
-    level: 0
-    gold: 0
-    expAward: 3
-    goldAward: 0
+    life:
+      value: 3
+    maxBadges: 3
+    badgesEquipped: 010101
+    magic:
+      value: 0
+    gold: 4
     enemyAI:
       attack: 43
       defend: 41
@@ -277,10 +271,18 @@ MonoBehaviour:
       run: 16
       dataStatus: 1
       lastCheck: 1
-    escapePercentageAllowed: 80
+    escapePercentageAllowed:
+      value: 60
+    spriteId: 0
+    magicOptionsForUnitIds: 
+    itemsIds: 
+    badgesOwnedIds: 
   onDefense: 0
-  stationGO: {fileID: 0}
+  stationGo: {fileID: 0}
   spriteRenderer: {fileID: 0}
+  magicOptionsForUnit: []
+  itemOptionsForUnit: []
+  badgesForUnit: []
 --- !u!1 &7458450869549329399
 GameObject:
   m_ObjectHideFlags: 0

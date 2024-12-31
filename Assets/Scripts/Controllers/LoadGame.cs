@@ -66,7 +66,6 @@ namespace Controllers
                 GameManager.LoadLevel(LevelScene.ShipTop, Vector2.zero, AnimPlus.Direction.Down);
 
                 yield return GameUIManager.ToggleLoadingScreen(false);
-                PlayerManager.UpdateToLevel1();
                 SaveSystem.SaveGame();
                 Destroy(gameObject);
             }

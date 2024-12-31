@@ -256,19 +256,13 @@ MonoBehaviour:
   data:
     title: Copper Orb
     sex: 1
-    life: 3
-    maxLife: 3
-    magic: 10
-    maxMagic: 0
-    defense: 1
-    attack: 1
-    magicOptionsForUnit: 00000000
-    itemOptionsForUnit: 
-    exp: 0
-    level: 0
-    gold: 0
-    expAward: 3
-    goldAward: 0
+    life:
+      value: 4
+    maxBadges: 3
+    badgesEquipped: 010101
+    magic:
+      value: 10
+    gold: 5
     enemyAI:
       attack: 80
       defend: 0
@@ -277,10 +271,22 @@ MonoBehaviour:
       run: 0
       dataStatus: 1
       lastCheck: 1
-    escapePercentageAllowed: 80
+    escapePercentageAllowed:
+      value: 80
+    spriteId: 0
+    magicOptionsForUnitIds: 
+    itemsIds: 
+    badgesOwnedIds: 
   onDefense: 0
   stationGo: {fileID: 0}
   spriteRenderer: {fileID: 0}
+  magicOptionsForUnit:
+  - {fileID: 11400000, guid: 71755f47b42c8c7479db0da8f50e04f3, type: 2}
+  itemOptionsForUnit: []
+  badgesForUnit:
+  - {fileID: 11400000, guid: 563b2501b8b0591318f268d1ae16331a, type: 2}
+  - {fileID: 11400000, guid: ce8164ce7cde647cb811a479cbbd917d, type: 2}
+  - {fileID: 11400000, guid: 43400a3e4558de267bfad8019784d116, type: 2}
 --- !u!1 &8556412144545650230
 GameObject:
   m_ObjectHideFlags: 0

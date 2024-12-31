@@ -21,8 +21,8 @@ namespace Data
         [SerializeField] bool canUseOutsideOfBattle;
         public bool CanUseOutsideOfBattle => canUseOutsideOfBattle;
 
-        [SerializeField] int powerMin;
-        [SerializeField] int powerMax;
-        public int Power => Random.Range(powerMin, powerMax + 1);
+        [SerializeField] Max100 powerMin;
+        [SerializeField] Max100 powerMax;
+        public Max100 Power => (Max100)Random.Range(powerMin, powerMax + 1);
     }
 }

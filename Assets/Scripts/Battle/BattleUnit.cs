@@ -19,27 +19,20 @@ namespace Battle
             [Header("Appearance Options")] public string title;
             public UnitSex sex;
 
-            [Header("Stat Options")] public int life;
-            public int maxLife;
-            public int magic;
-            public int maxMagic;
-            public int defense;
-            public int attack;
-
-
-            [Header("Player Only")] public int exp;
-            public int level;
+            [Header("Stat Options")] public Max100 life;
+            public int maxBadges;
+            public List<bool> badgesEquipped;
+            public Max100 magic;
             public int gold;
 
-            [Header("Enemy Only")] public int expAward;
-            public int goldAward;
-            public EnemyAI enemyAI;
+            [Header("Enemy Only")] public EnemyAI enemyAI;
 
-            [Header("Static")] public byte escapePercentageAllowed;
+            [Header("Static")] public Max100 escapePercentageAllowed;
 
             [Header("Save Only Data")] public short spriteId;
             public short[] magicOptionsForUnitIds;
             public short[] itemsIds;
+            public short[] badgesOwnedIds;
 
             public readonly bool Alive => life > 0;
 
@@ -48,6 +41,7 @@ namespace Battle
                 spriteId = UnserializableDataIdMap.GetSpriteID(unit.sprite);
                 magicOptionsForUnitIds = unit.magicOptionsForUnit.Select(UnserializableDataIdMap.GetMagicID).ToArray();
                 itemsIds = unit.itemOptionsForUnit.Select(UnserializableDataIdMap.GetItemID).ToArray();
+                badgesOwnedIds = unit.badgesForUnit.Select(UnserializableDataIdMap.GetBadgeID).ToArray();
             }
 
             public void SyncUnit(BattleUnit unit)
@@ -55,6 +49,7 @@ namespace Battle
                 unit.sprite = UnserializableDataIdMap.GetSprite(spriteId);
                 unit.magicOptionsForUnit = magicOptionsForUnitIds.Select(UnserializableDataIdMap.GetMagic).ToList();
                 unit.itemOptionsForUnit = itemsIds.Select(UnserializableDataIdMap.GetItem).ToList();
+                unit.badgesForUnit = badgesOwnedIds.Select(UnserializableDataIdMap.GetBadge).ToList();
             }
         }
 
@@ -76,9 +71,31 @@ namespace Battle
 
         [HideInInspector] public SpriteRenderer spriteRenderer;
 
-        [Header("Items/Magic")] public const int MaxItems = 30;
-        public List<MagicScriptable> magicOptionsForUnit;
+        [Header("Items/Magic/Badges")] public List<MagicScriptable> magicOptionsForUnit;
         public List<ItemScriptable> itemOptionsForUnit;
+        public List<BadgesScriptable> badgesForUnit;
+
+        public Max100 GetMaxHealth() => (Max100)Mathf.Clamp(badgesForUnit
+            .Where((item, idx) => data.badgesEquipped[idx] && item.Type == BadgesScriptable.BadgeType.Health)
+            .Sum(item => item.Power), 1, 100);
+
+        private Max100 GetAttackTrait() =>
+            Mathf.Clamp(
+                badgesForUnit
+                    .Where((item, idx) => data.badgesEquipped[idx] && item.Type == BadgesScriptable.BadgeType.Attack)
+                    .Sum(item => item.Power), 1, 100);
+
+        private Max100 GetDefenseTrait() =>
+            Mathf.Clamp(
+                badgesForUnit
+                    .Where((item, idx) => data.badgesEquipped[idx] && item.Type == BadgesScriptable.BadgeType.Defense)
+                    .Sum(item => item.Power), 1, 100);
+
+        public Max100 GetMaxMagic() =>
+            Mathf.Clamp(
+                badgesForUnit
+                    .Where((item, idx) => data.badgesEquipped[idx] && item.Type == BadgesScriptable.BadgeType.Magic)
+                    .Sum(item => item.Power), 0, 100);
 
         public enum UnitSex
         {
@@ -86,12 +103,8 @@ namespace Battle
             Female,
         }
 
-        #region AI_VALIDATOR
-
-#if UNITY_EDITOR
         private void OnValidate()
         {
-            data.escapePercentageAllowed = (byte)Mathf.Clamp(data.escapePercentageAllowed, 0, 100);
             if (data.enemyAI != null)
             {
                 data.enemyAI.ClampData();
@@ -109,9 +122,6 @@ namespace Battle
                 data.enemyAI.lastCheck = data.enemyAI.dataStatus;
             }
         }
-#endif
-
-        #endregion
 
         public BattleUnit CopyAtStationGo()
         {
@@ -125,53 +135,21 @@ namespace Battle
             return newBattleUnit;
         }
 
-        public int GetAttack()
+        public Max100 GetAttack()
         {
-            int maxAttack = data.attack;
-            int minAttack = Mathf.CeilToInt(maxAttack * 0.75f);
-            int attack = Random.Range(minAttack, maxAttack + 1);
-            return Mathf.Max(attack, 1);
+            Max100 maxAttack = GetAttackTrait();
+            return maxAttack * Random.Range(0.75f, 1);
         }
 
-        public int GetDefenseChange(int power)
+        public Max100 GetDefenseChange(Max100 attack)
         {
-            int maxTake = Mathf.CeilToInt(data.defense * 1);
-            int minTake = Mathf.FloorToInt(maxTake * 0.5f);
-            int newAttack = power - Random.Range(minTake, maxTake + 1);
+            Max100 maxTake = GetDefenseTrait();
+            Max100 newAttack = maxTake * Random.Range(0.75f, 0);
 
             if (onDefense)
-            {
-                newAttack = Mathf.CeilToInt(newAttack * 0.75f);
-            }
+                newAttack *= 0.5f;
 
-            return Mathf.Max(newAttack, 1);
-        }
-
-        public IEnumerator LevelUpUnit()
-        {
-            LevelUp.LevelData levelData = LevelUp.GetDataForLevelStatic(data.level + 1);
-            if (data.exp >= levelData.expNeeded)
-            {
-                data.exp -= levelData.expNeeded;
-
-                yield return GameUIManager.TypeOut($"{data.title} reached level {levelData.level}!");
-                yield return GameUIManager.TypeOut(
-                    $"Max life is now {levelData.life}! ({levelData.life - data.maxLife:+#;-#;+0})");
-                yield return GameUIManager.TypeOut(
-                    $"Max magic is now {levelData.magic}! ({levelData.magic - data.maxMagic:+#;-#;+0})");
-                yield return GameUIManager.TypeOut(
-                    $"Attack is now {levelData.attack}! ({levelData.attack - data.attack:+#;-#;+0})");
-                yield return GameUIManager.TypeOut(
-                    $"Defense is now {levelData.defense}! ({levelData.defense - data.defense:+#;-#;+0})");
-
-                data.level = levelData.level;
-                data.maxLife = levelData.life;
-                data.maxMagic = levelData.magic;
-                data.attack = levelData.attack;
-                data.defense = levelData.defense;
-
-                yield return LevelUpUnit();
-            }
+            return newAttack;
         }
 
         public BattleUnitData GetSyncedData()

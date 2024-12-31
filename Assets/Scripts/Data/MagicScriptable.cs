@@ -26,9 +26,9 @@ namespace Data
         [SerializeField] private int price;
         public int Price => price;
 
-        [SerializeField] private int powerMin;
-        [SerializeField] private int powerMax;
-        public int Power => Random.Range(powerMin, powerMax + 1);
+        [SerializeField] private byte powerMin;
+        [SerializeField] private byte powerMax;
+        public byte Power => (byte)Random.Range(powerMin, powerMax + 1);
 
         [SerializeField] private bool effectsAll;
         public bool EffectsAll => effectsAll;

@@ -25,10 +25,10 @@ namespace Battle
             panelName.text = Unit.data.title;
 
             hpSlider.value = GetLifePercent();
-            hpText.text = $"{GetClampedLifeReading()}/{Unit.data.maxLife}";
+            hpText.text = $"{GetClampedLifeReading()}/{Unit.GetMaxHealth()}";
 
             magicSlider.value = GetMagicPercent();
-            psiText.text = $"{GetClampedMagicReading()}/{Unit.data.maxMagic}";
+            psiText.text = $"{GetClampedMagicReading()}/{Unit.GetMaxMagic()}";
 
             background.color = Unit.data.life > 0 ? Color.black : deathColor;
 
@@ -39,10 +39,10 @@ namespace Battle
         public void DisplayUnitGradual(float step)
         {
             hpSlider.value += (GetLifePercent() - hpSlider.value) * step;
-            hpText.text = $"{GetClampedLifeReading()}/{Unit.data.maxLife}";
+            hpText.text = $"{GetClampedLifeReading()}/{Unit.GetMaxHealth()}";
 
             magicSlider.value += (GetMagicPercent() - magicSlider.value) * step;
-            psiText.text = $"{GetClampedMagicReading()}/{Unit.data.maxMagic}";
+            psiText.text = $"{GetClampedMagicReading()}/{Unit.GetMaxMagic()}";
 
             Color targetColor = Unit.data.life > 0 ? Color.black : deathColor;
             float r = background.color.r + ((targetColor.r - background.color.r) * step);
@@ -62,10 +62,10 @@ namespace Battle
             }
         }
 
-        private float GetClampedLifeReading() => Mathf.Clamp(Unit.data.life, 0, Unit.data.maxLife);
-        private float GetLifePercent() => Mathf.Clamp(GetClampedLifeReading() / Unit.data.maxLife, 0, 1);
+        private float GetClampedLifeReading() => Mathf.Clamp(Unit.data.life, 0, Unit.GetMaxHealth());
+        private float GetLifePercent() => Mathf.Clamp(GetClampedLifeReading() / Unit.GetMaxHealth(), 0, 1);
 
-        private float GetClampedMagicReading() => Mathf.Clamp(Unit.data.magic, 0, Unit.data.maxMagic);
-        private float GetMagicPercent() => Mathf.Clamp(GetClampedMagicReading() / Unit.data.maxMagic, 0, 1);
+        private float GetClampedMagicReading() => Mathf.Clamp(Unit.data.magic, 0, Unit.GetMaxMagic());
+        private float GetMagicPercent() => Mathf.Clamp(GetClampedMagicReading() / Unit.GetMaxMagic(), 0, 1);
     }
 }

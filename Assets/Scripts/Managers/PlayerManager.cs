@@ -41,19 +41,6 @@ namespace Managers
             comradeBattleUnits = new List<BattleUnit>();
         }
 
-        public static void UpdateToLevel1()
-        {
-            LevelUp.LevelData levelData = LevelUp.GetDataForLevelStatic(1);
-            _i.playerBattleUnit.data.level = levelData.level;
-            _i.playerBattleUnit.data.maxLife = levelData.life;
-            _i.playerBattleUnit.data.maxMagic = levelData.magic;
-            _i.playerBattleUnit.data.attack = levelData.attack;
-            _i.playerBattleUnit.data.defense = levelData.defense;
-
-            _i.playerBattleUnit.data.life = levelData.life;
-            _i.playerBattleUnit.data.magic = levelData.magic;
-        }
-
         public static void AddBattleUnit(BattleUnit.BattleUnitData battleUnit)
         {
             GameObject go = new(battleUnit.title)

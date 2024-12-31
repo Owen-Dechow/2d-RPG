@@ -257,31 +257,33 @@ MonoBehaviour:
   data:
     title: Sea Goblin
     sex: 0
-    life: 5
-    maxLife: 5
-    magic: 0
-    maxMagic: 0
-    defense: 1
-    attack: 1
-    magicOptionsForUnit: 
-    itemOptionsForUnit: 
-    exp: 0
-    level: 0
-    gold: 0
-    expAward: 3
-    goldAward: 0
+    life:
+      value: 6
+    maxBadges: 3
+    badgesEquipped: 010101
+    magic:
+      value: 0
+    gold: 7
     enemyAI:
-      attack: 51
-      defend: 49
+      attack: 60
+      defend: 40
       item: 0
       magic: 0
       run: 0
       dataStatus: 1
       lastCheck: 1
-    escapePercentageAllowed: 50
+    escapePercentageAllowed:
+      value: 40
+    spriteId: 0
+    magicOptionsForUnitIds: 
+    itemsIds: 
+    badgesOwnedIds: 
   onDefense: 0
-  stationGO: {fileID: 0}
+  stationGo: {fileID: 0}
   spriteRenderer: {fileID: 0}
+  magicOptionsForUnit: []
+  itemOptionsForUnit: []
+  badgesForUnit: []
 --- !u!1 &6791893535787412339
 GameObject:
   m_ObjectHideFlags: 0
