@@ -40,10 +40,20 @@ namespace Battle
         private BattleFinish battleFinish;
 
         private string PlayerTitle =>
-            $"{PlayerManager.Name}{(players.Length == 1 ? "" : " and his companion" + (players.Length == 2 ? "" : "s"))}";
+            PlayerManager.SyncTextToSex(
+                PlayerManager.Name +
+                (players.Length == 1 ? "" : " and his companion" + (players.Length == 2 ? "" : "s")));
 
         private string EnemyTitle =>
-            $"the {enemies[0].data.title}{(enemies.Length == 1 ? "" : enemies.Length == 2 ? " and his brother" : "'s mob")}";
+            enemies[0].SyncSex(
+                $@"{enemies[0].data.title}{
+                    enemies.Length switch
+                    {
+                        1 => "",
+                        2 => " and his sibling",
+                        _ => "and his mob"
+                    }
+                }");
 
         private enum BattleState
         {
@@ -182,18 +192,12 @@ namespace Battle
 
                 yield return EnterBattleAnimation();
 
-                // Set enemy group name
-                string enemyGroupName;
-                if (enemies.Length == 1) enemyGroupName = enemies[0].data.title;
-                else if (enemies.Length == 2) enemyGroupName = $"{enemies[0].data.title} and his brother";
-
-                // Select a or an
-                else enemyGroupName = $"{enemies[0].data.title} and his cohorts";
-                if ("aeiouAEIOU".Contains(enemyGroupName[0])) enemyGroupName = "an " + enemyGroupName;
-                else enemyGroupName = "a " + enemyGroupName;
-
+                string aOrAn = "AEIOUAEIOU".Contains(EnemyTitle[0])
+                    ? "an"
+                    : "a";
+                
                 // Display Message
-                yield return GameUIManager.TypeOut($"{PlayerManager.Name} engages {enemyGroupName}.");
+                yield return GameUIManager.TypeOut($"{PlayerManager.Name} engages {aOrAn} {EnemyTitle}.");
 
                 // Pick randomly who goes first
                 battleState = Random.Range(0, 1) == 0
@@ -363,12 +367,12 @@ namespace Battle
                 {
                     case MyInput.Action.Left:
                     case MyInput.Action.Up:
-                        selected = SkipToNextLivingUnit(units, selected, 1);
+                        selected = SkipToNextLivingUnit(units, selected, -1);
                         break;
 
                     case MyInput.Action.Right:
                     case MyInput.Action.Down:
-                        selected = SkipToNextLivingUnit(units, selected, -1);
+                        selected = SkipToNextLivingUnit(units, selected, 1);
                         break;
 
                     case MyInput.Action.Select:
@@ -589,8 +593,8 @@ namespace Battle
                             yield break;
                         }
                     }
-                    
-                    MagicScriptable magic  = unit.magicOptionsForUnit[GameUIManager.AnswerIndex];
+
+                    MagicScriptable magic = unit.magicOptionsForUnit[GameUIManager.AnswerIndex];
 
                     // Choose target
                     BattleUnit[] targets;
@@ -923,17 +927,11 @@ namespace Battle
 
         string GetActionStatement(BattleUnit unit, string[] statements, string opposition)
         {
-            string reflexive = unit.data.sex switch
-            {
-                BattleUnit.UnitSex.Male => "himself",
-                BattleUnit.UnitSex.Female => "herself",
-                _ => throw new System.NotImplementedException(),
-            };
-
             string choice = statements[Random.Range(0, statements.Length)];
-            choice = choice.Replace("himself", reflexive).Replace("Player", unit.data.title)
+            choice = choice.Replace("Player", unit.data.title)
                 .Replace("Enemy", opposition);
-            return choice;
+
+            return unit.SyncSex(choice);
         }
 
         bool CheckLoss(BattleUnit[] side)

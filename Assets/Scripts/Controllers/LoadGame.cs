@@ -79,7 +79,7 @@ namespace Controllers
             int gamesCount = SaveSystem.GetSaveProfiles().Count;
             confirmDeletePanel.SetActive(false);
             buttonsContainer.gameObject.SetActive(true);
-            ToggleNewGameBTN(gamesCount);
+            ToggleNewGameBtn(gamesCount);
         }
 
         public void No_ConfirmDelete()
@@ -123,10 +123,10 @@ namespace Controllers
                 buttonLoad.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = game.Value;
             }
 
-            ToggleNewGameBTN(games.Count);
+            ToggleNewGameBtn(games.Count);
         }
 
-        void ToggleNewGameBTN(int numberOfGames)
+        void ToggleNewGameBtn(int numberOfGames)
         {
             if (numberOfGames < maxNumberOfGameProfiles)
             {
@@ -143,9 +143,12 @@ namespace Controllers
         void LoadFromSavePoint(int key)
         {
             buttonsContainer.gameObject.SetActive(false);
-            IEnumerator startGame()
+            StartCoroutine(StartGame());
+            return;
+
+            IEnumerator StartGame()
             {
-                using (new CutScene.Window())
+                using (new CutScene.Window(true))
                 {
                     DontDestroyOnLoad(gameObject);
                     yield return GameUIManager.ToggleLoadingScreen(true);
@@ -157,7 +160,6 @@ namespace Controllers
                     Destroy(gameObject);
                 }
             }
-            StartCoroutine(startGame());
         }
     }
 }

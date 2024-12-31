@@ -75,7 +75,7 @@ namespace Battle
         public List<ItemScriptable> itemOptionsForUnit;
         public List<BadgesScriptable> badgesForUnit;
 
-        public Max100 GetMaxHealth() => (Max100)Mathf.Clamp(badgesForUnit
+        public Max100 GetMaxHealth() => Mathf.Clamp(badgesForUnit
             .Where((item, idx) => data.badgesEquipped[idx] && item.Type == BadgesScriptable.BadgeType.Health)
             .Sum(item => item.Power), 1, 100);
 
@@ -131,6 +131,10 @@ namespace Battle
             newBattleUnit.spriteRenderer = spriteRenderer;
             newBattleUnit.onDefense = onDefense;
             newBattleUnit.sprite = sprite;
+            newBattleUnit.badgesForUnit = badgesForUnit;
+            newBattleUnit.magicOptionsForUnit = magicOptionsForUnit;
+            newBattleUnit.itemOptionsForUnit = itemOptionsForUnit;
+            newBattleUnit.data.life = Mathf.Min(newBattleUnit.data.life, newBattleUnit.GetMaxHealth());
 
             return newBattleUnit;
         }
@@ -156,6 +160,18 @@ namespace Battle
         {
             data.SyncSelf(this);
             return data;
+        }
+
+        public string SyncSex(string str)
+        {
+            if (data.sex == UnitSex.Male)
+                return str;
+            
+            str = str.Replace("him", "her");
+            str = str.Replace("male", "female");
+            str = str.Replace("his", "her");
+            
+            return str;
         }
     }
 }

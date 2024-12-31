@@ -512,9 +512,9 @@ MonoBehaviour:
     title: Owen
     sex: 0
     life:
-      value: 15
+      value: 10
     maxBadges: 0
-    badgesEquipped: 
+    badgesEquipped: 010101
     magic:
       value: 0
     gold: 0
@@ -537,4 +537,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   magicOptionsForUnit: []
   itemOptionsForUnit: []
-  badgesForUnit: []
+  badgesForUnit:
+  - {fileID: 11400000, guid: 563b2501b8b0591318f268d1ae16331a, type: 2}
+  - {fileID: 11400000, guid: ce8164ce7cde647cb811a479cbbd917d, type: 2}
+  - {fileID: 11400000, guid: 43400a3e4558de267bfad8019784d116, type: 2}

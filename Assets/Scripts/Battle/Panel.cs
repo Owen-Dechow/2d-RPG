@@ -45,11 +45,12 @@ namespace Battle
             psiText.text = $"{GetClampedMagicReading()}/{Unit.GetMaxMagic()}";
 
             Color targetColor = Unit.data.life > 0 ? Color.black : deathColor;
-            float r = background.color.r + ((targetColor.r - background.color.r) * step);
-            float g = background.color.g + ((targetColor.g - background.color.g) * step);
-            float b = background.color.b + ((targetColor.b - background.color.b) * step);
-            float a = background.color.a + ((targetColor.a - background.color.a) * step);
-            background.color = new Color(r, g, b, a);
+            // float r = background.color.r + ((targetColor.r - background.color.r) * step);
+            // float g = background.color.g + ((targetColor.g - background.color.g) * step);
+            // float b = background.color.b + ((targetColor.b - background.color.b) * step);
+            // float a = background.color.a + ((targetColor.a - background.color.a) * step);
+            // background.color = new Color(r, g, b, a);
+            background.color = targetColor;
 
             if (Bump)
             {

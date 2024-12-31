@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9130d2e7a86c416f8666bb2a9a6493f9, type: 3}
   m_Name: Defense1
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   power:
-    value: 0
+    value: 1

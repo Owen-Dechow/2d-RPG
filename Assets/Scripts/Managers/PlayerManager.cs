@@ -103,5 +103,7 @@ namespace Managers
 
             return false;
         }
+
+        public static string SyncTextToSex(string str) => _i.playerBattleUnit.SyncSex(str);
     }
 }

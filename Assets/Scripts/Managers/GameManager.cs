@@ -20,7 +20,6 @@ namespace Managers
         [SerializeField] private bool saveAsJson;
         public static bool SaveAsJson => _i.saveAsJson;
 
-
         void Start()
         {
             DontDestroyOnLoad(this);
@@ -49,7 +48,8 @@ namespace Managers
 
         public static void LoadLevel(LevelScene scene, Vector2 playerSpanPoint, AnimPlus.Direction playerSpanDirection)
         {
-            PlayerManager.PlacementSettings = new PlayerController.PlacementSettings(playerSpanPoint, playerSpanDirection);
+            PlayerManager.PlacementSettings =
+                new PlayerController.PlacementSettings(playerSpanPoint, playerSpanDirection);
             SceneManager.LoadScene(scene.ToString());
             CutScene.CutScene.DisableAllSoftCutscenes();
         }
