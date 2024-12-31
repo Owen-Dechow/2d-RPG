@@ -15,3 +15,5 @@ MonoBehaviour:
   type: 0
   power:
     value: 1
+  sprite: {fileID: 492370779, guid: 198379a5fad43f4889d0dab17535f151, type: 3}
+  title: Badge of Fire

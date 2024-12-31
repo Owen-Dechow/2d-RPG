@@ -15,3 +15,5 @@ MonoBehaviour:
   type: 2
   power:
     value: 10
+  sprite: {fileID: 1265204825, guid: 198379a5fad43f4889d0dab17535f151, type: 3}
+  title: Elixir of Life

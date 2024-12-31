@@ -5,22 +5,32 @@ using Controllers;
 using Data;
 using Managers;
 using Managers.CutScene;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
+using Transform = UnityEngine.Transform;
 
 namespace Battle
 {
     public class BattleSystem : MonoBehaviour
     {
+        #region Fields/Properties
+
         [Header("UI Settings")] [SerializeField]
         private float playerSpread;
 
         [SerializeField] private float panelSpread;
         [SerializeField] private Transform playerBattleStation;
         [SerializeField] private Transform enemyBattleStation;
+        [SerializeField] private Transform playerBadges;
+        [SerializeField] private Transform enemyBadges;
+        [SerializeField] private Transform damageNumberCanvas;
+        [SerializeField] private TextMeshProUGUI damageText;
         [SerializeField] private GameObject panelPrefab;
         [SerializeField] private Canvas canvas;
         [SerializeField] private GameObject pointer;
         [SerializeField] private GameObject background;
+        [SerializeField] private GameObject badgePrefab;
 
         [Header("Action Messages")] [SerializeField]
         private string[] attackText;
@@ -39,6 +49,8 @@ namespace Battle
         private BattleState battleState;
         private BattleFinish battleFinish;
 
+        private Max100 attackPower;
+
         private string PlayerTitle =>
             PlayerManager.SyncTextToSex(
                 PlayerManager.Name +
@@ -55,6 +67,8 @@ namespace Battle
                     }
                 }");
 
+        #endregion
+
         private enum BattleState
         {
             PlayerTurn,
@@ -62,7 +76,7 @@ namespace Battle
             Exit,
         }
 
-        enum BattleFinish
+        private enum BattleFinish
         {
             PlayerWin,
             EnemyWin,
@@ -70,7 +84,7 @@ namespace Battle
             None,
         }
 
-        void Start()
+        private void Start()
         {
             // Instantiate player units
             playerPanels = new Panel[players.Length];
@@ -96,8 +110,7 @@ namespace Battle
 
 
                 // Player panel
-                float panelMove;
-                panelMove = (i * panelSpread) - (players.Length * panelSpread / 2);
+                var panelMove = (i * panelSpread) - (players.Length * panelSpread / 2);
                 panelMove += panelSpread / 2;
 
                 playerPanels[i] = Instantiate(panelPrefab, canvas.transform).GetComponent<Panel>();
@@ -109,26 +122,29 @@ namespace Battle
             Dictionary<string, int> enemyNumbers = new();
             for (int i = 0; i < enemies.Length; i++)
             {
-                enemies[i].stationGo = new($"EnemyBattleUnit_{i}", typeof(SpriteRenderer));
-                enemies[i].stationGo.transform.parent = enemyBattleStation;
+                enemies[i].stationGo = new GameObject($"EnemyBattleUnit_{i}", typeof(SpriteRenderer))
+                {
+                    transform =
+                    {
+                        parent = enemyBattleStation
+                    }
+                };
 
                 enemies[i].spriteRenderer = enemies[i].stationGo.GetComponent<SpriteRenderer>();
                 enemies[i].spriteRenderer.sprite = enemies[i].sprite;
                 enemies[i].spriteRenderer.sortingLayerName = "Battle";
 
-                float enemyMove;
-                enemyMove = (i * playerSpread) - (enemies.Length * playerSpread / 2);
+                var enemyMove = (i * playerSpread) - (enemies.Length * playerSpread / 2);
                 enemyMove += playerSpread / 2;
                 enemies[i].stationGo.transform.localPosition = Vector3.zero;
                 enemies[i].stationGo.transform.Translate(enemyMove, 0, 0);
 
                 enemies[i] = enemies[i].CopyAtStationGo();
-                if (enemyNumbers.ContainsKey(enemies[i].data.title))
+                if (!enemyNumbers.TryAdd(enemies[i].data.title, 1))
                 {
                     enemyNumbers[enemies[i].data.title]++;
                     enemies[i].data.title += " " + enemyNumbers[enemies[i].data.title];
                 }
-                else enemyNumbers[enemies[i].data.title] = 1;
             }
 
             // Set Battle Position
@@ -157,14 +173,14 @@ namespace Battle
             }
         }
 
-        IEnumerator EnterBattleAnimation()
+        private IEnumerator EnterBattleAnimation()
         {
             SpriteRenderer spriteRenderer = background.GetComponent<SpriteRenderer>();
             spriteRenderer.color = Color.clear;
 
             while (spriteRenderer.color.a < 0.9f)
             {
-                spriteRenderer.color = Color.Lerp(spriteRenderer.color, Color.black, Time.deltaTime);
+                spriteRenderer.color = Color.Lerp(spriteRenderer.color, Color.black, Time.deltaTime * 2);
                 yield return new WaitForEndOfFrame();
             }
 
@@ -184,7 +200,7 @@ namespace Battle
             }
         }
 
-        IEnumerator Battle()
+        private IEnumerator Battle()
         {
             using (new CutScene.Window())
             {
@@ -195,7 +211,7 @@ namespace Battle
                 string aOrAn = "AEIOUAEIOU".Contains(EnemyTitle[0])
                     ? "an"
                     : "a";
-                
+
                 // Display Message
                 yield return GameUIManager.TypeOut($"{PlayerManager.Name} engages {aOrAn} {EnemyTitle}.");
 
@@ -292,7 +308,7 @@ namespace Battle
             }
         }
 
-        IEnumerator EndBattle()
+        private IEnumerator EndBattle()
         {
             yield return new WaitForEndOfFrame();
 
@@ -330,7 +346,7 @@ namespace Battle
             }
         }
 
-        IEnumerator ChooseUnitPlayer(BattleUnit[] units)
+        private IEnumerator ChooseUnitPlayer(BattleUnit[] units)
         {
             // Clear Selected
             yield return new WaitForEndOfFrame();
@@ -393,7 +409,7 @@ namespace Battle
             }
         }
 
-        void ChooseUnitEnemy(BattleUnit[] units)
+        private void ChooseUnitEnemy(BattleUnit[] units)
         {
             BattleUnit target = null;
             while (target == null || !target.data.Alive)
@@ -404,19 +420,19 @@ namespace Battle
             selectedUnit = target;
         }
 
-        IEnumerator ChangeLifeOnEnemyUnit(BattleUnit unit, int lifeChange)
+        private static IEnumerator DamageBlink(BattleUnit unit)
         {
-            if (lifeChange < 0)
+            for (int i = 0; i < 2; i++)
             {
-                for (int i = 0; i < 2; i++)
-                {
-                    unit.spriteRenderer.color = Color.clear;
-                    yield return new WaitForSecondsRealtime(0.05f);
-                    unit.spriteRenderer.color = Color.white;
-                    yield return new WaitForSecondsRealtime(0.05f);
-                }
+                unit.spriteRenderer.color = Color.clear;
+                yield return new WaitForSecondsRealtime(0.05f);
+                unit.spriteRenderer.color = Color.white;
+                yield return new WaitForSecondsRealtime(0.05f);
             }
+        }
 
+        private static IEnumerator ChangeLifeOnEnemyUnit(BattleUnit unit, int lifeChange)
+        {
             Max100 maxLife = unit.GetMaxHealth();
             unit.data.life += lifeChange;
             if (unit.data.life >= maxLife)
@@ -440,19 +456,8 @@ namespace Battle
             }
         }
 
-        IEnumerator ChangeLifeOnPlayerUnit(BattleUnit unit, int lifeChange)
+        private static IEnumerator ChangeLifeOnPlayerUnit(BattleUnit unit, int lifeChange)
         {
-            if (lifeChange < 0)
-            {
-                for (int i = 0; i < 2; i++)
-                {
-                    unit.spriteRenderer.color = Color.clear;
-                    yield return new WaitForSecondsRealtime(0.05f);
-                    unit.spriteRenderer.color = Color.white;
-                    yield return new WaitForSecondsRealtime(0.05f);
-                }
-            }
-
             unit.data.life += lifeChange;
             Max100 maxLife = unit.GetMaxHealth();
             if (unit.data.life >= maxLife)
@@ -467,10 +472,10 @@ namespace Battle
             }
         }
 
-        IEnumerator PlayerUnitTurn(BattleUnit unit)
+        private IEnumerator PlayerUnitTurn(BattleUnit unit)
         {
             // Indicate which player is going
-            Panel playerPanel = playerPanels.Where(p => p.Unit == unit).First();
+            Panel playerPanel = playerPanels.First(p => p.Unit == unit);
             playerPanel.Bump = true;
             PositionPointer(unit);
 
@@ -641,7 +646,7 @@ namespace Battle
             playerPanel.Bump = false;
         }
 
-        IEnumerator EnemyUnitTurn(BattleUnit unit)
+        private IEnumerator EnemyUnitTurn(BattleUnit unit)
         {
             // Wait for end of frame
             yield return new WaitForEndOfFrame();
@@ -748,7 +753,7 @@ namespace Battle
             }
         }
 
-        BattleUnit.TurnOptions GetEnemyTurnChoice(BattleUnit enemy)
+        private static BattleUnit.TurnOptions GetEnemyTurnChoice(BattleUnit enemy)
         {
             EnemyAI ai = enemy.data.enemyAI;
             ai.CorrectData();
@@ -779,7 +784,7 @@ namespace Battle
             throw new System.Exception("AI did not find correct turn option.");
         }
 
-        IEnumerator Run(bool run)
+        private IEnumerator Run(bool run)
         {
             if (run)
             {
@@ -793,7 +798,7 @@ namespace Battle
             }
         }
 
-        bool GetCanRun(BattleUnit enemyUnit)
+        private static bool GetCanRun(BattleUnit enemyUnit)
         {
             bool run;
             if (enemyUnit.data.escapePercentageAllowed == 0) run = false;
@@ -801,23 +806,135 @@ namespace Battle
             return run;
         }
 
-        IEnumerator Attack(BattleUnit attacking, BattleUnit defending,
+        private IEnumerator Attack(BattleUnit attacking, BattleUnit defending,
             System.Func<BattleUnit, int, IEnumerator> lifeChangeFunc)
         {
-            int attackPower = GetAttackPower(attacking, defending);
             yield return GameUIManager.TypeOut(GetActionStatement(attacking, attackText, defending.data.title));
+            yield return AttackPower(attacking, defending);
             yield return GameUIManager.TypeOut($"{attackPower} damage to {defending.data.title}.");
             yield return lifeChangeFunc(defending, -attackPower);
         }
 
-        Max100 GetAttackPower(BattleUnit attacking, BattleUnit defending)
+        private IEnumerator AttackPower(BattleUnit attacking, BattleUnit defending)
         {
-            Max100 preDefenseAttack = attacking.GetAttack();
-            Max100 attack = defending.GetDefenseChange(preDefenseAttack);
-            return attack;
+            bool isPlayer = players.Contains(attacking);
+
+            BadgesScriptable[] attackingBadges = attacking.GetAttackBadges();
+            BadgesScriptable[] defendingBadges = defending.GetDefenseBadges();
+
+            List<BadgeStation> attackingBadgeStations = new();
+
+            for (int i = 0; i < attackingBadges.Length; i++)
+            {
+                BadgesScriptable badge = attackingBadges[i];
+                GameObject badgeStation = Instantiate(badgePrefab, isPlayer ? playerBadges : enemyBadges, false);
+                SpriteRenderer sr = badgeStation.GetComponent<SpriteRenderer>();
+                sr.sprite = badge.Sprite;
+                badgeStation.transform.Translate(Vector3.right * (isPlayer ? playerSpread * i : -playerSpread * i));
+
+                attackingBadgeStations.Add(new BadgeStation(badgeStation, sr, badgeStation.transform, badge));
+            }
+
+            List<BadgeStation> defendingBadgeStations = new();
+            for (int i = 0; i < defendingBadges.Length; i++)
+            {
+                BadgesScriptable badge = defendingBadges[i];
+                GameObject badgeStation = Instantiate(badgePrefab, isPlayer ? enemyBadges : playerBadges, false);
+                SpriteRenderer sr = badgeStation.GetComponent<SpriteRenderer>();
+                sr.sprite = badge.Sprite;
+                badgeStation.transform.Translate(Vector3.left * (isPlayer ? playerSpread * i : -playerSpread * i));
+
+                defendingBadgeStations.Add(new BadgeStation(badgeStation, sr, badgeStation.transform, badge));
+            }
+
+            attackPower = 1;
+            if (attackingBadgeStations.Count > 0)
+            {
+                bool first = true;
+                foreach (BadgeStation badgeStation in attackingBadgeStations)
+                {
+                    yield return badgeStation.AnimationIn();
+
+                    if (first)
+                        damageNumberCanvas.position = badgeStation.GetTargetPosition();
+                    else
+                        yield return badgeStation.LerpObjectToPosition(damageNumberCanvas);
+
+                    attackPower += badgeStation.Badge.Power * Random.Range(0.75f, 1);
+                    damageText.text = attackPower.ToString();
+                    yield return new WaitForSeconds(0.25f);
+                    yield return badgeStation.AnimationOut();
+                    first = false;
+                }
+            }
+            else
+            {
+                damageNumberCanvas.transform.position = isPlayer
+                    ? playerBadges.position
+                    : enemyBadges.position;
+
+                damageText.text = "1";
+            }
+
+            foreach (BadgeStation badgeStation in defendingBadgeStations)
+            {
+                yield return badgeStation.AnimationIn();
+                yield return badgeStation.LerpObjectToPosition(damageNumberCanvas);
+                attackPower -= badgeStation.Badge.Power * Random.Range(0.75f, 1);
+                attackPower.Min1();
+                damageText.text = attackPower.ToString();
+                yield return new WaitForSeconds(0.25f);
+                yield return badgeStation.AnimationOut();
+            }
+
+            yield return BadgeStation.LerpObjectToPosition(damageNumberCanvas.transform,
+                defending.stationGo.transform.position);
+            damageText.text = "";
+            yield return DamageBlink(defending);
         }
 
-        IEnumerator Item(BattleUnit unit, BattleUnit target, ItemScriptable item,
+        private IEnumerator AttackPowerNoAttackBadge(BattleUnit defending, Max100 initialAttack)
+        {
+            bool isPlayer = enemies.Contains(defending);
+
+            BadgesScriptable[] defendingBadges = defending.GetDefenseBadges();
+
+            List<BadgeStation> defendingBadgeStations = new();
+            for (int i = 0; i < defendingBadges.Length; i++)
+            {
+                BadgesScriptable badge = defendingBadges[i];
+                GameObject badgeStation = Instantiate(badgePrefab, isPlayer ? enemyBadges : playerBadges, false);
+                SpriteRenderer sr = badgeStation.GetComponent<SpriteRenderer>();
+                sr.sprite = badge.Sprite;
+                badgeStation.transform.Translate(Vector3.left * (isPlayer ? playerSpread * i : -playerSpread * i));
+
+                defendingBadgeStations.Add(new BadgeStation(badgeStation, sr, badgeStation.transform, badge));
+            }
+
+            damageNumberCanvas.transform.position = isPlayer
+                ? playerBadges.position
+                : enemyBadges.position;
+
+            attackPower = initialAttack;
+            damageText.text = initialAttack.ToString();
+
+            foreach (BadgeStation badgeStation in defendingBadgeStations)
+            {
+                yield return badgeStation.AnimationIn();
+                yield return badgeStation.LerpObjectToPosition(damageNumberCanvas);
+                attackPower -= badgeStation.Badge.Power * Random.Range(0.75f, 1);
+                attackPower.Min1();
+                damageText.text = attackPower.ToString();
+                yield return badgeStation.AnimationOut();
+            }
+
+            yield return BadgeStation.LerpObjectToPosition(damageNumberCanvas.transform,
+                defending.stationGo.transform.position);
+            damageText.text = "";
+            yield return DamageBlink(defending);
+        }
+
+        private IEnumerator Item(BattleUnit unit, BattleUnit target, ItemScriptable item,
             System.Func<BattleUnit, int, IEnumerator> changeLifeOnFriendFunc,
             System.Func<BattleUnit, int, IEnumerator> changeLifeOnOpponentFunc)
         {
@@ -829,9 +946,9 @@ namespace Battle
             yield return new WaitForEndOfFrame();
             if (item.Type == ItemScriptable.ItemType.Attack)
             {
-                int hit = target.GetDefenseChange(item.Power);
-                yield return GameUIManager.TypeOut($"{hit} damage to {target.data.title}.");
-                yield return changeLifeOnOpponentFunc(target, -hit);
+                yield return AttackPowerNoAttackBadge(target, item.Power);
+                yield return GameUIManager.TypeOut($"{attackPower} damage to {target.data.title}.");
+                yield return changeLifeOnOpponentFunc(target, -attackPower);
             }
             else if (item.Type == ItemScriptable.ItemType.Heal)
             {
@@ -841,12 +958,12 @@ namespace Battle
             }
         }
 
-        string[] GetPossibleItems(BattleUnit unit)
+        private static string[] GetPossibleItems(BattleUnit unit)
         {
             return unit.itemOptionsForUnit.Select(item => item.ToString()).ToArray();
         }
 
-        IEnumerator Magic(BattleUnit unit, BattleUnit[] targets, MagicScriptable magic,
+        private IEnumerator Magic(BattleUnit unit, BattleUnit[] targets, MagicScriptable magic,
             System.Func<BattleUnit, int, IEnumerator> changeLifeOnFriendFunc,
             System.Func<BattleUnit, int, IEnumerator> changeLifeOnOpponentFunc)
         {
@@ -870,9 +987,9 @@ namespace Battle
             {
                 foreach (BattleUnit target in targets)
                 {
-                    int hit = target.GetDefenseChange(magic.Power);
-                    yield return GameUIManager.TypeOut($"{hit} damage to {target.data.title}.");
-                    yield return changeLifeOnOpponentFunc(target, -hit);
+                    yield return AttackPowerNoAttackBadge(target, magic.Power);
+                    yield return GameUIManager.TypeOut($"{attackPower} damage to {target.data.title}.");
+                    yield return changeLifeOnOpponentFunc(target, -attackPower);
                 }
             }
             else if (magic.Type == MagicScriptable.MagicType.Heal)
@@ -886,7 +1003,7 @@ namespace Battle
             }
         }
 
-        string[] GetPossibleMagic(BattleUnit unit)
+        private static string[] GetPossibleMagic(BattleUnit unit)
         {
             string[] magicOptions = new string[unit.magicOptionsForUnit.Count];
             for (int i = 0; i < magicOptions.Length; i++)
@@ -898,7 +1015,7 @@ namespace Battle
             return magicOptions;
         }
 
-        string[] GetPossibleActions(BattleUnit unit)
+        private static string[] GetPossibleActions(BattleUnit unit)
         {
             List<string> possibleActions = new(System.Enum.GetNames(typeof(BattleUnit.TurnOptions)));
 
@@ -911,7 +1028,7 @@ namespace Battle
             return possibleActions.ToArray();
         }
 
-        int SkipToNextLivingUnit(BattleUnit[] units, int selected, int step)
+        private static int SkipToNextLivingUnit(BattleUnit[] units, int selected, int step)
         {
             selected += step;
             if (selected > units.Length - 1) selected = 0;
@@ -925,7 +1042,7 @@ namespace Battle
             return selected;
         }
 
-        string GetActionStatement(BattleUnit unit, string[] statements, string opposition)
+        private static string GetActionStatement(BattleUnit unit, string[] statements, string opposition)
         {
             string choice = statements[Random.Range(0, statements.Length)];
             choice = choice.Replace("Player", unit.data.title)
@@ -934,7 +1051,7 @@ namespace Battle
             return unit.SyncSex(choice);
         }
 
-        bool CheckLoss(BattleUnit[] side)
+        private static bool CheckLoss(BattleUnit[] side)
         {
             foreach (BattleUnit battleUnit in side)
             {
@@ -944,7 +1061,7 @@ namespace Battle
             return true;
         }
 
-        void DisplayUnitsOnPanel()
+        private void DisplayUnitsOnPanel()
         {
             foreach (Panel panel in playerPanels)
             {
@@ -968,6 +1085,71 @@ namespace Battle
 
             pointer.transform.position += .2f * moveDir * Vector3.up;
             pointer.transform.rotation = Quaternion.Euler(0, 0, moveDir * -90);
+        }
+
+        private struct BadgeStation
+        {
+            public GameObject GO;
+            public SpriteRenderer SR;
+            public Transform Tr;
+            public BadgesScriptable Badge;
+
+            public BadgeStation(GameObject go, SpriteRenderer sr, Transform transform, BadgesScriptable badge)
+            {
+                GO = go;
+                SR = sr;
+                Tr = transform;
+                Badge = badge;
+            }
+
+            public IEnumerator AnimationIn()
+            {
+                while (SR.color.a < .9)
+                {
+                    SR.color = Color.Lerp(SR.color, Color.white, Time.deltaTime * 4);
+                    Tr.Translate(Vector3.up * Time.deltaTime * 0.15f);
+                    yield return new WaitForEndOfFrame();
+                }
+
+                SR.color = Color.white;
+            }
+
+            public IEnumerator AnimationOut()
+            {
+                while (SR.color.a > .1)
+                {
+                    SR.color = Color.Lerp(SR.color, Color.clear, Time.deltaTime * 4);
+                    Tr.Translate(Vector3.down * Time.deltaTime * 0.15f);
+                    yield return new WaitForEndOfFrame();
+                }
+
+                SR.color = Color.clear;
+            }
+
+            public IEnumerator LerpObjectToPosition(Transform objectTransform)
+            {
+                yield return LerpObjectToPosition(objectTransform, GetTargetPosition());
+            }
+
+            public static IEnumerator LerpObjectToPosition(Transform objectTransform, Vector3 endPoint)
+            {
+                const float duration = 0.25f;
+                Vector3 startPoint = objectTransform.position;
+                float elapsedTime = 0;
+                while (elapsedTime < duration)
+                {
+                    objectTransform.position = Vector3.Lerp(startPoint, endPoint, elapsedTime / duration);
+                    elapsedTime += Time.deltaTime;
+                    yield return new WaitForEndOfFrame();
+                }
+
+                objectTransform.position = endPoint;
+            }
+
+            public Vector3 GetTargetPosition()
+            {
+                return Tr.position + Vector3.down * .175f;
+            }
         }
     }
 }

@@ -15,3 +15,5 @@ MonoBehaviour:
   type: 1
   power:
     value: 1
+  sprite: {fileID: -1079259607, guid: 198379a5fad43f4889d0dab17535f151, type: 3}
+  title: Eye of Protection

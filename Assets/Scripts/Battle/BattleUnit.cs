@@ -1,11 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Data;
 using Managers;
 using UnityEngine;
-using UnityEngine.Serialization;
-using Random = UnityEngine.Random;
 
 namespace Battle
 {
@@ -64,10 +61,9 @@ namespace Battle
 
         public Sprite sprite;
         public BattleUnitData data;
-        [HideInInspector] public bool onDefense;
+        public bool onDefense;
 
-        [FormerlySerializedAs("stationGO")] [HideInInspector]
-        public GameObject stationGo;
+        [HideInInspector] public GameObject stationGo;
 
         [HideInInspector] public SpriteRenderer spriteRenderer;
 
@@ -79,17 +75,13 @@ namespace Battle
             .Where((item, idx) => data.badgesEquipped[idx] && item.Type == BadgesScriptable.BadgeType.Health)
             .Sum(item => item.Power), 1, 100);
 
-        private Max100 GetAttackTrait() =>
-            Mathf.Clamp(
-                badgesForUnit
-                    .Where((item, idx) => data.badgesEquipped[idx] && item.Type == BadgesScriptable.BadgeType.Attack)
-                    .Sum(item => item.Power), 1, 100);
+        public BadgesScriptable[] GetAttackBadges() =>
+            badgesForUnit.Where((x, idx) => x.Type == BadgesScriptable.BadgeType.Attack && data.badgesEquipped[idx])
+                .ToArray();
 
-        private Max100 GetDefenseTrait() =>
-            Mathf.Clamp(
-                badgesForUnit
-                    .Where((item, idx) => data.badgesEquipped[idx] && item.Type == BadgesScriptable.BadgeType.Defense)
-                    .Sum(item => item.Power), 1, 100);
+        public BadgesScriptable[] GetDefenseBadges() =>
+            badgesForUnit.Where((x, idx) => x.Type == BadgesScriptable.BadgeType.Defense && data.badgesEquipped[idx])
+                .ToArray();
 
         public Max100 GetMaxMagic() =>
             Mathf.Clamp(
@@ -139,23 +131,6 @@ namespace Battle
             return newBattleUnit;
         }
 
-        public Max100 GetAttack()
-        {
-            Max100 maxAttack = GetAttackTrait();
-            return maxAttack * Random.Range(0.75f, 1);
-        }
-
-        public Max100 GetDefenseChange(Max100 attack)
-        {
-            Max100 maxTake = GetDefenseTrait();
-            Max100 newAttack = maxTake * Random.Range(0.75f, 0);
-
-            if (onDefense)
-                newAttack *= 0.5f;
-
-            return newAttack;
-        }
-
         public BattleUnitData GetSyncedData()
         {
             data.SyncSelf(this);
@@ -166,11 +141,11 @@ namespace Battle
         {
             if (data.sex == UnitSex.Male)
                 return str;
-            
+
             str = str.Replace("him", "her");
             str = str.Replace("male", "female");
             str = str.Replace("his", "her");
-            
+
             return str;
         }
     }

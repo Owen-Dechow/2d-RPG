@@ -1169,7 +1169,7 @@ MonoBehaviour:
   gameManager: {fileID: 747861101}
   buttonPrefab: {fileID: 3593949501272601045, guid: ce21b20fea6ced540b72c3f9c2964e8e, type: 3}
   buttonsContainer: {fileID: 155476505}
-  newGameBTN: {fileID: 104707219}
+  newGameBtn: {fileID: 104707219}
   maxNumberOfGameProfiles: 8
   eventSystem: {fileID: 566134891}
   getNamePanel: {fileID: 807405327}

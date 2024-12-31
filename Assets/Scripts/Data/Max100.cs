@@ -58,5 +58,12 @@ namespace Data
             return value.ToString();
         }
 
+        public void Min1()
+        {
+            if (value < 1)
+            {
+                value = 1;
+            } 
+        } 
     }
 }
