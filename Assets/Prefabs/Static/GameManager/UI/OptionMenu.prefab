@@ -150,8 +150,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointer: {fileID: 3056548747731079124}
   textAreaPrefab: {fileID: 3507527660197755248, guid: 7bb84ebe0ed97b94d898100efa0eb37c, type: 3}
-  pointerOriginY: -14
-  pointerSpaceY: -21.25
+  pointerOriginY: -20
+  pointerSpaceY: -28
   pointerSpaceX: -10
 --- !u!114 &2219872838634558221
 MonoBehaviour:

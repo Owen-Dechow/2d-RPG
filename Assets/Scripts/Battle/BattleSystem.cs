@@ -6,6 +6,7 @@ using Data;
 using Managers;
 using Managers.CutScene;
 using TMPro;
+using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Transform = UnityEngine.Transform;
@@ -16,7 +17,11 @@ namespace Battle
     {
         #region Fields/Properties
 
-        [Header("UI Settings")] [SerializeField]
+        [Header("UI Settings")]
+
+        #region UI Settings
+
+        [SerializeField]
         private float playerSpread;
 
         [SerializeField] private float panelSpread;
@@ -32,11 +37,16 @@ namespace Battle
         [SerializeField] private GameObject background;
         [SerializeField] private GameObject badgePrefab;
 
+        #endregion
+
         [Header("Action Messages")] [SerializeField]
         private string[] attackText;
 
         [SerializeField] private string[] defendText;
         [SerializeField] private string[] runText;
+
+        [Header("Audio")] [SerializeField] private AudioClip damageSound;
+        private AudioSource audioSource;
 
         [HideInInspector] public GameObject enemyGameObject;
         [HideInInspector] public BattleUnit[] players;
@@ -63,7 +73,7 @@ namespace Battle
                     {
                         1 => "",
                         2 => " and his sibling",
-                        _ => "and his mob"
+                        _ => " and his mob"
                     }
                 }");
 
@@ -86,6 +96,8 @@ namespace Battle
 
         private void Start()
         {
+            audioSource = GetComponent<AudioSource>();
+            
             // Instantiate player units
             playerPanels = new Panel[players.Length];
             for (int i = 0; i < players.Length; i++)
@@ -420,8 +432,10 @@ namespace Battle
             selectedUnit = target;
         }
 
-        private static IEnumerator DamageBlink(BattleUnit unit)
+        private IEnumerator DamageBlink(BattleUnit unit)
         {
+            audioSource.PlayOneShot(damageSound);
+            
             for (int i = 0; i < 2; i++)
             {
                 unit.spriteRenderer.color = Color.clear;
@@ -832,7 +846,7 @@ namespace Battle
                 sr.sprite = badge.Sprite;
                 badgeStation.transform.Translate(Vector3.right * (isPlayer ? playerSpread * i : -playerSpread * i));
 
-                attackingBadgeStations.Add(new BadgeStation(badgeStation, sr, badgeStation.transform, badge));
+                attackingBadgeStations.Add(new BadgeStation(sr, badgeStation.transform, badge));
             }
 
             List<BadgeStation> defendingBadgeStations = new();
@@ -844,7 +858,7 @@ namespace Battle
                 sr.sprite = badge.Sprite;
                 badgeStation.transform.Translate(Vector3.left * (isPlayer ? playerSpread * i : -playerSpread * i));
 
-                defendingBadgeStations.Add(new BadgeStation(badgeStation, sr, badgeStation.transform, badge));
+                defendingBadgeStations.Add(new BadgeStation(sr, badgeStation.transform, badge));
             }
 
             attackPower = 1;
@@ -887,8 +901,19 @@ namespace Battle
                 yield return badgeStation.AnimationOut();
             }
 
+            if (defending.onDefense)
+            {
+                yield return BadgeStation.LerpObjectToPosition(damageNumberCanvas.transform,
+                    defending.stationGo.transform.position + Vector3.down * .5f);
+                attackPower *= .5f;
+                attackPower.Min1();
+                damageText.text = attackPower.ToString();
+                yield return new WaitForSeconds(0.25f);
+            }
+
             yield return BadgeStation.LerpObjectToPosition(damageNumberCanvas.transform,
                 defending.stationGo.transform.position);
+
             damageText.text = "";
             yield return DamageBlink(defending);
         }
@@ -908,7 +933,7 @@ namespace Battle
                 sr.sprite = badge.Sprite;
                 badgeStation.transform.Translate(Vector3.left * (isPlayer ? playerSpread * i : -playerSpread * i));
 
-                defendingBadgeStations.Add(new BadgeStation(badgeStation, sr, badgeStation.transform, badge));
+                defendingBadgeStations.Add(new BadgeStation(sr, badgeStation.transform, badge));
             }
 
             damageNumberCanvas.transform.position = isPlayer
@@ -926,6 +951,16 @@ namespace Battle
                 attackPower.Min1();
                 damageText.text = attackPower.ToString();
                 yield return badgeStation.AnimationOut();
+            }
+
+            if (defending.onDefense)
+            {
+                yield return BadgeStation.LerpObjectToPosition(damageNumberCanvas.transform,
+                    defending.stationGo.transform.position + Vector3.down * .5f);
+                attackPower *= .5f;
+                attackPower.Min1();
+                damageText.text = attackPower.ToString();
+                yield return new WaitForSeconds(0.25f);
             }
 
             yield return BadgeStation.LerpObjectToPosition(damageNumberCanvas.transform,
@@ -1087,43 +1122,42 @@ namespace Battle
             pointer.transform.rotation = Quaternion.Euler(0, 0, moveDir * -90);
         }
 
-        private struct BadgeStation
+        private readonly struct BadgeStation
         {
-            public GameObject GO;
-            public SpriteRenderer SR;
-            public Transform Tr;
-            public BadgesScriptable Badge;
+            private readonly SpriteRenderer sr;
+            private readonly Transform tr;
+            public readonly BadgesScriptable Badge;
+            private const byte AnimationSpeed = 5;
 
-            public BadgeStation(GameObject go, SpriteRenderer sr, Transform transform, BadgesScriptable badge)
+            public BadgeStation(SpriteRenderer sr, Transform transform, BadgesScriptable badge)
             {
-                GO = go;
-                SR = sr;
-                Tr = transform;
+                this.sr = sr;
+                tr = transform;
                 Badge = badge;
             }
 
             public IEnumerator AnimationIn()
             {
-                while (SR.color.a < .9)
+                while (sr.color.a < .9)
                 {
-                    SR.color = Color.Lerp(SR.color, Color.white, Time.deltaTime * 4);
-                    Tr.Translate(Vector3.up * Time.deltaTime * 0.15f);
+                    sr.color = Color.Lerp(sr.color, Color.white, Time.deltaTime * AnimationSpeed);
+                    tr.Translate(Vector3.up * Time.deltaTime * 0.15f);
                     yield return new WaitForEndOfFrame();
                 }
 
-                SR.color = Color.white;
+                sr.color = Color.white;
             }
 
             public IEnumerator AnimationOut()
             {
-                while (SR.color.a > .1)
+                while (sr.color.a > .1)
                 {
-                    SR.color = Color.Lerp(SR.color, Color.clear, Time.deltaTime * 4);
-                    Tr.Translate(Vector3.down * Time.deltaTime * 0.15f);
+                    sr.color = Color.Lerp(sr.color, Color.clear, Time.deltaTime * AnimationSpeed);
+                    tr.Translate(Vector3.down * Time.deltaTime * 0.15f);
                     yield return new WaitForEndOfFrame();
                 }
 
-                SR.color = Color.clear;
+                sr.color = Color.clear;
             }
 
             public IEnumerator LerpObjectToPosition(Transform objectTransform)
@@ -1148,7 +1182,7 @@ namespace Battle
 
             public Vector3 GetTargetPosition()
             {
-                return Tr.position + Vector3.down * .175f;
+                return tr.position + Vector3.down * .175f;
             }
         }
     }

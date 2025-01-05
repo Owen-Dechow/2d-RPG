@@ -77,6 +77,7 @@ namespace Managers
         public static void SetBattleUnitData(BattleUnit.BattleUnitData battleUnitData)
         {
             _i.playerBattleUnit.data = battleUnitData;
+            battleUnitData.SyncUnit(_i.playerBattleUnit);
         }
 
         public static void SetName(string name)

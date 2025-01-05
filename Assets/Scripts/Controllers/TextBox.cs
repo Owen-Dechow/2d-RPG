@@ -9,7 +9,13 @@ namespace Controllers
     {
         public TMPro.TextMeshProUGUI textMeshObject;
         public float delayBeforeTyping;
+        private AudioSource audioSource;
 
+        private void Start()
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
+        
         public IEnumerator TypeOut(string text, bool instant, Vector2 position)
         {
             GameUIManager.RenderAtPosition(gameObject, position);
@@ -44,6 +50,7 @@ namespace Controllers
             // Type out text
             foreach (char letter in text)
             {
+                audioSource.Play();
                 textMeshObject.text += letter;
                 gameObject.SetActive(true);
 

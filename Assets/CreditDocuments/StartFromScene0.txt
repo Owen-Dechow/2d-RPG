@@ -1,1 +1,0 @@
-https://discussions.unity.com/t/editor-script-to-make-play-button-always-jump-to-a-start-scene/68990

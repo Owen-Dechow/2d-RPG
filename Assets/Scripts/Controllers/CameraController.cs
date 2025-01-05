@@ -9,7 +9,8 @@ namespace Controllers
     public class CameraController : MonoBehaviour
     {
         private readonly int materialColorField = Shader.PropertyToID("_Color");
-        private const float Drag = 0.5f;
+        private const float Speed = 1.5f;
+        private const float PlayerDistance = 0.05f;
 
         [SerializeField] public Material sceneIndependentSpriteMaterial;
         [SerializeField] public Color multiplier;
@@ -29,10 +30,10 @@ namespace Controllers
 
             if (!followPlayer)
                 return;
-            
+
             Vector3 position = PlayerController.playerController.transform.position;
             position.z = transform.position.z;
-            
+
             if (followPlayer)
                 transform.position = position;
         }
@@ -41,9 +42,13 @@ namespace Controllers
         {
             if (followPlayer)
             {
-                Vector3 delta = (PlayerController.playerController.transform.position - transform.position) / Drag;
-                delta.z = 0;
-                Vector3 newPos = transform.position + Time.deltaTime * delta;
+                Vector3 targetPosition = PlayerController.playerController.transform.position;
+                targetPosition.z = transform.position.z;
+
+                Vector3 newPos = Vector3.Distance(transform.position, targetPosition) > PlayerDistance
+                    ? Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * Speed)
+                    : transform.position;
+
                 newPos.x = Mathf.Clamp(newPos.x, cameraBounds.minX, cameraBounds.maxX);
                 newPos.y = Mathf.Clamp(newPos.y, cameraBounds.minY, cameraBounds.maxY);
                 transform.position = newPos;
