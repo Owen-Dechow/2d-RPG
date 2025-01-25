@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 291e275b4c41aee54920e1c92ba1a4df, type: 3}
+  m_Name: Up
+  m_EditorClassIdentifier: 
+  frames:
+  - {fileID: -2107672541, guid: 13e3a09d93415f49f9dd02a76ca88dcc, type: 3}
+  - {fileID: 882253287, guid: 13e3a09d93415f49f9dd02a76ca88dcc, type: 3}
+  - {fileID: -1066846674, guid: 13e3a09d93415f49f9dd02a76ca88dcc, type: 3}
+  - {fileID: 2060148715, guid: 13e3a09d93415f49f9dd02a76ca88dcc, type: 3}
+  - {fileID: -490413717, guid: 13e3a09d93415f49f9dd02a76ca88dcc, type: 3}
+  - {fileID: -1034403248, guid: 13e3a09d93415f49f9dd02a76ca88dcc, type: 3}
+  - {fileID: 660651648, guid: 13e3a09d93415f49f9dd02a76ca88dcc, type: 3}
+  - {fileID: 1758456135, guid: 13e3a09d93415f49f9dd02a76ca88dcc, type: 3}
+  animationDuration: 0.75

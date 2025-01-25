@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 5320338607762916003}
   - component: {fileID: 8309164432365765190}
   - component: {fileID: 7482619167255386239}
-  - component: {fileID: 2180464514429688720}
   - component: {fileID: 14195705096688690}
   - component: {fileID: 3301391266877692524}
   - component: {fileID: 973967652070576557}
@@ -164,27 +163,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.12, y: 0.12}
   m_EdgeRadius: 0
---- !u!95 &2180464514429688720
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1676499015156381114}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 83b20cf17521a67a29ddbf668d684a4a, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &14195705096688690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,12 +187,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d559f75e8e6a2c409c733415ec03e20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveUp: {fileID: 7400000, guid: 1794a729f26affbce9c741f497e11c72, type: 2}
-  moveDown: {fileID: 7400000, guid: aa26f4dea1acedddeae508214d24d572, type: 2}
-  moveHorizontal: {fileID: 7400000, guid: 065f0092c295cd395bdd15a2ff5b5ce0, type: 2}
-  idleUp: {fileID: 7400000, guid: 34ecf20649c1cf2db9c931bbb93a0f2e, type: 2}
-  idleDown: {fileID: 7400000, guid: a747f20011ee6b3dfb8fc21037daba2a, type: 2}
-  idleHorizontal: {fileID: 7400000, guid: 1a963ba97237733aa9cf91ef138efccf, type: 2}
+  currentState: {fileID: 11400000, guid: 51342274b21afa050830566ca617701a, type: 2}
+  moveUp: {fileID: 11400000, guid: ea8b1374a79bfbfa29ae6838fa26a476, type: 2}
+  moveDown: {fileID: 11400000, guid: 51342274b21afa050830566ca617701a, type: 2}
+  moveHorizontal: {fileID: 11400000, guid: 3748c287846ae156097c8f2f0de79fa0, type: 2}
+  idleUp: {fileID: 11400000, guid: ea8b1374a79bfbfa29ae6838fa26a476, type: 2}
+  idleDown: {fileID: 11400000, guid: c79051e41f3642102bf39ecde974e12a, type: 2}
+  idleHorizontal: {fileID: 11400000, guid: 3748c287846ae156097c8f2f0de79fa0, type: 2}
   speedAdded: 0
   useRigidBody: 1
 --- !u!114 &973967652070576557
@@ -283,7 +262,10 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   magicOptionsForUnit: []
   itemOptionsForUnit: []
-  badgesForUnit: []
+  badgesForUnit:
+  - {fileID: 11400000, guid: 563b2501b8b0591318f268d1ae16331a, type: 2}
+  - {fileID: 11400000, guid: ce8164ce7cde647cb811a479cbbd917d, type: 2}
+  - {fileID: 11400000, guid: 43400a3e4558de267bfad8019784d116, type: 2}
 --- !u!1 &6791893535787412339
 GameObject:
   m_ObjectHideFlags: 0

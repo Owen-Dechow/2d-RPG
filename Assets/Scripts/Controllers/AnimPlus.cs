@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using Managers;
 using Managers.CutScene;
-using UnityEditor.UI;
 using UnityEngine;
+using Data;
 
 namespace Controllers
 {
@@ -16,28 +15,29 @@ namespace Controllers
             Right
         }
 
-        private Animator anim;
         private SpriteRenderer spr;
-        private AnimationClip currentState;
+
         private Rigidbody2D rb;
 
         private Direction currentDirection = Direction.Down;
         private Vector2 movementDelta;
 
-        public AnimationClip moveUp;
-        public AnimationClip moveDown;
-        public AnimationClip moveHorizontal;
+        private float animationTime;
 
-        public AnimationClip idleUp;
-        public AnimationClip idleDown;
-        public AnimationClip idleHorizontal;
+        public AnimationScriptable currentState;
+        public AnimationScriptable moveUp;
+        public AnimationScriptable moveDown;
+        public AnimationScriptable moveHorizontal;
+
+        public AnimationScriptable idleUp;
+        public AnimationScriptable idleDown;
+        public AnimationScriptable idleHorizontal;
 
         public bool speedAdded = false;
         public bool useRigidBody = true;
 
         private void Start()
         {
-            anim = GetComponent<Animator>();
             spr = GetComponent<SpriteRenderer>();
 
             try { rb = GetComponent<Rigidbody2D>(); }
@@ -47,7 +47,8 @@ namespace Controllers
         private void LateUpdate()
         {
             spr.flipX = currentDirection == Direction.Left;
-            anim.speed = speedAdded ? 1.75f : 1;
+            float animSpeed = speedAdded ? 1.75f : 1;
+
             if (useRigidBody)
             {
                 if (rb == null)
@@ -61,7 +62,8 @@ namespace Controllers
             }
 
             bool idle = movementDelta.magnitude == 0;
-            if (!idle) SetDirection();
+            if (!idle)
+                SetDirection();
 
             if (idle)
             {
@@ -85,29 +87,32 @@ namespace Controllers
                         SetAnimationTo(moveHorizontal); break;
                 }
             }
+
+            animationTime += Time.deltaTime * animSpeed;
+            spr.sprite = currentState.GetSprite(animationTime);
         }
 
         private void SetDirection()
         {
             if (CutScene.Enabled) return;
-            if (movementDelta.x > 0) currentDirection = Direction.Right;
-            else if (movementDelta.x < 0) currentDirection = Direction.Left;
+            if (movementDelta.x > Mathf.Abs(movementDelta.y) * .5) currentDirection = Direction.Right;
+            else if (movementDelta.x < Mathf.Abs(movementDelta.y) * -0.5) currentDirection = Direction.Left;
             else if (movementDelta.y > 0) currentDirection = Direction.Up;
             else if (movementDelta.y < 0) currentDirection = Direction.Down;
         }
 
-        private void SetAnimationTo(AnimationClip animationClip)
+        private void SetAnimationTo(AnimationScriptable animationClip)
         {
             if (currentState == animationClip) return;
 
-            anim.Play(animationClip.name);
+            animationTime = 0;
             currentState = animationClip;
         }
 
         public static Direction RandomDirection(bool includeX = true, bool includeY = true)
         {
             List<Direction> directions = new();
-        
+
             if (includeX)
             {
                 directions.Add(Direction.Left);

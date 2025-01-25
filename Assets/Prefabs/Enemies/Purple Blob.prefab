@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4326385105789543778}
   - component: {fileID: 4326385105789543780}
   - component: {fileID: 4326385105789543790}
-  - component: {fileID: 4326385105789543777}
   - component: {fileID: 4326385105789543776}
   - component: {fileID: 1831631503}
   - component: {fileID: 4326385105789543781}
@@ -164,27 +163,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.16, y: 0.073831216}
   m_EdgeRadius: 0
---- !u!95 &4326385105789543777
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4326385105789543782}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: fadf0131ef0492c4ca245ed67715bc5d, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &4326385105789543776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,12 +187,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d559f75e8e6a2c409c733415ec03e20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveUp: {fileID: 7400000, guid: b75cd93eefeb22f46bac99aaf9757fb2, type: 2}
-  moveDown: {fileID: 7400000, guid: b75cd93eefeb22f46bac99aaf9757fb2, type: 2}
-  moveHorizontal: {fileID: 7400000, guid: b75cd93eefeb22f46bac99aaf9757fb2, type: 2}
-  idleUp: {fileID: 7400000, guid: b75cd93eefeb22f46bac99aaf9757fb2, type: 2}
-  idleDown: {fileID: 7400000, guid: b75cd93eefeb22f46bac99aaf9757fb2, type: 2}
-  idleHorizontal: {fileID: 7400000, guid: b75cd93eefeb22f46bac99aaf9757fb2, type: 2}
+  currentState: {fileID: 11400000, guid: 6425f98b76c4904ada950bf946b3cd07, type: 2}
+  moveUp: {fileID: 11400000, guid: 6425f98b76c4904ada950bf946b3cd07, type: 2}
+  moveDown: {fileID: 11400000, guid: 6425f98b76c4904ada950bf946b3cd07, type: 2}
+  moveHorizontal: {fileID: 11400000, guid: 6425f98b76c4904ada950bf946b3cd07, type: 2}
+  idleUp: {fileID: 11400000, guid: 6425f98b76c4904ada950bf946b3cd07, type: 2}
+  idleDown: {fileID: 11400000, guid: 6425f98b76c4904ada950bf946b3cd07, type: 2}
+  idleHorizontal: {fileID: 11400000, guid: 6425f98b76c4904ada950bf946b3cd07, type: 2}
   speedAdded: 0
   useRigidBody: 1
 --- !u!114 &4326385105789543781
