@@ -1,16 +1,17 @@
 ﻿using System.Collections;
+using Assets.Scripts.Controllers;
+using Assets.Scripts.NPC;
 using Controllers;
 using Data;
 using Managers;
 using Managers.CutScene;
-using NPC;
 using UnityEngine;
 
 public class Node_ChangeScene : ActionNode
 {
-    [SerializeField] LevelScene scene;
+    [SerializeField] readonly LevelScene scene;
     [SerializeField] Vector2 playerSpanPoint;
-    [SerializeField] bool saveAfterChange = true;
+    [SerializeField] readonly bool saveAfterChange = true;
 
     public override string MenuLocation => "Animation/Change Scene";
 

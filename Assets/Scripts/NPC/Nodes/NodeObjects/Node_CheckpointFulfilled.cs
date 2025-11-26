@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using Controllers;
+using Assets.Scripts.Controllers;
+using Assets.Scripts.NPC;
 using Managers;
-using NPC;
 using UnityEngine;
 
 public class Node_CheckpointFulfilled : IFNode
 {
-    [SerializeField] CheckpointSystem.CheckpointFlag checkpoint;
+    [SerializeField] readonly CheckpointSystem.CheckpointFlag checkpoint;
 
     public override string MenuLocation => "Control/Checkpoint Passed";
 

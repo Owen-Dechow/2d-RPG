@@ -1,7 +1,6 @@
 ﻿using System.Collections;
-using Controllers;
-using NPC;
-using UnityEngine;
+using Assets.Scripts.Controllers;
+using Assets.Scripts.NPC;
 
 public class Node_DoNothing : ActionNode
 {

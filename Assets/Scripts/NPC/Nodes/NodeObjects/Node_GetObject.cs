@@ -1,13 +1,12 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using Controllers;
-using NPC;
+using Assets.Scripts.Controllers;
+using Assets.Scripts.NPC;
 using UnityEngine;
 
 public class Node_GetObject : ActionNode
 {
-    [SerializeField] string objectName;
-    [SerializeField] string referenceKey;
+    [SerializeField] readonly string objectName;
+    [SerializeField] readonly string referenceKey;
 
     public override string MenuLocation => "Animation/Get Object";
 

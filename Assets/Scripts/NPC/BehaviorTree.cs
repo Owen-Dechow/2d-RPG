@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Controllers;
+using Assets.Scripts.Controllers;
 using UnityEditor;
 using UnityEngine;
 
-namespace NPC
+namespace Assets.Scripts.NPC
 {
     [CreateAssetMenu(menuName = "Action Tree")]
     public class BehaviorTree : ScriptableObject

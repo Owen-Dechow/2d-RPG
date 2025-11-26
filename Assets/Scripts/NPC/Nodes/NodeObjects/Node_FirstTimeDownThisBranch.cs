@@ -1,8 +1,6 @@
-﻿using Controllers;
-using Managers;
-using NPC;
-using UnityEngine;
-using UnityEditor;
+﻿using Managers;
+using Assets.Scripts.NPC;
+using Assets.Scripts.Controllers;
 
 public class Node_FirstTimeDownThisBranch : IFNode
 {

@@ -1,13 +1,12 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using Controllers;
-using NPC;
+using Assets.Scripts.Controllers;
+using Assets.Scripts.NPC;
 using UnityEngine;
 
 public class Node_AnimateObject : ActionNode
 {
-    [SerializeField] string referenceKey;
-    [SerializeField] AnimationClip animationClip;
+    [SerializeField] readonly string referenceKey;
+    [SerializeField] readonly AnimationClip animationClip;
 
     public override string MenuLocation => "Animation/Animate Object";
 

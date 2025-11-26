@@ -1,13 +1,12 @@
 using System.Collections;
-using System.Collections.Generic;
-using Controllers;
+using Assets.Scripts.Controllers;
+using Assets.Scripts.NPC;
 using Managers;
-using NPC;
 using UnityEngine;
 
 public class Node_Say : ActionNode
 {
-    [SerializeField] string text;
+    [SerializeField] readonly string text;
 
     public override string MenuLocation => "Menus/Text Only";
 

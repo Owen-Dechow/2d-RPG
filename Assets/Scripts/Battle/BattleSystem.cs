@@ -1,17 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Battle;
 using Controllers;
 using Data;
 using Managers;
 using Managers.CutScene;
 using TMPro;
-using UnityEditor.UI;
 using UnityEngine;
-using UnityEngine.Rendering;
 using Transform = UnityEngine.Transform;
 
-namespace Battle
+namespace Assets.Scripts.Battle
 {
     public class BattleSystem : MonoBehaviour
     {
@@ -22,30 +21,30 @@ namespace Battle
         #region UI Settings
 
         [SerializeField]
-        private float playerSpread;
+        private readonly float playerSpread;
 
-        [SerializeField] private float panelSpread;
-        [SerializeField] private Transform playerBattleStation;
-        [SerializeField] private Transform enemyBattleStation;
-        [SerializeField] private Transform playerBadges;
-        [SerializeField] private Transform enemyBadges;
-        [SerializeField] private Transform damageNumberCanvas;
+        [SerializeField] private readonly float panelSpread;
+        [SerializeField] private readonly Transform playerBattleStation;
+        [SerializeField] private readonly Transform enemyBattleStation;
+        [SerializeField] private readonly Transform playerBadges;
+        [SerializeField] private readonly Transform enemyBadges;
+        [SerializeField] private readonly Transform damageNumberCanvas;
         [SerializeField] private TextMeshProUGUI damageText;
-        [SerializeField] private GameObject panelPrefab;
-        [SerializeField] private Canvas canvas;
-        [SerializeField] private GameObject pointer;
-        [SerializeField] private GameObject background;
-        [SerializeField] private GameObject badgePrefab;
+        [SerializeField] private readonly GameObject panelPrefab;
+        [SerializeField] private readonly Canvas canvas;
+        [SerializeField] private readonly GameObject pointer;
+        [SerializeField] private readonly GameObject background;
+        [SerializeField] private readonly GameObject badgePrefab;
 
         #endregion
 
         [Header("Action Messages")] [SerializeField]
-        private string[] attackText;
+        private readonly string[] attackText;
 
-        [SerializeField] private string[] defendText;
-        [SerializeField] private string[] runText;
+        [SerializeField] private readonly string[] defendText;
+        [SerializeField] private readonly string[] runText;
 
-        [Header("Audio")] [SerializeField] private AudioClip damageSound;
+        [Header("Audio")] [SerializeField] private readonly AudioClip damageSound;
         private AudioSource audioSource;
 
         [HideInInspector] public GameObject enemyGameObject;
@@ -1109,7 +1108,7 @@ namespace Battle
             pointer.transform.position = unit.spriteRenderer.transform.position;
 
             int moveDir;
-            if (Camera.main!.WorldToScreenPoint(pointer.transform.position).y - Camera.main.scaledPixelHeight / 2 > 0)
+            if (Camera.main.WorldToScreenPoint(pointer.transform.position).y - Camera.main.scaledPixelHeight / 2 > 0)
             {
                 moveDir = -1;
             }

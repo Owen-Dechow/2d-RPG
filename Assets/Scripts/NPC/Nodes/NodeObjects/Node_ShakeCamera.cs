@@ -1,13 +1,14 @@
 ﻿using System.Collections;
+using Assets.Scripts.Controllers;
+using Assets.Scripts.NPC;
 using Controllers;
-using NPC;
 using UnityEngine;
 
 public class Node_ShakeCamera : ActionNode
 {
-    [SerializeField] float time;
-    [SerializeField] float intensity;
-    [SerializeField] bool decay;
+    [SerializeField] readonly float time;
+    [SerializeField] readonly float intensity;
+    [SerializeField] readonly bool decay;
 
     public override string MenuLocation => "Animation/Shake Camera";
 

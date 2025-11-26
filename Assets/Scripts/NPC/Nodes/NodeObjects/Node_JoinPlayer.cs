@@ -1,15 +1,15 @@
 ﻿using System.Collections;
+using Assets.Scripts.Controllers;
+using Assets.Scripts.NPC;
 using Battle;
-using Controllers;
 using Managers;
-using NPC;
 using UnityEngine;
 
 public class Node_JoinPlayer : ActionNode
 {
-    [SerializeField] Sprite sprite;
+    [SerializeField] readonly Sprite sprite;
     [SerializeField] BattleUnit.BattleUnitData battleUnit;
-    [SerializeField] string joinedPlayerCheckpoint;
+    [SerializeField] readonly string joinedPlayerCheckpoint;
 
     public override string MenuLocation => "Actions/NPC Join";
 

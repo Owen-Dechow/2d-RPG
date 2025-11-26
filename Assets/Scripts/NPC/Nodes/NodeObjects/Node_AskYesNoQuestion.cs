@@ -1,14 +1,14 @@
 ﻿using System.Collections;
-using Controllers;
+using Assets.Scripts.Controllers;
+using Assets.Scripts.NPC;
 using Managers;
-using NPC;
 using UnityEngine;
 
 public class Node_AskYesNoQuestion : ActionNode
 {
-    [SerializeField] string prompt;
+    [SerializeField] readonly string prompt;
     [SerializeField] string thirdOption;
-    [SerializeField] bool allowNoAnswer = false;
+    [SerializeField] readonly bool allowNoAnswer = false;
 
     public override string MenuLocation => "Menus/Yes Or No";
 

@@ -1,13 +1,13 @@
 ﻿using System.Collections;
-using Controllers;
+using Assets.Scripts.Controllers;
+using Assets.Scripts.NPC;
 using Managers;
-using NPC;
 using UnityEngine;
 
 public class Node_ComplexMenu : ActionNode
 {
-    [SerializeField] string[] choices;
-    [SerializeField] bool allowNoAnswer = false;
+    [SerializeField] readonly string[] choices;
+    [SerializeField] readonly bool allowNoAnswer = false;
 
     public override string MenuLocation => "Menus/Complex Tree";
 

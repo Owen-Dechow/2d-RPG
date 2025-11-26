@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using Battle;
+using Assets.Scripts.Battle;
 
 namespace Managers
 {

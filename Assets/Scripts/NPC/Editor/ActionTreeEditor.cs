@@ -1,4 +1,5 @@
-using NPC;
+using Assets.Scripts.NPC;
+using Assets.Scripts.Controllers;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -65,7 +66,7 @@ public class ActionTreeEditor : EditorWindow
             info.text = $"{tree}\n" +
                 $"Number of nodes: {tree.nodes.Count}\n" +
                 $"Instance Id: {tree.GetInstanceID()}\n" +
-                $"RootnNode: {tree.rootNode}";
+                $"RootNode: {tree.rootNode}";
         }
     }
 }

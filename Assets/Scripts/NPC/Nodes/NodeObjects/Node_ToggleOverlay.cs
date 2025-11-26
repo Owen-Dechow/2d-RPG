@@ -1,15 +1,16 @@
 ﻿using System.Collections;
+using Assets.Scripts.Controllers;
+using Assets.Scripts.NPC;
 using Controllers;
 using Managers;
-using NPC;
 using UnityEngine;
 
 public class Node_ToggleOverlay : ActionNode
 {
-    [SerializeField] bool on = true;
-    [SerializeField] float shakePower;
-    [SerializeField] bool controlVol = true;
-    [SerializeField] bool instant = false;
+    [SerializeField] readonly bool on = true;
+    [SerializeField] readonly float shakePower;
+    [SerializeField] readonly bool controlVol = true;
+    [SerializeField] readonly bool instant = false;
 
     public override string MenuLocation => "Animation/Toggle Overlay";
 

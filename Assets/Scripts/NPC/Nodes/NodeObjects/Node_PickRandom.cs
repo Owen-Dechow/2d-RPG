@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using Controllers;
-using NPC;
+using Assets.Scripts.Controllers;
+using Assets.Scripts.NPC;
 using UnityEngine;
 
 public class Node_PickRandom : IFNode

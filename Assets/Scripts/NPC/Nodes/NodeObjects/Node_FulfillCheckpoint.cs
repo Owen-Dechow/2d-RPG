@@ -1,12 +1,12 @@
 ﻿using System.Collections;
-using Controllers;
+using Assets.Scripts.Controllers;
+using Assets.Scripts.NPC;
 using Managers;
-using NPC;
 using UnityEngine;
 
 public class Node_FulfillCheckpoint : ActionNode
 {
-    [SerializeField] CheckpointSystem.CheckpointFlag checkpoint;
+    [SerializeField] readonly CheckpointSystem.CheckpointFlag checkpoint;
 
     public override string MenuLocation => "Actions/Fulfill Checkpoint";
 

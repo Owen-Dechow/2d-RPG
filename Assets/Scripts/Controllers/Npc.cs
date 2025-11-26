@@ -1,13 +1,13 @@
-using System;
 using System.Collections;
+using Assets.Scripts.NPC;
+using Controllers;
 using Managers;
 using Managers.CutScene;
-using NPC;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
-namespace Controllers
+namespace Assets.Scripts.Controllers
 {
     public class Npc : MonoBehaviour
     {
@@ -23,14 +23,14 @@ namespace Controllers
             XAndY,
         }
 
-        [SerializeField] private MovementType movementType;
+        [SerializeField] private readonly MovementType movementType;
         public BehaviorTree behaviorTree;
 
         [FormerlySerializedAs("NPCEnabledCheckpointWindowOpen")] [SerializeField]
-        private CheckpointSystem.CheckpointFlag npcEnabledCheckpointWindowOpen;
+        private readonly CheckpointSystem.CheckpointFlag npcEnabledCheckpointWindowOpen;
 
         [FormerlySerializedAs("NPCEnabledCheckpointWindowClose")] [SerializeField]
-        private CheckpointSystem.CheckpointFlag npcEnabledCheckpointWindowClose;
+        private readonly CheckpointSystem.CheckpointFlag npcEnabledCheckpointWindowClose;
 
         private bool inPlayerInteractionZone;
         private AnimPlus animPlus;

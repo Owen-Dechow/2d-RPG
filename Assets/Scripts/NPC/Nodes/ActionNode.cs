@@ -1,6 +1,6 @@
 using System.Collections;
-using Controllers;
-using NPC;
+using Assets.Scripts.Controllers;
+using Assets.Scripts.NPC;
 using UnityEngine;
 
 public abstract class ActionNode : Node

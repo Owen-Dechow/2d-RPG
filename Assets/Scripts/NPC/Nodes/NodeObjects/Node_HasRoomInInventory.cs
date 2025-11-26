@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using Controllers;
+﻿using Assets.Scripts.Controllers;
+using Assets.Scripts.NPC;
 using Managers;
-using NPC;
-using UnityEngine;
 
 public class Node_HasRoomInInventory : IFNode
 {

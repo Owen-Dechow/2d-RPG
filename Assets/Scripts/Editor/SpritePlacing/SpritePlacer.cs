@@ -1,5 +1,5 @@
-using Controllers;
-using NPC;
+using Assets.Scripts.Controllers;
+using Assets.Scripts.NPC;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;

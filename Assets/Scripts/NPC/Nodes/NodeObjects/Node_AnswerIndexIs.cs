@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Controllers;
+﻿using Assets.Scripts.Controllers;
+using Assets.Scripts.NPC;
 using Managers;
-using NPC;
 using UnityEngine;
 
 public class Node_AnswerIndexIs : IFNode
 {
-    [SerializeField] int[] answerIndexes;
+    [SerializeField] readonly int[] answerIndexes;
 
     public override string MenuLocation => "Control/Answer Index is";
 
